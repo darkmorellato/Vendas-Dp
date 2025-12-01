@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Executivo - Análise de Vendas Dom Pedro II</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Plus Jakarta Sans (More enterprise/tech look) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc; /* Slate-50 */
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Custom Select Style */
+        .custom-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-brand-600 p-2 rounded-lg">
+                        <i data-lucide="bar-chart-2" class="text-white h-6 w-6"></i>
+                    </div>
+                    <span class="text-xl font-bold text-slate-900 tracking-tight">Análise de Vendas Dom Pedro II</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- Period Selector -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="calendar" class="h-4 w-4 text-slate-500"></i>
+                        </div>
+                        <select id="period-selector" class="custom-select bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full pl-10 p-2.5 font-medium">
+                            <option value="nov2025" selected>Novembro 2025</option>
+                            <option value="out2025">Outubro 2025</option>
+                        </select>
+                    </div>
+                    
+                    <div class="h-8 w-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-sm border border-brand-200">
+                        DP
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900" id="page-title">Visão Geral - Novembro</h2>
+                <p class="text-slate-500 mt-1">Resumo estratégico do desempenho de vendas.</p>
+            </div>
+            <div>
+                <span id="last-updated" class="text-xs text-slate-400">Dados processados em tempo real</span>
+            </div>
+        </div>
+
+        <!-- KPI Cards Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 card-hover shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-blue-50 rounded-lg">
+                        <i data-lucide="shopping-bag" class="h-6 w-6 text-blue-600"></i>
+                    </div>
+                    <!-- Placeholder for MoM growth calculation if needed in future -->
+                    <span id="growth-badge" class="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded-full">Mensal</span>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-slate-500">Volume Total de Vendas</p>
+                    <h3 id="total-items" class="text-3xl font-bold text-slate-900 mt-1">...</h3>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 card-hover shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-indigo-50 rounded-lg">
+                        <i data-lucide="layers" class="h-6 w-6 text-indigo-600"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-500">Mix de Produtos</span>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-slate-500">Produtos Únicos Vendidos</p>
+                    <h3 id="unique-products" class="text-3xl font-bold text-slate-900 mt-1">...</h3>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 card-hover shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-purple-50 rounded-lg">
+                        <i data-lucide="trending-up" class="h-6 w-6 text-purple-600"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded-full">Top Performer</span>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-slate-500">Item Mais Vendido</p>
+                    <h3 id="top-product-name" class="text-lg font-bold text-slate-900 mt-1 truncate" title="">...</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Pie Chart -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold text-slate-900">Distribuição do Mix</h3>
+                    <button class="text-slate-400 hover:text-slate-600"><i data-lucide="more-horizontal" class="h-5 w-5"></i></button>
+                </div>
+                <div class="relative flex-grow flex items-center justify-center min-h-[300px]">
+                    <canvas id="productPieChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Bar Chart -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold text-slate-900">Top 10 Produtos (Volume)</h3>
+                    <button class="text-slate-400 hover:text-slate-600"><i data-lucide="more-horizontal" class="h-5 w-5"></i></button>
+                </div>
+                <div class="relative flex-grow flex items-center justify-center min-h-[300px]">
+                    <canvas id="productBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Legend (Grid) -->
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+             <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="list" class="h-5 w-5 text-slate-400"></i>
+                <h3 class="text-lg font-bold text-slate-900">Legenda Detalhada</h3>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="pie-legend-container">
+                <!-- Javascript will populate -->
+            </div>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Detalhamento de Vendas</h3>
+                    <p class="text-sm text-slate-500">Lista completa de todos os itens transacionados.</p>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="relative">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400"></i>
+                    <input type="text" id="table-search" placeholder="Buscar produto..." class="pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 w-full sm:w-64">
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-600">
+                    <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500">
+                        <tr>
+                            <th class="px-6 py-4 text-center w-16">#</th>
+                            <th id="sort-by-name" class="px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors group">
+                                <div class="flex items-center gap-1">
+                                    Produto
+                                    <i data-lucide="arrow-up-down" class="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity"></i>
+                                </div>
+                            </th>
+                            <th id="sort-by-quantity" class="px-6 py-4 text-center cursor-pointer hover:bg-slate-100 transition-colors group">
+                                <div class="flex items-center justify-center gap-1">
+                                    Qtd.
+                                    <i data-lucide="arrow-up-down" class="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity"></i>
+                                </div>
+                            </th>
+                            <th id="sort-by-percentage" class="px-6 py-4 text-center cursor-pointer hover:bg-slate-100 transition-colors group">
+                                <div class="flex items-center justify-center gap-1">
+                                    Share (%)
+                                    <i data-lucide="arrow-up-down" class="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity"></i>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-table-body" class="divide-y divide-slate-100">
+                        <!-- Javascript populates this -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Simple Pagination Mockup -->
+            <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between text-sm text-slate-500">
+                <span id="showing-text">Mostrando todos os resultados</span>
+                <div class="flex gap-2">
+                    <button class="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50" disabled>Anterior</button>
+                    <button class="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50" disabled>Próxima</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-400 text-sm">
+            &copy; 2025 XV Analytics. Relatório confidencial de uso interno.
+        </div>
+    </footer>
+
+    <script>
+        // Inicializa ícones Lucide
+        lucide.createIcons();
+
+        // ==========================================
+        // DADOS
+        // ==========================================
+
+        const datasets = {
+            'nov2025': {
+                total: 402, // Total atualizado com base no último input
+                data: [
+                    { name: "ADAPTADOR TOMADA (BRINDE)", quantity: 7, percentage: 0.0174 },
+                    { name: "ASSISTÊNCIA SENHA DESBLOQUEIO(PDV)", quantity: 1, percentage: 0.0025 },
+                    { name: "ASSISTÊNCIA SOFTWARE(PDV)", quantity: 1, percentage: 0.0025 },
+                    { name: "ASSISTÊNCIA TROCA PEÇA(PDV)", quantity: 1, percentage: 0.0025 },
+                    { name: "ASSISTÊNCIA TROCA TELA (PDV)", quantity: 1, percentage: 0.0025 },
+                    { name: "BODY SPLASH. WEPINK (BRINDE)", quantity: 8, percentage: 0.0199 },
+                    { name: "BOTICARIO(BRINDE)", quantity: 15, percentage: 0.0373 },
+                    { name: "CABO DE DADOS HB16-CC H'MASTON", quantity: 1, percentage: 0.0025 },
+                    { name: "CAPA HONOR X7C", quantity: 1, percentage: 0.0025 },
+                    { name: "CAPA REALME C61/C63", quantity: 1, percentage: 0.0025 },
+                    { name: "CAPA REDMI NOTE 14 4G", quantity: 1, percentage: 0.0025 },
+                    { name: "CARREGADOR 20W KD KN-108A KDPAN", quantity: 2, percentage: 0.0050 },
+                    { name: "CARREGADOR 20W KD KN-108C KDPAN", quantity: 1, percentage: 0.0025 },
+                    { name: "CARREGADOR CARRO S15-4 H'MASTON", quantity: 1, percentage: 0.0025 },
+                    { name: "CARREGADOR MOTOROLA 50W", quantity: 6, percentage: 0.0149 },
+                    { name: "CARREGADOR MOTOROLA 68W", quantity: 2, percentage: 0.0050 },
+                    { name: "CARREGADOR XIAOMI 90W C/CABO 2MTS", quantity: 1, percentage: 0.0025 },
+                    { name: "CARREGADOR Y24-1 H'MASTON", quantity: 1, percentage: 0.0025 },
+                    { name: "CARREGADOR Y27-3 H'MASTON", quantity: 1, percentage: 0.0025 },
+                    { name: "CARTÃO SDXC 128G V30 KODAK", quantity: 1, percentage: 0.0025 },
+                    { name: "CHIP CLARO FLEX", quantity: 2, percentage: 0.0050 },
+                    { name: "CHIP CLARO PREZÃO", quantity: 31, percentage: 0.0771 },
+                    { name: "CHIP TIM PRE C REGARGA", quantity: 7, percentage: 0.0174 },
+                    { name: "COPO STANLEY (BRINDE)", quantity: 24, percentage: 0.0597 },
+                    { name: "DESCONTO NA VENDA", quantity: 37, percentage: 0.0920 },
+                    { name: "FONE BLUETOOTH KNC5602 KAIDI", quantity: 1, percentage: 0.0025 },
+                    { name: "FONE BLUETOOTH KNC5603 KAIDI", quantity: 2, percentage: 0.0050 },
+                    { name: "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)", quantity: 38, percentage: 0.0945 },
+                    { name: "FONE COM FIO LE-0204 LELONG", quantity: 3, percentage: 0.0075 },
+                    { name: "HONOR 400 LITE 5G 8/256 VELVET BLACK", quantity: 1, percentage: 0.0025 },
+                    { name: "HONOR X5B PLUS 4/256 BLACK MIDNIGHT", quantity: 1, percentage: 0.0025 },
+                    { name: "HONOR X7C 8/256 BLACK (SEMINOVO)", quantity: 1, percentage: 0.0025 },
+                    { name: "HONOR X7C 8/256 FOREST GREEN", quantity: 2, percentage: 0.0050 },
+                    { name: "HONOR X7C 8/256 MIDNIGHT BLACK", quantity: 4, percentage: 0.0100 },
+                    { name: "HONOR X7C 8/256 MOONLIGHT WHITE", quantity: 24, percentage: 0.0597 },
+                    { name: "HONOR X8B 8/256 CYAN LAKE", quantity: 2, percentage: 0.0050 },
+                    { name: "HONOR X8B 8/256 TITANIUM SILVER", quantity: 2, percentage: 0.0050 },
+                    { name: "MOTO G05 4/128 VERDE", quantity: 11, percentage: 0.0274 },
+                    { name: "MOTO G05 4/128 VERMELHO", quantity: 13, percentage: 0.0323 },
+                    { name: "MOTO G15 4/128 CINZA", quantity: 11, percentage: 0.0274 },
+                    { name: "MOTO G15 4/128 LARANJA", quantity: 3, percentage: 0.0075 },
+                    { name: "MOTO G15 4/128 VERDE", quantity: 7, percentage: 0.0174 },
+                    { name: "MOTO G15 8/256 GRAVITY GRAY", quantity: 2, percentage: 0.0050 },
+                    { name: "MOTO G15 8/256 SEA BLUE", quantity: 2, percentage: 0.0050 },
+                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 FOREST BLUE", quantity: 2, percentage: 0.0050 },
+                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK", quantity: 1, percentage: 0.0025 },
+                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 MARSHMALLOW BLUE", quantity: 2, percentage: 0.0050 },
+                    { name: "MOTOROLA EDGE 60 5G FUSION 12/256 BLUE", quantity: 2, percentage: 0.0050 },
+                    { name: "MOTOROLA EDGE 60 5G FUSION 12/256 GREY", quantity: 3, percentage: 0.0075 },
+                    { name: "MOTOROLA EDGE 60 5G FUSION 12/256 PINK", quantity: 1, percentage: 0.0025 },
+                    { name: "MOTOROLA EDGE 60 5G FUSION 8/256 BLUE", quantity: 1, percentage: 0.0025 },
+                    { name: "PAGAMENTO NUOVO(PDV)", quantity: 12, percentage: 0.0299 },
+                    { name: "PELICULA FOSCA HYDROGEL SUPER PREMIUM", quantity: 3, percentage: 0.0075 },
+                    { name: "PELICULA HD HYDROGEL PREMIUM", quantity: 6, percentage: 0.0149 },
+                    { name: "PELICULA HD HYDROGEL STANDARD", quantity: 27, percentage: 0.0672 },
+                    { name: "PELICULA HD HYDROGEL SUPER PREMIUM", quantity: 1, percentage: 0.0025 },
+                    { name: "PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM", quantity: 2, percentage: 0.0050 },
+                    { name: "POCO X7 PRO 5G 12/512 IRON MAN EDITION", quantity: 1, percentage: 0.0025 },
+                    { name: "POCO X7 PRO 5G 12/512 PRETO", quantity: 1, percentage: 0.0025 },
+                    { name: "POCO X7 PRO 5G 12/512 YELLOW", quantity: 1, percentage: 0.0025 },
+                    { name: "REALME C63 8/256 JADE GREEN", quantity: 9, percentage: 0.0224 },
+                    { name: "REALME C63 8/256 LEATHER BLUE", quantity: 9, percentage: 0.0224 },
+                    { name: "REALME C65 8/256 STARLIGHT BLACK", quantity: 2, percentage: 0.0050 },
+                    { name: "REALME C65 8/256 STARLIGHT PURPLE", quantity: 2, percentage: 0.0050 },
+                    { name: "REALME C71 8/256 FOREST OWL", quantity: 2, percentage: 0.0050 },
+                    { name: "REALME C71 8/256 WHITE SWAN", quantity: 5, percentage: 0.0124 },
+                    { name: "REALME C75 8/256 RUBY RED", quantity: 2, percentage: 0.0050 },
+                    { name: "REALME C75X 8/256 CORAL PINK", quantity: 2, percentage: 0.0050 },
+                    { name: "REDMI 14C 4/128 STARRY BLUE SEMINOVO", quantity: 1, percentage: 0.0025 },
+                    { name: "REDMI 15C 8/256 MIDNIGHT BLACK", quantity: 2, percentage: 0.0050 },
+                    { name: "REDMI A5 4/128 AZUL", quantity: 7, percentage: 0.0174 },
+                    { name: "REDMI A5 4/128 GOLD", quantity: 1, percentage: 0.0025 },
+                    { name: "REDMI A5 4/128 PRETO", quantity: 6, percentage: 0.0149 },
+                    { name: "REDMI A5 4/128 VERDE", quantity: 1, percentage: 0.0025 }
+                ]
+            },
+            'out2025': {
+                total: 329, // Total corrigido conforme imagem
+                data: [
+                    { name: "ADAPTADOR TOMADA (BRINDE)", quantity: 15, percentage: 0.0456 },
+                    { name: "ASSISTÊNCIA SOFTWARE(PDV)", quantity: 1, percentage: 0.0030 },
+                    { name: "ASSISTÊNCIA TROCA TELA (PDV)", quantity: 1, percentage: 0.0030 },
+                    { name: "CABO HB 11-3 H'MASTON", quantity: 1, percentage: 0.0030 },
+                    { name: "CABO KD 327C 2 MTS KAIDI", quantity: 2, percentage: 0.0061 },
+                    { name: "CAPA HONOR X7C", quantity: 3, percentage: 0.0091 },
+                    { name: "CAPA HONOR X8B", quantity: 2, percentage: 0.0061 },
+                    { name: "CAPA REALME C61/C63", quantity: 1, percentage: 0.0030 },
+                    { name: "CARREGADOR 20W KD KN-108A KDPAN", quantity: 2, percentage: 0.0061 },
+                    { name: "CARREGADOR ADAPTADOR DE ENERGIA 30W CB-23 H'MASTON", quantity: 1, percentage: 0.0030 },
+                    { name: "CARREGADOR MOTOROLA 68W", quantity: 1, percentage: 0.0030 },
+                    { name: "CHIP CLARO FLEX", quantity: 3, percentage: 0.0091 },
+                    { name: "CHIP CLARO PREZÃO", quantity: 9, percentage: 0.0274 },
+                    { name: "CHIP TIM PRE C REGARGA", quantity: 38, percentage: 0.1155 },
+                    { name: "COPO STANLEY (BRINDE)", quantity: 11, percentage: 0.0334 },
+                    { name: "DESCONTO NA VENDA", quantity: 23, percentage: 0.0699 },
+                    { name: "FONE BLUETOOTH KD 776 KAIDI", quantity: 1, percentage: 0.0030 },
+                    { name: "FONE BLUETOOTH KD 777 KAIDI", quantity: 1, percentage: 0.0030 },
+                    { name: "FONE BLUETOOTH KNC5603 KAIDI", quantity: 2, percentage: 0.0061 },
+                    { name: "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)", quantity: 37, percentage: 0.1125 },
+                    { name: "FONE COM FIO LE-0201 LELONG", quantity: 3, percentage: 0.0091 },
+                    { name: "HONOR 400 LITE 5G 8/256 VELVET GREY", quantity: 1, percentage: 0.0030 },
+                    { name: "HONOR MAGIC 7 LITE 5G 12/512 BLACK", quantity: 1, percentage: 0.0030 },
+                    { name: "HONOR X6C 6/256 MOONLIGHT WHITE", quantity: 1, percentage: 0.0030 },
+                    { name: "HONOR X6C 6/256 OCEAN CYAN", quantity: 1, percentage: 0.0030 },
+                    { name: "HONOR X7C 8/256 FOREST GREEN", quantity: 5, percentage: 0.0152 },
+                    { name: "HONOR X7C 8/256 MIDNIGHT BLACK", quantity: 2, percentage: 0.0061 },
+                    { name: "HONOR X7C 8/256 MOONLIGHT WHITE", quantity: 26, percentage: 0.0790 },
+                    { name: "MOTO G05 4/128 VERDE", quantity: 2, percentage: 0.0061 },
+                    { name: "MOTO G05 4/128 VERMELHO", quantity: 1, percentage: 0.0030 },
+                    { name: "MOTO G15 4/128 CINZA", quantity: 1, percentage: 0.0030 },
+                    { name: "MOTO G24 4/128 GRAFITE (SEMI NOVO)", quantity: 1, percentage: 0.0030 },
+                    { name: "MOTOROLA EDGE 50 5G 12/512 KOALA GREY", quantity: 1, percentage: 0.0030 },
+                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK", quantity: 1, percentage: 0.0030 },
+                    { name: "PAGAMENTO NUOVO(PDV)", quantity: 6, percentage: 0.0182 },
+                    { name: "PAGAMENTO PAYJOY(PDV)", quantity: 32, percentage: 0.0973 },
+                    { name: "PELICULA FOSCA HYDROGEL SUPER PREMIUM", quantity: 1, percentage: 0.0030 },
+                    { name: "PELICULA HD HYDROGEL PREMIUM", quantity: 2, percentage: 0.0061 },
+                    { name: "PELICULA HD HYDROGEL STANDARD", quantity: 10, percentage: 0.0304 },
+                    { name: "PELICULA HD HYDROGEL SUPER PREMIUM", quantity: 3, percentage: 0.0091 },
+                    { name: "PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM", quantity: 2, percentage: 0.0061 },
+                    { name: "POCO X7 5G 8/256 BLACK", quantity: 1, percentage: 0.0030 },
+                    { name: "POCO X7 PRO 5G 12/512 PRETO", quantity: 1, percentage: 0.0030 },
+                    { name: "REALME C63 8/256 JADE GREEN", quantity: 7, percentage: 0.0213 },
+                    { name: "REALME C63 8/256 LEATHER BLUE", quantity: 5, percentage: 0.0152 },
+                    { name: "REALME C65 8/256 STARLIGHT BLACK", quantity: 1, percentage: 0.0030 },
+                    { name: "REALME C71 8/256 WHITE SWAN", quantity: 3, percentage: 0.0091 },
+                    { name: "REALME C75 8/256 LIGHTNING GOLD", quantity: 1, percentage: 0.0030 },
+                    { name: "REALME C75 8/256 RUBY RED", quantity: 2, percentage: 0.0061 },
+                    { name: "REALME C75 8/256 STORM BLACK", quantity: 1, percentage: 0.0030 },
+                    { name: "REALME C75X 8/256 CORAL PINK", quantity: 4, percentage: 0.0122 },
+                    { name: "REALME NOTE 60 4/128 VOYAGE BLUE", quantity: 1, percentage: 0.0030 },
+                    { name: "REDMI 14C 8/256 SAGE GREEN", quantity: 1, percentage: 0.0030 },
+                    { name: "REDMI 14C 8/256 STARRY BLUE", quantity: 1, percentage: 0.0030 },
+                    { name: "REDMI A5 4/128 AZUL", quantity: 14, percentage: 0.0426 },
+                    { name: "REDMI A5 4/128 GOLD", quantity: 11, percentage: 0.0334 },
+                    { name: "REDMI A5 4/128 PRETO", quantity: 7, percentage: 0.0213 },
+                    { name: "REDMI A5 4/128 VERDE", quantity: 4, percentage: 0.0122 },
+                    { name: "REDMI NOTE 14 4G 8/256 BLACK", quantity: 2, percentage: 0.0061 },
+                    { name: "REDMI NOTE 14 4G 8/256 BLUE", quantity: 2, percentage: 0.0061 },
+                    { name: "REDMI NOTE 14 PRO 5G 12/512 GREEN", quantity: 1, percentage: 0.0030 },
+                    { name: "TAXA DO CARTÃO", quantity: 1, percentage: 0.0030 }
+                ]
+            }
+        };
+
+        // Paleta de cores profissional (Corporate Blue/Teal/Slate)
+        const brandColors = [
+            '#2563eb', '#0891b2', '#0d9488', '#4f46e5', '#7c3aed', 
+            '#db2777', '#ea580c', '#65a30d', '#475569', '#64748b'
+        ];
+
+        let currentPeriod = 'nov2025';
+        let sortState = { column: 'quantity', direction: 'desc' };
+        let filteredData = []; 
+
+        // --- Funções Auxiliares ---
+
+        function generateColors(num) {
+            const colors = [];
+            for (let i = 0; i < num; i++) colors.push(brandColors[i % brandColors.length]);
+            return colors;
+        }
+
+        // --- Renderização ---
+
+        function renderTable(data) {
+            const tbody = document.getElementById('product-table-body');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-slate-400">Nenhum produto encontrado.</td></tr>`;
+                document.getElementById('showing-text').innerText = `Mostrando 0 resultados`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition-colors group';
+                
+                // Status Logic
+                let statusBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Ativo</span>`;
+                if(item.name.includes("BRINDE")) statusBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Brinde</span>`;
+                if(item.name.includes("DESCONTO")) statusBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Ajuste</span>`;
+                if(item.quantity < 0) statusBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Devolução</span>`;
+
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-slate-400 font-mono text-xs">${index + 1}</td>
+                    <td class="px-6 py-4 font-medium text-slate-700 group-hover:text-brand-700 transition-colors">${item.name}</td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="inline-block font-bold text-slate-900 bg-slate-100 px-3 py-1 rounded-md min-w-[3rem]">${item.quantity}</span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-sm text-slate-600">${(item.percentage * 100).toFixed(2)}%</span>
+                            <div class="w-16 bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-brand-500 h-1.5 rounded-full" style="width: ${(item.percentage * 100)}%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">${statusBadge}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            document.getElementById('showing-text').innerText = `Mostrando ${data.length} resultados`;
+        }
+
+        function renderPieLegend(data, colors) {
+            const container = document.getElementById('pie-legend-container');
+            container.innerHTML = '';
+            
+            // Filtra e limita para não quebrar o layout se forem muitos
+            const legendData = data.filter(item => item.quantity > 0); 
+            
+            legendData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'flex items-start gap-2 p-2 rounded hover:bg-slate-50 transition-colors';
+                div.innerHTML = `
+                    <span class="mt-1 block h-3 w-3 rounded-full flex-shrink-0" style="background-color: ${colors[index % colors.length]}"></span>
+                    <div class="text-xs leading-tight">
+                        <p class="font-medium text-slate-700 truncate w-32" title="${item.name}">${item.name}</p>
+                        <p class="text-slate-400">${item.quantity} un. (${(item.percentage * 100).toFixed(1)}%)</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // --- Charts ---
+
+        function setupCharts(data) {
+            const validData = data.filter(d => d.quantity > 0).sort((a,b) => b.quantity - a.quantity);
+            const colors = generateColors(validData.length);
+
+            // Pie Chart
+            const pieCtx = document.getElementById('productPieChart').getContext('2d');
+            if(window.pieChart) window.pieChart.destroy();
+            
+            window.pieChart = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: validData.map(d => d.name),
+                    datasets: [{
+                        data: validData.map(d => d.quantity),
+                        backgroundColor: colors,
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.raw;
+                                    const total = context.dataset.data.reduce((a,b) => a+b, 0);
+                                    return ` ${val} un. (${((val/total)*100).toFixed(1)}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Bar Chart
+            const top10 = validData.slice(0, 10);
+            const topColors = generateColors(10);
+            const barCtx = document.getElementById('productBarChart').getContext('2d');
+            if(window.barChart) window.barChart.destroy();
+
+            window.barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: top10.map(d => d.name.length > 20 ? d.name.substring(0,20)+'...' : d.name), // Truncate labels
+                    datasets: [{
+                        label: 'Vendas',
+                        data: top10.map(d => d.quantity),
+                        backgroundColor: topColors,
+                        borderRadius: 6,
+                        barThickness: 24
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: { title: (items) => top10[items[0].dataIndex].name } // Full name on hover
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9', drawBorder: false },
+                            ticks: { color: '#64748b', font: {family: "'Plus Jakarta Sans'"}}
+                        },
+                        x: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: { color: '#64748b', font: {family: "'Plus Jakarta Sans'", size: 10}}
+                        }
+                    }
+                }
+            });
+
+            // Update Legend
+            renderPieLegend(validData, colors);
+        }
+
+        // --- Logic ---
+
+        function updateStats(periodData) {
+            const data = periodData.data;
+            const total = periodData.total;
+            const unique = data.length;
+            const topProduct = [...data].sort((a,b) => b.quantity - a.quantity)[0];
+
+            document.getElementById('total-items').innerText = total;
+            document.getElementById('unique-products').innerText = unique;
+            if(topProduct) {
+                const el = document.getElementById('top-product-name');
+                el.innerText = topProduct.name;
+                el.title = topProduct.name;
+            }
+        }
+
+        function filterData(query) {
+            const currentData = datasets[currentPeriod].data;
+            const lower = query.toLowerCase();
+            filteredData = currentData.filter(item => item.name.toLowerCase().includes(lower));
+            // Re-apply sorting
+            sortData(sortState.column, sortState.direction, false); 
+        }
+
+        function sortData(column, direction, updateUI = true) {
+            sortState = { column, direction };
+            
+            filteredData.sort((a, b) => {
+                let valA = a[column];
+                let valB = b[column];
+                
+                if (typeof valA === 'string') return direction === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                return direction === 'asc' ? valA - valB : valB - valA;
+            });
+
+            if(updateUI) renderTable(filteredData);
+        }
+
+        function loadPeriod(period) {
+            currentPeriod = period;
+            const periodData = datasets[period];
+            const data = periodData.data;
+            
+            // UI Updates
+            const label = period === 'nov2025' ? 'Novembro 2025' : 'Outubro 2025';
+            document.getElementById('page-title').innerText = `Visão Geral - ${label}`;
+            
+            // Badge visual de crescimento
+            const growthEl = document.getElementById('growth-badge');
+            if (period === 'nov2025') {
+                 // Nov: 402, Oct: 329. (402-329)/329 = +0.2218 -> +22.2%
+                 growthEl.className = "text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full";
+                 growthEl.innerText = "+22.2% vs. Outubro"; 
+            } else {
+                 growthEl.className = "text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded-full";
+                 growthEl.innerText = "Base";
+            }
+
+            // Reset sort/filter
+            data.sort((a, b) => b.quantity - a.quantity);
+            filteredData = [...data];
+            document.getElementById('table-search').value = '';
+
+            // Render
+            updateStats(periodData);
+            setupCharts(data);
+            renderTable(filteredData);
+        }
+
+        // --- Events ---
+
+        document.getElementById('period-selector').addEventListener('change', (e) => {
+            loadPeriod(e.target.value);
+        });
+
+        document.getElementById('table-search').addEventListener('input', (e) => {
+            filterData(e.target.value);
+        });
+
+        document.getElementById('sort-by-name').addEventListener('click', () => {
+            const dir = sortState.column === 'name' && sortState.direction === 'asc' ? 'desc' : 'asc';
+            sortData('name', dir);
+        });
+
+        document.getElementById('sort-by-quantity').addEventListener('click', () => {
+            const dir = sortState.column === 'quantity' && sortState.direction === 'desc' ? 'asc' : 'desc';
+            sortData('quantity', dir);
+        });
+        
+        document.getElementById('sort-by-percentage').addEventListener('click', () => {
+            const dir = sortState.column === 'percentage' && sortState.direction === 'desc' ? 'asc' : 'desc';
+            sortData('percentage', dir);
+        });
+
+        // --- Init ---
+        
+        (function init() {
+            loadPeriod('nov2025');
+        })();
+
+    </script>
+</body>
+</html>
