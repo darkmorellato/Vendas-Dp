@@ -79,7 +79,8 @@
                             <i data-lucide="calendar" class="h-4 w-4 text-slate-500"></i>
                         </div>
                         <select id="period-selector" class="custom-select bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full pl-10 p-2.5 font-medium">
-                            <option value="nov2025" selected>Novembro 2025</option>
+                            <option value="dez2025" selected>Dezembro 2025</option>
+                            <option value="nov2025">Novembro 2025</option>
                             <option value="out2025">Outubro 2025</option>
                         </select>
                     </div>
@@ -97,7 +98,7 @@
         <!-- Header Section -->
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-                <h2 class="text-2xl font-bold text-slate-900" id="page-title">Visão Geral - Novembro</h2>
+                <h2 class="text-2xl font-bold text-slate-900" id="page-title">Visão Geral - Dezembro</h2>
                 <p class="text-slate-500 mt-1">Resumo estratégico do desempenho de vendas.</p>
             </div>
             <div>
@@ -260,6 +261,91 @@
         // ==========================================
 
         const datasets = {
+            'dez2025': {
+                total: 470,
+                data: [
+                    { name: "ADAPTADOR TOMADA (BRINDE)", quantity: 6, percentage: 0.0128 },
+                    { name: "ASSISTÊNCIA SENHA DESBLOQUEIO(PDV)", quantity: 3, percentage: 0.0064 },
+                    { name: "ASSISTÊNCIA SOFTWARE(PDV)", quantity: 4, percentage: 0.0085 },
+                    { name: "BODY SPLASH. WEPINK (BRINDE)", quantity: 37, percentage: 0.0787 },
+                    { name: "BOTICARIO(BRINDE)", quantity: 22, percentage: 0.0468 },
+                    { name: "CABO KD 306 KAIDI", quantity: 3, percentage: 0.0064 },
+                    { name: "CABO KD 336A 2MTS KAIDI", quantity: 2, percentage: 0.0043 },
+                    { name: "CAPA HONOR X7C", quantity: 4, percentage: 0.0085 },
+                    { name: "CARREGADOR 20W ESSAGER PRETO", quantity: 1, percentage: 0.0021 },
+                    { name: "CARREGADOR 20W KD KN-108C KDPAN", quantity: 1, percentage: 0.0021 },
+                    { name: "CARREGADOR 50W LEHΜΟΧ", quantity: 0, percentage: 0.0000 },
+                    { name: "CARREGADOR INDUÇÃO 15W ESSAGER", quantity: 1, percentage: 0.0021 },
+                    { name: "CARREGADOR MOTOROLA 50W", quantity: 4, percentage: 0.0085 },
+                    { name: "CARREGADOR MOTOROLA 68W", quantity: 1, percentage: 0.0021 },
+                    { name: "CARREGADOR XIAOMI 120W", quantity: 1, percentage: 0.0021 },
+                    { name: "CHIP CLARO FLEX", quantity: 1, percentage: 0.0021 },
+                    { name: "CHIP CLARO PREZÃO", quantity: 21, percentage: 0.0447 },
+                    { name: "CHIP TIM PRE C REGARGA", quantity: 20, percentage: 0.0426 },
+                    { name: "COPO STANLEY (BRINDE)", quantity: 26, percentage: 0.0553 },
+                    { name: "DESCONTO NA VENDA", quantity: 47, percentage: 0.1000 },
+                    { name: "FONE BLUETOOTH KNC5603 KAIDI", quantity: 1, percentage: 0.0021 },
+                    { name: "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)", quantity: 30, percentage: 0.0638 },
+                    { name: "FONE COM FIO LE-0204 LELONG", quantity: 1, percentage: 0.0021 },
+                    { name: "GARRAFA HONOR (BRINDE)", quantity: 14, percentage: 0.0298 },
+                    { name: "HONOR MAGIC 7 LITE 5G 12/512 PURPLE", quantity: 1, percentage: 0.0021 },
+                    { name: "HONOR X6C 6/256 MIDNIGHT BLACK", quantity: 1, percentage: 0.0021 },
+                    { name: "HONOR X6C 6/256 OCEAN CYAN", quantity: 1, percentage: 0.0021 },
+                    { name: "HONOR X7C 8/256 FOREST GREEN", quantity: 2, percentage: 0.0043 },
+                    { name: "HONOR X7C 8/256 MIDNIGHT BLACK", quantity: 9, percentage: 0.0191 },
+                    { name: "HONOR X7C 8/256 MOONLIGHT WHITE", quantity: 15, percentage: 0.0319 },
+                    { name: "HONOR X7D 8/256 METEOR SILVER", quantity: 3, percentage: 0.0064 },
+                    { name: "HONOR X7D 8/256 OCEAN CYAN", quantity: 2, percentage: 0.0043 },
+                    { name: "IPHONE 12 MINI 64G PRETO", quantity: 1, percentage: 0.0021 },
+                    { name: "IPHONE 13 128 BRANCO", quantity: 2, percentage: 0.0043 },
+                    { name: "IPHONE 14 128 LILAS", quantity: 1, percentage: 0.0021 },
+                    { name: "IPHONE 15 128G AZUL", quantity: 1, percentage: 0.0021 },
+                    { name: "MOTO G045 4/128 GRAFITE (SEMINOVO)", quantity: 1, percentage: 0.0021 },
+                    { name: "MOTO G05 4/128 VERDE", quantity: 4, percentage: 0.0085 },
+                    { name: "MOTO G05 4/128 VERMELHO", quantity: 4, percentage: 0.0085 },
+                    { name: "MOTO G15 4/128 VERDE", quantity: 6, percentage: 0.0128 },
+                    { name: "MOTO G15 4/512 SEA BLUE", quantity: 1, percentage: 0.0021 },
+                    { name: "MOTO G15 8/128 SEA GLACIER BLUE", quantity: 1, percentage: 0.0021 },
+                    { name: "MOTO G15 8/256 GRAVITY GRAY", quantity: 2, percentage: 0.0043 },
+                    { name: "MOTO G15 8/256 IGUANA GREEN", quantity: 1, percentage: 0.0021 },
+                    { name: "MOTO G15 8/256 SEA BLUE", quantity: 2, percentage: 0.0043 },
+                    { name: "MOTO G56 5G 8/256 GRAY MIST", quantity: 3, percentage: 0.0064 },
+                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 FOREST BLUE", quantity: 2, percentage: 0.0043 },
+                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK", quantity: 1, percentage: 0.0021 },
+                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 MARSHMALLOW BLUE", quantity: 1, percentage: 0.0021 },
+                    { name: "MOTOROLA EDGE 60 5G FUSION 8/256 BLUE", quantity: 2, percentage: 0.0043 },
+                    { name: "MOTOROLA EDGE 60 5G FUSION 8/256 GREEN", quantity: 2, percentage: 0.0043 },
+                    { name: "PAGAMENTO NUOVO(PDV)", quantity: 14, percentage: 0.0298 },
+                    { name: "PELICULA FOSCA HYDROGEL SUPER PREMIUM", quantity: 4, percentage: 0.0085 },
+                    { name: "PELICULA HD HYDROGEL PREMIUM", quantity: 12, percentage: 0.0255 },
+                    { name: "PELICULA HD HYDROGEL STANDARD", quantity: 29, percentage: 0.0617 },
+                    { name: "PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM", quantity: 5, percentage: 0.0106 },
+                    { name: "PERFUMES ÁRABES (BRINDE)", quantity: 3, percentage: 0.0064 },
+                    { name: "POCO X7 5G 8/256 BLACK", quantity: 1, percentage: 0.0021 },
+                    { name: "POCO X7 PRO 5G 12/512 PRETO", quantity: 1, percentage: 0.0021 },
+                    { name: "POCO X7 PRO 5G 12/512 YELLOW", quantity: 3, percentage: 0.0064 },
+                    { name: "POWER BANK MAGNÉTICO KD 998 PRETO 10000MAH KAIDI", quantity: 1, percentage: 0.0021 },
+                    { name: "REALME 14T 5G 8/256GB OBSIDIAN BLACK", quantity: 2, percentage: 0.0043 },
+                    { name: "REALME C61 8/256 SPARKLE GOLD", quantity: 1, percentage: 0.0021 },
+                    { name: "REALME C63 8/256 JADE GREEN", quantity: 3, percentage: 0.0064 },
+                    { name: "REALME C65 6/128 STARLIGHT BLACK", quantity: 1, percentage: 0.0021 },
+                    { name: "REALME C65 8/256 STARLIGHT BLACK", quantity: 4, percentage: 0.0085 },
+                    { name: "REALME C65 8/256 STARLIGHT PURPLE", quantity: 2, percentage: 0.0043 },
+                    { name: "REALME C71 8/256 FOREST OWL", quantity: 11, percentage: 0.0234 },
+                    { name: "REALME C71 8/256 WHITE SWAN", quantity: 11, percentage: 0.0234 },
+                    { name: "REALME C75 8/256 LIGHTNING GOLD", quantity: 1, percentage: 0.0021 },
+                    { name: "REALME C75 8/256 RUBY RED", quantity: 3, percentage: 0.0064 },
+                    { name: "REALME C75 8/256 STORM BLACK", quantity: 2, percentage: 0.0043 },
+                    { name: "REALME C75X 8/256 CORAL PINK", quantity: 4, percentage: 0.0085 },
+                    { name: "REALME C75X 8/256 OCEANIC BLUE", quantity: 1, percentage: 0.0021 },
+                    { name: "REALME NOTE 60 4/128 VOYAGE BLUE", quantity: 2, percentage: 0.0043 },
+                    { name: "REALME NOTE 70 4/128 BEACH GOLD", quantity: 2, percentage: 0.0043 },
+                    { name: "REALME NOTE 70 4/128 OBSIDIAN BLACK", quantity: 1, percentage: 0.0021 },
+                    { name: "REDMI A5 4/128 AZUL", quantity: 2, percentage: 0.0043 },
+                    { name: "REDMI A5 4/128 GOLD", quantity: 6, percentage: 0.0128 },
+                    { name: "REDMI A5 4/128 PRETO", quantity: 15, percentage: 0.0319 }
+                ]
+            },
             'nov2025': {
                 total: 402, // Total atualizado com base no último input
                 data: [
@@ -414,7 +500,7 @@
             '#db2777', '#ea580c', '#65a30d', '#475569', '#64748b'
         ];
 
-        let currentPeriod = 'nov2025';
+        let currentPeriod = 'dez2025';
         let sortState = { column: 'quantity', direction: 'desc' };
         let filteredData = []; 
 
@@ -627,12 +713,20 @@
             const data = periodData.data;
             
             // UI Updates
-            const label = period === 'nov2025' ? 'Novembro 2025' : 'Outubro 2025';
+            let label = 'Novembro 2025';
+            if (period === 'out2025') label = 'Outubro 2025';
+            if (period === 'dez2025') label = 'Dezembro 2025';
+
             document.getElementById('page-title').innerText = `Visão Geral - ${label}`;
             
             // Badge visual de crescimento
             const growthEl = document.getElementById('growth-badge');
-            if (period === 'nov2025') {
+            
+            if (period === 'dez2025') {
+                 // Dez (470) vs Nov (402): +16.9%
+                 growthEl.className = "text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full";
+                 growthEl.innerText = "+16.9% vs. Novembro";
+            } else if (period === 'nov2025') {
                  // Nov: 402, Oct: 329. (402-329)/329 = +0.2218 -> +22.2%
                  growthEl.className = "text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full";
                  growthEl.innerText = "+22.2% vs. Outubro"; 
@@ -680,7 +774,7 @@
         // --- Init ---
         
         (function init() {
-            loadPeriod('nov2025');
+            loadPeriod('dez2025');
         })();
 
     </script>
