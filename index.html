@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dp Analytics | Dashboard Executivo</title>
+    <title>DP Analytics | Dashboard Executivo</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Plus Jakarta Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -41,24 +43,29 @@
     </script>
     <style>
         body {
-            background-color: #f1f5f9; /* Slate-100 */
+            background-color: #f1f5f9;
+            /* Slate-100 */
         }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: transparent;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 3px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
-        
+
         .glass-header {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(8px);
@@ -80,16 +87,18 @@
             transition: opacity 300ms ease-out;
             pointer-events: none;
         }
+
         .modal-backdrop.open {
             opacity: 1;
             pointer-events: auto;
         }
-        
+
         .modal-panel {
             opacity: 0;
             transform: scale(0.95) translateY(10px);
             transition: opacity 300ms ease-out, transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .modal-panel.open {
             opacity: 1;
             transform: scale(1) translateY(0);
@@ -101,38 +110,61 @@
                 size: A4;
                 margin: 1cm;
             }
-            body, html {
+
+            body,
+            html {
                 height: auto !important;
                 overflow: visible !important;
                 background-color: white !important;
             }
-            aside, header, #search-btn, #bar-chart-menu-btn, .no-print, #category-modal, ::-webkit-scrollbar {
+
+            aside,
+            header,
+            #search-btn,
+            #bar-chart-menu-btn,
+            .no-print,
+            #category-modal,
+            ::-webkit-scrollbar {
                 display: none !important;
             }
+
             #main-wrapper {
                 display: block !important;
                 height: auto !important;
                 overflow: visible !important;
                 width: 100% !important;
             }
+
             #scroll-content {
                 padding: 0 !important;
                 height: auto !important;
                 overflow: visible !important;
             }
+
             .shadow-card {
                 box-shadow: none !important;
                 border: 1px solid #ddd !important;
                 page-break-inside: avoid;
             }
+
             canvas {
                 max-height: 300px !important;
             }
-            h2, h3 { color: #000 !important; }
-            p, span, td { color: #333 !important; }
+
+            h2,
+            h3 {
+                color: #000 !important;
+            }
+
+            p,
+            span,
+            td {
+                color: #333 !important;
+            }
         }
     </style>
 </head>
+
 <body class="text-slate-600 antialiased h-screen flex overflow-hidden font-sans bg-slate-50">
 
     <!-- Sidebar (Desktop) -->
@@ -140,12 +172,14 @@
         <!-- Logo Area -->
         <div class="h-20 flex items-center px-8 border-b border-slate-800">
             <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/20 overflow-hidden bg-slate-800">
+                <div
+                    class="h-10 w-10 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/20 overflow-hidden bg-slate-800">
                     <!-- Placeholder seguro para evitar erros visuais -->
-                    <img src="dp.jpg" alt="Logo Dp" class="h-full w-full object-cover" onerror="this.src='https://placehold.co/40x40/0ea5e9/ffffff?text=Dp'">
+                    <img src="dp.jpg" alt="Logo DP" class="h-full w-full object-cover"
+                        onerror="this.src='https://placehold.co/40x40/0ea5e9/ffffff?text=DP'">
                 </div>
                 <div>
-                    <h1 class="text-white font-bold text-lg tracking-tight leading-none">Dom Pedro II</h1>
+                    <h1 class="text-white font-bold text-lg tracking-tight leading-none">Premium</h1>
                     <span class="text-slate-400 text-xs font-medium">Enterprise Dashboard</span>
                 </div>
             </div>
@@ -154,19 +188,28 @@
         <!-- Navigation -->
         <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
             <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Principal</p>
-            
-            <button onclick="switchView('overview')" id="nav-overview" class="w-full flex items-center gap-3 px-4 py-3 text-white bg-slate-800/50 rounded-xl border border-slate-700/50 shadow-sm transition-all group">
+
+            <button onclick="switchView('overview')" id="nav-overview"
+                class="w-full flex items-center gap-3 px-4 py-3 text-white bg-slate-800/50 rounded-xl border border-slate-700/50 shadow-sm transition-all group">
                 <i data-lucide="layout-dashboard" class="h-5 w-5 text-brand-500 group-hover:text-brand-400"></i>
                 <span class="font-medium">Visão Geral</span>
             </button>
-            
-            <button onclick="switchView('products')" id="nav-products" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/30 rounded-xl transition-all group">
+
+            <button onclick="switchView('products')" id="nav-products"
+                class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/30 rounded-xl transition-all group">
                 <i data-lucide="package" class="h-5 w-5 group-hover:text-brand-400 transition-colors"></i>
                 <span class="font-medium">Categorias</span>
             </button>
-            
+
+            <button onclick="switchView('comparison')" id="nav-comparison"
+                class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/30 rounded-xl transition-all group">
+                <i data-lucide="trending-up" class="h-5 w-5 group-hover:text-brand-400 transition-colors"></i>
+                <span class="font-medium">Comparativo</span>
+            </button>
+
             <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-8">Relatórios</p>
-            <button onclick="window.print()" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/30 rounded-xl transition-all group">
+            <button onclick="window.print()"
+                class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/30 rounded-xl transition-all group">
                 <i data-lucide="file-text" class="h-5 w-5 group-hover:text-brand-400 transition-colors"></i>
                 <span class="font-medium">Exportar PDF</span>
             </button>
@@ -175,7 +218,8 @@
         <!-- User Profile (Bottom) -->
         <div class="p-4 border-t border-slate-800">
             <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-800/30 border border-slate-700/30">
-                <div class="h-9 w-9 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs font-bold border border-slate-600">
+                <div
+                    class="h-9 w-9 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs font-bold border border-slate-600">
                     DM
                 </div>
                 <div class="flex-1 min-w-0">
@@ -188,9 +232,10 @@
 
     <!-- Main Content Wrapper -->
     <div id="main-wrapper" class="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50/50">
-        
+
         <!-- Top Header -->
-        <header class="glass-header h-20 border-b border-slate-200/60 flex items-center justify-between px-6 sticky top-0 z-10">
+        <header
+            class="glass-header h-20 border-b border-slate-200/60 flex items-center justify-between px-6 sticky top-0 z-10">
             <!-- Mobile Menu Toggle -->
             <button class="md:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg">
                 <i data-lucide="menu" class="h-6 w-6"></i>
@@ -209,17 +254,16 @@
             <div class="flex items-center gap-4">
                 <!-- Period Selector -->
                 <div class="relative min-w-[180px]">
-                    <select id="period-selector" class="custom-select w-full bg-white border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 block p-2.5 shadow-sm transition-all hover:border-slate-300">
-                        <option value="jan2026" selected>Janeiro 2026</option>
-                        <option value="dez2025">Dezembro 2025</option>
-                        <option value="nov2025">Novembro 2025</option>
-                        <option value="out2025">Outubro 2025</option>
+                    <select id="period-selector"
+                        class="custom-select w-full bg-white border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 block p-2.5 shadow-sm transition-all hover:border-slate-300">
+                        <option value="">Carregando...</option>
                     </select>
                 </div>
-                
+
                 <div class="h-8 w-[1px] bg-slate-200 mx-1 hidden sm:block"></div>
-                
-                <button class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors relative">
+
+                <button
+                    class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors relative">
                     <i data-lucide="arrow-left" class="h-5 w-5"></i>
                 </button>
             </div>
@@ -227,121 +271,141 @@
 
         <!-- Scrollable Content -->
         <div id="scroll-content" class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth">
-            
+
             <!-- VIEW: OVERVIEW (Default) -->
-            <div id="view-overview" class="view-section space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div id="view-overview"
+                class="view-section space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <!-- KPI Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Card 1 -->
-                    <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                             <i data-lucide="shopping-bag" class="h-24 w-24 text-brand-600"></i>
                         </div>
                         <div class="relative z-10">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="p-3 bg-brand-50 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                                <div
+                                    class="p-3 bg-brand-50 rounded-xl group-hover:scale-110 transition-transform duration-300">
                                     <i data-lucide="shopping-bag" class="h-6 w-6 text-brand-600"></i>
                                 </div>
-                                <span id="growth-badge" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
-                                    --
+                                <span id="growth-badge"
+                                    class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                    Base
                                 </span>
                             </div>
                             <p class="text-sm font-medium text-slate-500 uppercase tracking-wide">Volume Total</p>
-                            <h3 id="total-items" class="text-4xl font-extrabold text-slate-900 mt-1 tracking-tight">...</h3>
+                            <h3 id="total-items" class="text-4xl font-extrabold text-slate-900 mt-1 tracking-tight">...
+                            </h3>
                         </div>
                     </div>
 
                     <!-- Card 2 -->
-                    <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                             <i data-lucide="layers" class="h-24 w-24 text-indigo-600"></i>
                         </div>
                         <div class="relative z-10">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="p-3 bg-indigo-50 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                                <div
+                                    class="p-3 bg-indigo-50 rounded-xl group-hover:scale-110 transition-transform duration-300">
                                     <i data-lucide="layers" class="h-6 w-6 text-indigo-600"></i>
                                 </div>
-                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                <span
+                                    class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
                                     Mix Ativo
                                 </span>
                             </div>
                             <p class="text-sm font-medium text-slate-500 uppercase tracking-wide">Produtos Únicos</p>
-                            <h3 id="unique-products" class="text-4xl font-extrabold text-slate-900 mt-1 tracking-tight">...</h3>
+                            <h3 id="unique-products" class="text-4xl font-extrabold text-slate-900 mt-1 tracking-tight">
+                                ...</h3>
                         </div>
                     </div>
 
                     <!-- Card 3 -->
-                    <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                             <i data-lucide="award" class="h-24 w-24 text-purple-600"></i>
                         </div>
                         <div class="relative z-10">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="p-3 bg-purple-50 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                                <div
+                                    class="p-3 bg-purple-50 rounded-xl group-hover:scale-110 transition-transform duration-300">
                                     <i data-lucide="award" class="h-6 w-6 text-purple-600"></i>
                                 </div>
-                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-100">
+                                <span
+                                    class="px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-100">
                                     Top Performer
                                 </span>
                             </div>
                             <p class="text-sm font-medium text-slate-500 uppercase tracking-wide">Mais Vendido</p>
-                            <h3 id="top-product-name" class="text-lg font-bold text-slate-900 mt-2 truncate leading-tight" title="">...</h3>
+                            <h3 id="top-product-name"
+                                class="text-lg font-bold text-slate-900 mt-2 truncate leading-tight" title="">...</h3>
                         </div>
                     </div>
                 </div>
 
                 <!-- Charts Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Pie Chart -->
-                <div class="bg-white p-8 rounded-2xl shadow-card border border-slate-100 flex flex-col">
-                    <div class="flex items-center justify-between mb-8">
-                        <div>
-                            <h3 id="pie-chart-title" class="text-lg font-bold text-slate-900">Distribuição do Mix</h3>
-                            <p class="text-sm text-slate-400 mt-1">Participação por produto</p>
-                        </div>
-                        <button class="text-slate-300 hover:text-slate-600 transition-colors">
-                            <i data-lucide="pie-chart" class="h-6 w-6"></i>
-                        </button>
-                    </div>
-                    <div class="relative flex-grow flex items-center justify-center min-h-[320px]">
-                        <canvas id="productPieChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Bar Chart -->
-                <div class="bg-white p-8 rounded-2xl shadow-card border border-slate-100 flex flex-col">
-                    <div class="flex items-center justify-between mb-8 relative">
-                        <div>
-                            <h3 id="bar-chart-title" class="text-lg font-bold text-slate-900">Top 10 Produtos</h3>
-                            <p class="text-sm text-slate-400 mt-1">Ranking por volume de vendas</p>
-                        </div>
-                        
-                        <!-- Dropdown Container -->
-                        <div class="relative">
-                            <button id="bar-chart-menu-btn" class="p-2 text-slate-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-brand-100">
-                                <i data-lucide="filter" class="h-5 w-5"></i>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Pie Chart -->
+                    <div
+                        class="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.03)] flex flex-col">
+                        <div class="flex items-center justify-between mb-8">
+                            <div>
+                                <h3 id="pie-chart-title" class="text-lg font-bold text-slate-800">Distribuição do Mix
+                                </h3>
+                                <p class="text-sm text-slate-400 mt-1">Participação por produto</p>
+                            </div>
+                            <button class="text-slate-300 hover:text-slate-500 transition-colors">
+                                <i data-lucide="pie-chart" class="h-6 w-6"></i>
                             </button>
-                            
-                            <!-- Dropdown Menu -->
-                            <div id="bar-chart-dropdown" class="hidden absolute right-0 top-10 w-64 bg-white rounded-xl shadow-xl border border-slate-100 z-30 py-2 custom-scrollbar max-h-80 overflow-y-auto transform origin-top-right transition-all animate-in fade-in zoom-in-95 duration-200">
-                                <div class="px-4 py-3 border-b border-slate-50 mb-1">
-                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Filtrar Categoria</span>
-                                </div>
-                                <div id="bar-chart-categories" class="p-1">
-                                    <!-- Populated by JS -->
+                        </div>
+                        <div class="relative flex-grow flex items-center justify-center min-h-[320px]">
+                            <canvas id="productPieChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart -->
+                    <div
+                        class="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.03)] flex flex-col">
+                        <div class="flex items-center justify-between mb-8 relative">
+                            <div>
+                                <h3 id="bar-chart-title" class="text-lg font-bold text-slate-800">Top 10 Produtos
+                                    (Volume)</h3>
+                                <p class="text-sm text-slate-400 mt-1">Ranking por volume de vendas</p>
+                            </div>
+
+                            <!-- Dropdown Container -->
+                            <div class="relative">
+                                <button id="bar-chart-menu-btn"
+                                    class="p-2 text-slate-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-brand-100">
+                                    <i data-lucide="filter" class="h-5 w-5"></i>
+                                </button>
+
+                                <!-- Dropdown Menu -->
+                                <div id="bar-chart-dropdown"
+                                    class="hidden absolute right-0 top-10 w-64 bg-white rounded-xl shadow-xl border border-slate-100 z-30 py-2 custom-scrollbar max-h-80 overflow-y-auto transform origin-top-right transition-all animate-in fade-in zoom-in-95 duration-200">
+                                    <div class="px-4 py-3 border-b border-slate-50 mb-1">
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Filtrar
+                                            Categoria</span>
+                                    </div>
+                                    <div id="bar-chart-categories" class="p-1">
+                                        <!-- Populated by JS -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="relative flex-grow flex items-center justify-center min-h-[320px]">
-                        <canvas id="productBarChart"></canvas>
+                        <div class="relative flex-grow flex items-center justify-center min-h-[320px]">
+                            <canvas id="productBarChart"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Legend (Grid) -->
-            <div class="bg-white p-8 rounded-2xl shadow-card border border-slate-100">
-                      <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-50">
+                <!-- Legend (Grid) -->
+                <div class="bg-white p-8 rounded-2xl shadow-card border border-slate-100">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-50">
                         <div class="p-2 bg-slate-50 rounded-lg">
                             <i data-lucide="list" class="h-5 w-5 text-slate-500"></i>
                         </div>
@@ -354,53 +418,68 @@
 
                 <!-- Data Table Section -->
                 <div class="bg-white rounded-2xl shadow-card border border-slate-100 overflow-hidden flex flex-col">
-                    <div class="p-8 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-slate-50/30">
+                    <div
+                        class="p-8 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-slate-50/30">
                         <div>
                             <h3 class="text-lg font-bold text-slate-900">Relatório Detalhado</h3>
-                            <p class="text-sm text-slate-500 mt-1">Análise granular de todas as transações do período.</p>
+                            <p class="text-sm text-slate-500 mt-1">Análise granular de todas as transações do período.
+                            </p>
                         </div>
-                        
+
                         <!-- Search Bar -->
                         <div class="flex items-center gap-2 w-full lg:w-auto">
                             <div class="relative flex-grow lg:w-80 group">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i data-lucide="search" class="h-4 w-4 text-slate-400 group-focus-within:text-brand-500 transition-colors"></i>
+                                    <i data-lucide="search"
+                                        class="h-4 w-4 text-slate-400 group-focus-within:text-brand-500 transition-colors"></i>
                                 </div>
-                                <input type="text" id="table-search" placeholder="Buscar produto ou categoria..." class="pl-10 pr-4 py-2.5 border border-slate-200 bg-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 w-full transition-all shadow-sm">
+                                <input type="text" id="table-search" placeholder="Buscar produto ou categoria..."
+                                    class="pl-10 pr-4 py-2.5 border border-slate-200 bg-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 w-full transition-all shadow-sm">
                             </div>
-                            <button id="search-btn" class="p-2.5 bg-brand-600 text-white rounded-xl hover:bg-brand-700 active:scale-95 transition-all shadow-md shadow-brand-500/20" aria-label="Buscar">
+                            <button id="search-btn"
+                                class="p-2.5 bg-brand-600 text-white rounded-xl hover:bg-brand-700 active:scale-95 transition-all shadow-md shadow-brand-500/20"
+                                aria-label="Buscar">
                                 <i data-lucide="arrow-right" class="h-5 w-5"></i>
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm text-slate-600">
-                            <thead class="bg-slate-50 text-xs uppercase font-bold text-slate-400 border-b border-slate-200">
+                            <thead
+                                class="bg-slate-50 text-xs uppercase font-bold text-slate-400 border-b border-slate-200">
                                 <tr>
                                     <th class="px-8 py-5 text-center w-20 tracking-wider">#</th>
-                                    <th id="sort-by-name" class="px-8 py-5 cursor-pointer hover:bg-slate-100/80 transition-colors group tracking-wider">
+                                    <th id="sort-by-name"
+                                        class="px-8 py-5 cursor-pointer hover:bg-slate-100/80 transition-colors group tracking-wider">
                                         <div class="flex items-center gap-2">
                                             Produto
-                                            <i data-lucide="chevrons-up-down" class="h-3 w-3 text-slate-300 group-hover:text-slate-500 transition-colors"></i>
+                                            <i data-lucide="chevrons-up-down"
+                                                class="h-3 w-3 text-slate-300 group-hover:text-slate-500 transition-colors"></i>
                                         </div>
                                     </th>
-                                    <th id="sort-by-category" class="px-8 py-5 cursor-pointer hover:bg-slate-100/80 transition-colors group tracking-wider">
+                                    <th id="sort-by-category"
+                                        class="px-8 py-5 cursor-pointer hover:bg-slate-100/80 transition-colors group tracking-wider">
                                         <div class="flex items-center gap-2">
                                             Categoria
-                                            <i data-lucide="chevrons-up-down" class="h-3 w-3 text-slate-300 group-hover:text-slate-500 transition-colors"></i>
+                                            <i data-lucide="chevrons-up-down"
+                                                class="h-3 w-3 text-slate-300 group-hover:text-slate-500 transition-colors"></i>
                                         </div>
                                     </th>
-                                    <th id="sort-by-quantity" class="px-8 py-5 text-center cursor-pointer hover:bg-slate-100/80 transition-colors group tracking-wider">
+                                    <th id="sort-by-quantity"
+                                        class="px-8 py-5 text-center cursor-pointer hover:bg-slate-100/80 transition-colors group tracking-wider">
                                         <div class="flex items-center justify-center gap-2">
                                             Qtd.
-                                            <i data-lucide="chevrons-up-down" class="h-3 w-3 text-slate-300 group-hover:text-slate-500 transition-colors"></i>
+                                            <i data-lucide="chevrons-up-down"
+                                                class="h-3 w-3 text-slate-300 group-hover:text-slate-500 transition-colors"></i>
                                         </div>
                                     </th>
-                                    <th id="sort-by-percentage" class="px-8 py-5 text-center cursor-pointer hover:bg-slate-100/80 transition-colors group tracking-wider">
+                                    <th id="sort-by-percentage"
+                                        class="px-8 py-5 text-center cursor-pointer hover:bg-slate-100/80 transition-colors group tracking-wider">
                                         <div class="flex items-center justify-center gap-2">
                                             Share (%)
-                                            <i data-lucide="chevrons-up-down" class="h-3 w-3 text-slate-300 group-hover:text-slate-500 transition-colors"></i>
+                                            <i data-lucide="chevrons-up-down"
+                                                class="h-3 w-3 text-slate-300 group-hover:text-slate-500 transition-colors"></i>
                                         </div>
                                     </th>
                                     <th class="px-8 py-5 text-center tracking-wider">Status</th>
@@ -411,20 +490,26 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <!-- Pagination Footer -->
-                    <div class="px-8 py-6 border-t border-slate-100 flex items-center justify-between text-sm bg-slate-50/30">
+                    <div
+                        class="px-8 py-6 border-t border-slate-100 flex items-center justify-between text-sm bg-slate-50/30">
                         <span id="showing-text" class="text-slate-500 font-medium">Carregando dados...</span>
                         <div class="flex gap-3">
-                            <button class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all disabled:opacity-50 font-medium" disabled>Anterior</button>
-                            <button class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all disabled:opacity-50 font-medium" disabled>Próxima</button>
+                            <button
+                                class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all disabled:opacity-50 font-medium"
+                                disabled>Anterior</button>
+                            <button
+                                class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all disabled:opacity-50 font-medium"
+                                disabled>Próxima</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- VIEW: PRODUCTS (Categories) -->
-            <div id="view-products" class="view-section hidden space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div id="view-products"
+                class="view-section hidden space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div class="bg-white p-8 rounded-2xl shadow-card border border-slate-100">
                     <h3 class="text-lg font-bold text-slate-900 mb-6">Performance por Categoria</h3>
                     <div id="categories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -433,28 +518,99 @@
                 </div>
             </div>
 
+            <!-- VIEW: COMPARISON -->
+            <div id="view-comparison"
+                class="view-section hidden space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+                <!-- Trend KPI Cards -->
+                <div id="comparison-kpi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Volume Trend Line Chart -->
+                <div class="bg-white p-8 rounded-2xl shadow-card border border-slate-100">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-brand-50 rounded-lg">
+                            <i data-lucide="trending-up" class="h-5 w-5 text-brand-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">Evolução do Volume Total</h3>
+                            <p class="text-sm text-slate-400 mt-0.5">Quantidade total de itens vendidos por mês</p>
+                        </div>
+                    </div>
+                    <div id="trendLineChart" style="width:100%;height:300px;"></div>
+                </div>
+
+                <!-- Category Comparison Bar Chart -->
+                <div class="bg-white p-8 rounded-2xl shadow-card border border-slate-100">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-indigo-50 rounded-lg">
+                            <i data-lucide="bar-chart-2" class="h-5 w-5 text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">Comparativo por Categoria</h3>
+                            <p class="text-sm text-slate-400 mt-0.5">Fev 2026 vs Jan 2026 — unidades por categoria</p>
+                        </div>
+                    </div>
+                    <div id="categoryCompareChart" style="width:100%;height:380px;overflow-x:auto;"></div>
+                </div>
+
+                <!-- MoM Detail Table -->
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden p-8 mt-4">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-slate-800">Histórico Mensal — Resumo por Categoria</h3>
+                        <p class="text-sm text-slate-400 mt-1 pb-4">Volume de unidades por categoria em cada período.
+                        </p>
+                    </div>
+                    <div class="overflow-x-auto pb-4">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="text-[11px] uppercase font-bold text-slate-400 border-b border-slate-100">
+                                <tr>
+                                    <th class="py-5 pr-8 tracking-wider">Categoria</th>
+                                    <th class="px-4 py-5 text-center tracking-wider">Fev 2026</th>
+                                    <th class="px-4 py-5 text-center tracking-wider">Jan 2026</th>
+                                    <th class="px-4 py-5 text-center tracking-wider">Dez 2025</th>
+                                    <th class="px-4 py-5 text-center tracking-wider">Nov 2025</th>
+                                    <th class="px-4 py-5 text-center tracking-wider">Out 2025</th>
+                                    <th class="px-4 py-5 text-right tracking-wider">Δ Mensal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comparison-table-body" class="divide-y divide-slate-50">
+                                <!-- JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
             <!-- Footer Signature -->
             <div class="text-center pt-8 pb-4 no-print">
-                <p class="text-slate-400 text-xs font-medium">&copy; 2026 Dp Analytics Platform. Uso estritamente confidencial.</p>
+                <p class="text-slate-400 text-xs font-medium">&copy; 2026 PR Analytics Platform. Uso estritamente
+                    confidencial.</p>
             </div>
 
         </div>
     </div>
 
     <!-- Category Details Modal -->
-    <div id="category-modal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div id="category-modal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
         <!-- Backdrop -->
         <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm modal-backdrop"></div>
-        
+
         <!-- Panel Wrapper - Handle click outside here -->
         <div class="fixed inset-0 z-10 overflow-y-auto" onclick="closeCategoryModal()">
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
                 <!-- Modal Panel - Stop propagation so clicking inside doesn't close it -->
-                <div id="modal-panel" class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl modal-panel sm:my-8 sm:w-full sm:max-w-lg" onclick="event.stopPropagation()">
+                <div id="modal-panel"
+                    class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl modal-panel sm:my-8 sm:w-full sm:max-w-lg"
+                    onclick="event.stopPropagation()">
                     <!-- Header -->
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border-b border-slate-100">
                         <div class="flex items-center justify-between">
-                             <h3 class="text-lg font-bold leading-6 text-slate-900" id="modal-category-title">Categoria</h3>
+                            <h3 class="text-lg font-bold leading-6 text-slate-900" id="modal-category-title">Categoria
+                            </h3>
                         </div>
                     </div>
                     <!-- Content -->
@@ -462,8 +618,11 @@
                         <table class="min-w-full divide-y divide-slate-100">
                             <thead class="bg-slate-50 sticky top-0">
                                 <tr>
-                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-slate-900">Produto</th>
-                                    <th scope="col" class="px-3 py-3.5 text-right text-xs font-semibold text-slate-900">Qtd.</th>
+                                    <th scope="col"
+                                        class="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-slate-900">Produto
+                                    </th>
+                                    <th scope="col" class="px-3 py-3.5 text-right text-xs font-semibold text-slate-900">
+                                        Qtd.</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 bg-white" id="modal-table-body">
@@ -475,7 +634,6 @@
             </div>
         </div>
     </div>
-
     <script>
         // Inicializa ícones Lucide
         lucide.createIcons();
@@ -484,310 +642,9 @@
         // DADOS
         // ==========================================
 
-        const rawDatasets = {
-            'jan2026': {
-                total: 278,
-                data: [
-                    { name: "ADAPTADOR TOMADA (BRINDE)", quantity: 6, percentage: 0.0216 },
-                    { name: "ASSISTÊNCIA LIMPEZA VIRUS(PDV)", quantity: 1, percentage: 0.0036 },
-                    { name: "ASSISTÊNCIA SENHA DESBLOQUEIO(PDV)", quantity: 1, percentage: 0.0036 },
-                    { name: "CABO LIGHTNING 2MTS ESSAGER 29W (IPHONE)", quantity: 1, percentage: 0.0036 },
-                    { name: "CAPA HONOR X7C", quantity: 8, percentage: 0.0288 },
-                    { name: "CARREGADOR 20W KD KN-108A KDPAN", quantity: 1, percentage: 0.0036 },
-                    { name: "CARREGADOR MOTOROLA 50W", quantity: 3, percentage: 0.0108 },
-                    { name: "CARREGADOR ONE PLUS(REALME) 100W COMPLETO", quantity: 0, percentage: 0.0000 },
-                    { name: "CARREGADOR XIAOMI 120W", quantity: 0, percentage: 0.0000 },
-                    { name: "CHIP CLARO PREZÃO", quantity: 5, percentage: 0.0180 },
-                    { name: "CHIP TIM PRE C REGARGA", quantity: 28, percentage: 0.1007 },
-                    { name: "COPO STANLEY (BRINDE)", quantity: 9, percentage: 0.0324 },
-                    { name: "DESCONTO NA VENDA", quantity: 39, percentage: 0.1403 },
-                    { name: "FONE BLUETOOTH KD 7101 KAIDI", quantity: 1, percentage: 0.0036 },
-                    { name: "FONE BLUETOOTH KNC5602 KAIDI", quantity: 2, percentage: 0.0072 },
-                    { name: "FONE BLUETOOTH LENOVO THINKPLUS XT8311", quantity: 2, percentage: 0.0072 },
-                    { name: "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)", quantity: 7, percentage: 0.0252 },
-                    { name: "FONE ESTÉREO KD 799 KAIDI BRANCO", quantity: 1, percentage: 0.0036 },
-                    { name: "FONTE CARREGADOR 50W EL 4005 ELETRO", quantity: 1, percentage: 0.0036 },
-                    { name: "GARRAFA HONOR (BRINDE)", quantity: 8, percentage: 0.0288 },
-                    { name: "HONOR X7C 8/256 FOREST GREEN", quantity: 1, percentage: 0.0036 },
-                    { name: "HONOR X7C 8/256 MIDNIGHT BLACK", quantity: 8, percentage: 0.0288 },
-                    { name: "HONOR X7C 8/256 MOONLIGHT WHITE", quantity: 1, percentage: 0.0036 },
-                    { name: "HONOR X7D 8/256 METEOR SILVER", quantity: 4, percentage: 0.0144 },
-                    { name: "HONOR X7D 8/256 OCEAN CYAN", quantity: 1, percentage: 0.0036 },
-                    { name: "HONOR X7D 8/256 VELVET BLACK", quantity: 3, percentage: 0.0108 },
-                    { name: "IPHONE 13 128 BRANCO", quantity: 2, percentage: 0.0072 },
-                    { name: "IPHONE 13 256G PRETO", quantity: 1, percentage: 0.0036 },
-                    { name: "IPHONE 13 PRO 128G AZUL", quantity: 1, percentage: 0.0036 },
-                    { name: "IPHONE 13 PRO 256G AZUL", quantity: 1, percentage: 0.0036 },
-                    { name: "IPHONE 13 PRO MAX 128G AZUL", quantity: 1, percentage: 0.0036 },
-                    { name: "IPHONE 14 128G PRETO (LACRADO)", quantity: 1, percentage: 0.0036 },
-                    { name: "IPHONE 15 128 PRETO", quantity: 1, percentage: 0.0036 },
-                    { name: "IPHONE 15 128G PRETO (LACRADO)", quantity: 1, percentage: 0.0036 },
-                    { name: "MOTO G05 4/128 VERDE", quantity: 3, percentage: 0.0108 },
-                    { name: "MOTO G05 4/128 VERMELHO", quantity: 1, percentage: 0.0036 },
-                    { name: "MOTO G15 4/128 CINZA", quantity: 2, percentage: 0.0072 },
-                    { name: "MOTO G15 8/128 SEA GLACIER BLUE", quantity: 1, percentage: 0.0036 },
-                    { name: "MOTO G15 8/256 IGUANA GREEN", quantity: 1, percentage: 0.0036 },
-                    { name: "MOTO G56 5G 12/256 DAZZLING BLUE", quantity: 1, percentage: 0.0036 },
-                    { name: "MOTO G56 5G 12/256 GREY MIST", quantity: 1, percentage: 0.0036 },
-                    { name: "MOTOROLA EDGE 60 5G FUSION 8/256 BLUE", quantity: 1, percentage: 0.0036 },
-                    { name: "PAGAMENTO DE ENTRADA (RESERVA)", quantity: 1, percentage: 0.0036 },
-                    { name: "PAGAMENTO NUOVO (PDV)", quantity: 12, percentage: 0.0432 },
-                    { name: "PELICULA FOSCA HYDROGEL SUPER PREMIUM", quantity: 2, percentage: 0.0072 },
-                    { name: "PELICULA HD HYDROGEL PREMIUM +", quantity: 2, percentage: 0.0072 },
-                    { name: "PELICULA HD HYDROGEL STANDARD", quantity: 14, percentage: 0.0504 },
-                    { name: "PELICULA HD TABLET PREMIUM", quantity: 1, percentage: 0.0036 },
-                    { name: "PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM", quantity: 2, percentage: 0.0072 },
-                    { name: "POCO X7 5G 12/512 SILVER", quantity: 1, percentage: 0.0036 },
-                    { name: "POCO X7 PRO 5G 12/512 PRETO", quantity: 1, percentage: 0.0036 },
-                    { name: "POCO X7 PRO 5G 12/512 YELLOW", quantity: 1, percentage: 0.0036 },
-                    { name: "REALME 11X 5G 8/128 PURPLE DAWN", quantity: 1, percentage: 0.0036 },
-                    { name: "REALME 14T 5G 8/256GB LIGHTNING PURPLE", quantity: 1, percentage: 0.0036 },
-                    { name: "REALME C61 8/256 DARK GREEN", quantity: 4, percentage: 0.0144 },
-                    { name: "REALME C63 6/128 JADE GREEN", quantity: 3, percentage: 0.0108 },
-                    { name: "REALME C63 6/128 LEATHER BLUE", quantity: 1, percentage: 0.0036 },
-                    { name: "REALME C63 8/256 JADE GREEN", quantity: 9, percentage: 0.0324 },
-                    { name: "REALME C63 8/256 LEATHER BLUE", quantity: 2, percentage: 0.0072 },
-                    { name: "REALME C71 4/128 FOREST OWL", quantity: 3, percentage: 0.0108 },
-                    { name: "REALME C71 4/128 WHITE SWAN", quantity: 7, percentage: 0.0252 },
-                    { name: "REALME C71 4/256 WHITE SWAN", quantity: 4, percentage: 0.0144 },
-                    { name: "REALME C71 8/256 FOREST OWL", quantity: 7, percentage: 0.0252 },
-                    { name: "REALME C71 8/256 WHITE SWAN", quantity: 14, percentage: 0.0504 },
-                    { name: "REALME C75 8/256 LIGHTNING GOLD", quantity: 6, percentage: 0.0216 },
-                    { name: "REALME C75 8/256 RUBY RED", quantity: 1, percentage: 0.0036 },
-                    { name: "REALME C75 8/256 STORM BLACK", quantity: 3, percentage: 0.0108 },
-                    { name: "REALME C85 PRO 8/256 PEACOCK GREEN", quantity: 1, percentage: 0.0036 },
-                    { name: "REALME NOTE 70 4/128 OBSIDIAN BLACK", quantity: 3, percentage: 0.0108 },
-                    { name: "REALME NOTE 70 4/256 OBSIDIAN BLACK", quantity: 2, percentage: 0.0072 },
-                    { name: "REDMI A5 4/128 AZUL (SEMINOVO)", quantity: 1, percentage: 0.0036 },
-                    { name: "REDMI A5 4/128 GOLD", quantity: 2, percentage: 0.0072 },
-                    { name: "REDMI A5 4/128 VERDE", quantity: 2, percentage: 0.0072 },
-                    { name: "TAXA CARTAO(PDV)", quantity: 1, percentage: 0.0036 }
-                ]
-            },
-            'dez2025': {
-                total: 470,
-                data: [
-                    { name: "ADAPTADOR TOMADA (BRINDE)", quantity: 6, percentage: 0.0128 },
-                    { name: "ASSISTÊNCIA SENHA DESBLOQUEIO(PDV)", quantity: 3, percentage: 0.0064 },
-                    { name: "ASSISTÊNCIA SOFTWARE(PDV)", quantity: 4, percentage: 0.0085 },
-                    { name: "BODY SPLASH. WEPINK (BRINDE)", quantity: 37, percentage: 0.0787 },
-                    { name: "BOTICARIO(BRINDE)", quantity: 22, percentage: 0.0468 },
-                    { name: "CABO KD 306 KAIDI", quantity: 3, percentage: 0.0064 },
-                    { name: "CABO KD 336A 2MTS KAIDI", quantity: 2, percentage: 0.0043 },
-                    { name: "CAPA HONOR X7C", quantity: 4, percentage: 0.0085 },
-                    { name: "CARREGADOR 20W ESSAGER PRETO", quantity: 1, percentage: 0.0021 },
-                    { name: "CARREGADOR 20W KD KN-108C KDPAN", quantity: 1, percentage: 0.0021 },
-                    { name: "CARREGADOR 50W LEHΜΟΧ", quantity: 0, percentage: 0.0000 },
-                    { name: "CARREGADOR INDUÇÃO 15W ESSAGER", quantity: 1, percentage: 0.0021 },
-                    { name: "CARREGADOR MOTOROLA 50W", quantity: 4, percentage: 0.0085 },
-                    { name: "CARREGADOR MOTOROLA 68W", quantity: 1, percentage: 0.0021 },
-                    { name: "CARREGADOR XIAOMI 120W", quantity: 1, percentage: 0.0021 },
-                    { name: "CHIP CLARO FLEX", quantity: 1, percentage: 0.0021 },
-                    { name: "CHIP CLARO PREZÃO", quantity: 21, percentage: 0.0447 },
-                    { name: "CHIP TIM PRE C REGARGA", quantity: 20, percentage: 0.0426 },
-                    { name: "COPO STANLEY (BRINDE)", quantity: 26, percentage: 0.0553 },
-                    { name: "DESCONTO NA VENDA", quantity: 47, percentage: 0.1000 },
-                    { name: "FONE BLUETOOTH KNC5603 KAIDI", quantity: 1, percentage: 0.0021 },
-                    { name: "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)", quantity: 30, percentage: 0.0638 },
-                    { name: "FONE COM FIO LE-0204 LELONG", quantity: 1, percentage: 0.0021 },
-                    { name: "GARRAFA HONOR (BRINDE)", quantity: 14, percentage: 0.0298 },
-                    { name: "HONOR MAGIC 7 LITE 5G 12/512 PURPLE", quantity: 1, percentage: 0.0021 },
-                    { name: "HONOR X6C 6/256 MIDNIGHT BLACK", quantity: 1, percentage: 0.0021 },
-                    { name: "HONOR X6C 6/256 OCEAN CYAN", quantity: 1, percentage: 0.0021 },
-                    { name: "HONOR X7C 8/256 FOREST GREEN", quantity: 2, percentage: 0.0043 },
-                    { name: "HONOR X7C 8/256 MIDNIGHT BLACK", quantity: 9, percentage: 0.0191 },
-                    { name: "HONOR X7C 8/256 MOONLIGHT WHITE", quantity: 15, percentage: 0.0319 },
-                    { name: "HONOR X7D 8/256 METEOR SILVER", quantity: 3, percentage: 0.0064 },
-                    { name: "HONOR X7D 8/256 OCEAN CYAN", quantity: 2, percentage: 0.0043 },
-                    { name: "IPHONE 12 MINI 64G PRETO", quantity: 1, percentage: 0.0021 },
-                    { name: "IPHONE 13 128 BRANCO", quantity: 2, percentage: 0.0043 },
-                    { name: "IPHONE 14 128 LILAS", quantity: 1, percentage: 0.0021 },
-                    { name: "IPHONE 15 128G AZUL", quantity: 1, percentage: 0.0021 },
-                    { name: "MOTO G045 4/128 GRAFITE (SEMINOVO)", quantity: 1, percentage: 0.0021 },
-                    { name: "MOTO G05 4/128 VERDE", quantity: 4, percentage: 0.0085 },
-                    { name: "MOTO G05 4/128 VERMELHO", quantity: 4, percentage: 0.0085 },
-                    { name: "MOTO G15 4/128 VERDE", quantity: 6, percentage: 0.0128 },
-                    { name: "MOTO G15 4/512 SEA BLUE", quantity: 1, percentage: 0.0021 },
-                    { name: "MOTO G15 8/128 SEA GLACIER BLUE", quantity: 1, percentage: 0.0021 },
-                    { name: "MOTO G15 8/256 GRAVITY GRAY", quantity: 2, percentage: 0.0043 },
-                    { name: "MOTO G15 8/256 IGUANA GREEN", quantity: 1, percentage: 0.0021 },
-                    { name: "MOTO G15 8/256 SEA BLUE", quantity: 2, percentage: 0.0043 },
-                    { name: "MOTO G56 5G 8/256 GRAY MIST", quantity: 3, percentage: 0.0064 },
-                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 FOREST BLUE", quantity: 2, percentage: 0.0043 },
-                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK", quantity: 1, percentage: 0.0021 },
-                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 MARSHMALLOW BLUE", quantity: 1, percentage: 0.0021 },
-                    { name: "MOTOROLA EDGE 60 5G FUSION 8/256 BLUE", quantity: 2, percentage: 0.0043 },
-                    { name: "MOTOROLA EDGE 60 5G FUSION 8/256 GREEN", quantity: 2, percentage: 0.0043 },
-                    { name: "PAGAMENTO NUOVO(PDV)", quantity: 14, percentage: 0.0298 },
-                    { name: "PELICULA FOSCA HYDROGEL SUPER PREMIUM", quantity: 4, percentage: 0.0085 },
-                    { name: "PELICULA HD HYDROGEL PREMIUM", quantity: 12, percentage: 0.0255 },
-                    { name: "PELICULA HD HYDROGEL STANDARD", quantity: 29, percentage: 0.0617 },
-                    { name: "PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM", quantity: 5, percentage: 0.0106 },
-                    { name: "PERFUMES ÁRABES (BRINDE)", quantity: 3, percentage: 0.0064 },
-                    { name: "POCO X7 5G 8/256 BLACK", quantity: 1, percentage: 0.0021 },
-                    { name: "POCO X7 PRO 5G 12/512 PRETO", quantity: 1, percentage: 0.0021 },
-                    { name: "POCO X7 PRO 5G 12/512 YELLOW", quantity: 3, percentage: 0.0064 },
-                    { name: "POWER BANK MAGNÉTICO KD 998 PRETO 10000MAH KAIDI", quantity: 1, percentage: 0.0021 },
-                    { name: "REALME 14T 5G 8/256GB OBSIDIAN BLACK", quantity: 2, percentage: 0.0043 },
-                    { name: "REALME C61 8/256 SPARKLE GOLD", quantity: 1, percentage: 0.0021 },
-                    { name: "REALME C63 8/256 JADE GREEN", quantity: 3, percentage: 0.0064 },
-                    { name: "REALME C65 6/128 STARLIGHT BLACK", quantity: 1, percentage: 0.0021 },
-                    { name: "REALME C65 8/256 STARLIGHT BLACK", quantity: 4, percentage: 0.0085 },
-                    { name: "REALME C65 8/256 STARLIGHT PURPLE", quantity: 2, percentage: 0.0043 },
-                    { name: "REALME C71 8/256 FOREST OWL", quantity: 11, percentage: 0.0234 },
-                    { name: "REALME C71 8/256 WHITE SWAN", quantity: 11, percentage: 0.0234 },
-                    { name: "REALME C75 8/256 LIGHTNING GOLD", quantity: 1, percentage: 0.0021 },
-                    { name: "REALME C75 8/256 RUBY RED", quantity: 3, percentage: 0.0064 },
-                    { name: "REALME C75 8/256 STORM BLACK", quantity: 2, percentage: 0.0043 },
-                    { name: "REALME C75X 8/256 CORAL PINK", quantity: 4, percentage: 0.0085 },
-                    { name: "REALME C75X 8/256 OCEANIC BLUE", quantity: 1, percentage: 0.0021 },
-                    { name: "REALME NOTE 60 4/128 VOYAGE BLUE", quantity: 2, percentage: 0.0043 },
-                    { name: "REALME NOTE 70 4/128 BEACH GOLD", quantity: 2, percentage: 0.0043 },
-                    { name: "REALME NOTE 70 4/128 OBSIDIAN BLACK", quantity: 1, percentage: 0.0021 },
-                    { name: "REDMI A5 4/128 AZUL", quantity: 2, percentage: 0.0043 },
-                    { name: "REDMI A5 4/128 GOLD", quantity: 6, percentage: 0.0128 },
-                    { name: "REDMI A5 4/128 PRETO", quantity: 15, percentage: 0.0319 }
-                ]
-            },
-            'nov2025': {
-                total: 402, // Total atualizado com base no último input
-                data: [
-                    { name: "ADAPTADOR TOMADA (BRINDE)", quantity: 7, percentage: 0.0174 },
-                    { name: "ASSISTÊNCIA SENHA DESBLOQUEIO(PDV)", quantity: 1, percentage: 0.0025 },
-                    { name: "ASSISTÊNCIA SOFTWARE(PDV)", quantity: 1, percentage: 0.0025 },
-                    { name: "ASSISTÊNCIA TROCA PEÇA(PDV)", quantity: 1, percentage: 0.0025 },
-                    { name: "ASSISTÊNCIA TROCA TELA (PDV)", quantity: 1, percentage: 0.0025 },
-                    { name: "BODY SPLASH. WEPINK (BRINDE)", quantity: 8, percentage: 0.0199 },
-                    { name: "BOTICARIO(BRINDE)", quantity: 15, percentage: 0.0373 },
-                    { name: "CABO DE DADOS HB16-CC H'MASTON", quantity: 1, percentage: 0.0025 },
-                    { name: "CAPA HONOR X7C", quantity: 1, percentage: 0.0025 },
-                    { name: "CAPA REALME C61/C63", quantity: 1, percentage: 0.0025 },
-                    { name: "CAPA REDMI NOTE 14 4G", quantity: 1, percentage: 0.0025 },
-                    { name: "CARREGADOR 20W KD KN-108A KDPAN", quantity: 2, percentage: 0.0050 },
-                    { name: "CARREGADOR 20W KD KN-108C KDPAN", quantity: 1, percentage: 0.0025 },
-                    { name: "CARREGADOR CARRO S15-4 H'MASTON", quantity: 1, percentage: 0.0025 },
-                    { name: "CARREGADOR MOTOROLA 50W", quantity: 6, percentage: 0.0149 },
-                    { name: "CARREGADOR MOTOROLA 68W", quantity: 2, percentage: 0.0050 },
-                    { name: "CARREGADOR XIAOMI 90W C/CABO 2MTS", quantity: 1, percentage: 0.0025 },
-                    { name: "CARREGADOR Y24-1 H'MASTON", quantity: 1, percentage: 0.0025 },
-                    { name: "CARREGADOR Y27-3 H'MASTON", quantity: 1, percentage: 0.0025 },
-                    { name: "CARTÃO SDXC 128G V30 KODAK", quantity: 1, percentage: 0.0025 },
-                    { name: "CHIP CLARO FLEX", quantity: 2, percentage: 0.0050 },
-                    { name: "CHIP CLARO PREZÃO", quantity: 31, percentage: 0.0771 },
-                    { name: "CHIP TIM PRE C REGARGA", quantity: 7, percentage: 0.0174 },
-                    { name: "COPO STANLEY (BRINDE)", quantity: 24, percentage: 0.0597 },
-                    { name: "DESCONTO NA VENDA", quantity: 37, percentage: 0.0920 },
-                    { name: "FONE BLUETOOTH KNC5602 KAIDI", quantity: 1, percentage: 0.0025 },
-                    { name: "FONE BLUETOOTH KNC5603 KAIDI", quantity: 2, percentage: 0.0050 },
-                    { name: "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)", quantity: 38, percentage: 0.0945 },
-                    { name: "FONE COM FIO LE-0204 LELONG", quantity: 3, percentage: 0.0075 },
-                    { name: "HONOR 400 LITE 5G 8/256 VELVET BLACK", quantity: 1, percentage: 0.0025 },
-                    { name: "HONOR X5B PLUS 4/256 BLACK MIDNIGHT", quantity: 1, percentage: 0.0025 },
-                    { name: "HONOR X7C 8/256 BLACK (SEMINOVO)", quantity: 1, percentage: 0.0025 },
-                    { name: "HONOR X7C 8/256 FOREST GREEN", quantity: 2, percentage: 0.0050 },
-                    { name: "HONOR X7C 8/256 MIDNIGHT BLACK", quantity: 4, percentage: 0.0100 },
-                    { name: "HONOR X7C 8/256 MOONLIGHT WHITE", quantity: 24, percentage: 0.0597 },
-                    { name: "HONOR X8B 8/256 CYAN LAKE", quantity: 2, percentage: 0.0050 },
-                    { name: "HONOR X8B 8/256 TITANIUM SILVER", quantity: 2, percentage: 0.0050 },
-                    { name: "MOTO G05 4/128 VERDE", quantity: 11, percentage: 0.0274 },
-                    { name: "MOTO G05 4/128 VERMELHO", quantity: 13, percentage: 0.0323 },
-                    { name: "MOTO G15 4/128 CINZA", quantity: 11, percentage: 0.0274 },
-                    { name: "MOTO G15 4/128 LARANJA", quantity: 3, percentage: 0.0075 },
-                    { name: "MOTO G15 4/128 VERDE", quantity: 7, percentage: 0.0174 },
-                    { name: "MOTO G15 8/256 GRAVITY GRAY", quantity: 2, percentage: 0.0050 },
-                    { name: "MOTO G15 8/256 SEA BLUE", quantity: 2, percentage: 0.0050 },
-                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 FOREST BLUE", quantity: 2, percentage: 0.0050 },
-                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK", quantity: 1, percentage: 0.0025 },
-                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 MARSHMALLOW BLUE", quantity: 2, percentage: 0.0050 },
-                    { name: "MOTOROLA EDGE 60 5G FUSION 12/256 BLUE", quantity: 2, percentage: 0.0050 },
-                    { name: "MOTOROLA EDGE 60 5G FUSION 12/256 GREY", quantity: 3, percentage: 0.0075 },
-                    { name: "MOTOROLA EDGE 60 5G FUSION 12/256 PINK", quantity: 1, percentage: 0.0025 },
-                    { name: "MOTOROLA EDGE 60 5G FUSION 8/256 BLUE", quantity: 1, percentage: 0.0025 },
-                    { name: "PAGAMENTO NUOVO(PDV)", quantity: 12, percentage: 0.0299 },
-                    { name: "PELICULA FOSCA HYDROGEL SUPER PREMIUM", quantity: 3, percentage: 0.0075 },
-                    { name: "PELICULA HD HYDROGEL PREMIUM", quantity: 6, percentage: 0.0149 },
-                    { name: "PELICULA HD HYDROGEL STANDARD", quantity: 27, percentage: 0.0672 },
-                    { name: "PELICULA HD HYDROGEL SUPER PREMIUM", quantity: 1, percentage: 0.0025 },
-                    { name: "PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM", quantity: 2, percentage: 0.0050 },
-                    { name: "POCO X7 PRO 5G 12/512 IRON MAN EDITION", quantity: 1, percentage: 0.0025 },
-                    { name: "POCO X7 PRO 5G 12/512 PRETO", quantity: 1, percentage: 0.0025 },
-                    { name: "POCO X7 PRO 5G 12/512 YELLOW", quantity: 1, percentage: 0.0025 },
-                    { name: "REALME C63 8/256 JADE GREEN", quantity: 9, percentage: 0.0224 },
-                    { name: "REALME C63 8/256 LEATHER BLUE", quantity: 9, percentage: 0.0224 },
-                    { name: "REALME C65 8/256 STARLIGHT BLACK", quantity: 2, percentage: 0.0050 },
-                    { name: "REALME C65 8/256 STARLIGHT PURPLE", quantity: 2, percentage: 0.0050 },
-                    { name: "REALME C71 8/256 FOREST OWL", quantity: 2, percentage: 0.0050 },
-                    { name: "REALME C71 8/256 WHITE SWAN", quantity: 5, percentage: 0.0124 },
-                    { name: "REALME C75 8/256 RUBY RED", quantity: 2, percentage: 0.0050 },
-                    { name: "REALME C75X 8/256 CORAL PINK", quantity: 2, percentage: 0.0050 },
-                    { name: "REDMI 14C 4/128 STARRY BLUE SEMINOVO", quantity: 1, percentage: 0.0025 },
-                    { name: "REDMI 15C 8/256 MIDNIGHT BLACK", quantity: 2, percentage: 0.0050 },
-                    { name: "REDMI A5 4/128 AZUL", quantity: 7, percentage: 0.0174 },
-                    { name: "REDMI A5 4/128 GOLD", quantity: 1, percentage: 0.0025 },
-                    { name: "REDMI A5 4/128 PRETO", quantity: 6, percentage: 0.0149 },
-                    { name: "REDMI A5 4/128 VERDE", quantity: 1, percentage: 0.0025 }
-                ]
-            },
-            'out2025': {
-                total: 329, // Total corrigido conforme imagem
-                data: [
-                    { name: "ADAPTADOR TOMADA (BRINDE)", quantity: 15, percentage: 0.0456 },
-                    { name: "ASSISTÊNCIA SOFTWARE(PDV)", quantity: 1, percentage: 0.0030 },
-                    { name: "ASSISTÊNCIA TROCA TELA (PDV)", quantity: 1, percentage: 0.0030 },
-                    { name: "CABO HB 11-3 H'MASTON", quantity: 1, percentage: 0.0030 },
-                    { name: "CABO KD 327C 2 MTS KAIDI", quantity: 2, percentage: 0.0061 },
-                    { name: "CAPA HONOR X7C", quantity: 3, percentage: 0.0091 },
-                    { name: "CAPA HONOR X8B", quantity: 2, percentage: 0.0061 },
-                    { name: "CAPA REALME C61/C63", quantity: 1, percentage: 0.0030 },
-                    { name: "CARREGADOR 20W KD KN-108A KDPAN", quantity: 2, percentage: 0.0061 },
-                    { name: "CARREGADOR ADAPTADOR DE ENERGIA 30W CB-23 H'MASTON", quantity: 1, percentage: 0.0030 },
-                    { name: "CARREGADOR MOTOROLA 68W", quantity: 1, percentage: 0.0030 },
-                    { name: "CHIP CLARO FLEX", quantity: 3, percentage: 0.0091 },
-                    { name: "CHIP CLARO PREZÃO", quantity: 9, percentage: 0.0274 },
-                    { name: "CHIP TIM PRE C REGARGA", quantity: 38, percentage: 0.1155 },
-                    { name: "COPO STANLEY (BRINDE)", quantity: 11, percentage: 0.0334 },
-                    { name: "DESCONTO NA VENDA", quantity: 23, percentage: 0.0699 },
-                    { name: "FONE BLUETOOTH KD 776 KAIDI", quantity: 1, percentage: 0.0030 },
-                    { name: "FONE BLUETOOTH KD 777 KAIDI", quantity: 1, percentage: 0.0030 },
-                    { name: "FONE BLUETOOTH KNC5603 KAIDI", quantity: 2, percentage: 0.0061 },
-                    { name: "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)", quantity: 37, percentage: 0.1125 },
-                    { name: "FONE COM FIO LE-0201 LELONG", quantity: 3, percentage: 0.0091 },
-                    { name: "HONOR 400 LITE 5G 8/256 VELVET GREY", quantity: 1, percentage: 0.0030 },
-                    { name: "HONOR MAGIC 7 LITE 5G 12/512 BLACK", quantity: 1, percentage: 0.0030 },
-                    { name: "HONOR X6C 6/256 MOONLIGHT WHITE", quantity: 1, percentage: 0.0030 },
-                    { name: "HONOR X6C 6/256 OCEAN CYAN", quantity: 1, percentage: 0.0030 },
-                    { name: "HONOR X7C 8/256 FOREST GREEN", quantity: 5, percentage: 0.0152 },
-                    { name: "HONOR X7C 8/256 MIDNIGHT BLACK", quantity: 2, percentage: 0.0061 },
-                    { name: "HONOR X7C 8/256 MOONLIGHT WHITE", quantity: 26, percentage: 0.0790 },
-                    { name: "MOTO G05 4/128 VERDE", quantity: 2, percentage: 0.0061 },
-                    { name: "MOTO G05 4/128 VERMELHO", quantity: 1, percentage: 0.0030 },
-                    { name: "MOTO G15 4/128 CINZA", quantity: 1, percentage: 0.0030 },
-                    { name: "MOTO G24 4/128 GRAFITE (SEMI NOVO)", quantity: 1, percentage: 0.0030 },
-                    { name: "MOTOROLA EDGE 50 5G 12/512 KOALA GREY", quantity: 1, percentage: 0.0030 },
-                    { name: "MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK", quantity: 1, percentage: 0.0030 },
-                    { name: "PAGAMENTO NUOVO(PDV)", quantity: 4, percentage: 0.0192 },
-                    { name: "PAGAMENTO PAYJOY(PDV)", quantity: 6, percentage: 0.0288 },
-                    { name: "PELICULA 3D A14/G10/G20/G9/E7/C53/13C/C61/C63/C65", quantity: 1, percentage: 0.0048 },
-                    { name: "PELICULA 3D NOTE 13 4G PRO", quantity: 2, percentage: 0.0096 },
-                    { name: "PELICULA HD HYDROGEL STANDARD", quantity: 43, percentage: 0.2067 },
-                    { name: "POCO C71 GOLD 4/128", quantity: 0, percentage: 0.0000 },
-                    { name: "REALME 14T 5G 8/256GB OBSIDIAN BLACK", quantity: 1, percentage: 0.0048 },
-                    { name: "REALME C71 8/256 FOREST OWL", quantity: 2, percentage: 0.0096 },
-                    { name: "REALME C71 8/256 WHITE SWAN", quantity: 11, percentage: 0.0529 },
-                    { name: "REALME C75 8/256 RUBY RED", quantity: 1, percentage: 0.0048 },
-                    { name: "REALME C75X 8/256 CORAL PINK", quantity: 2, percentage: 0.0096 },
-                    { name: "REDMI 14C 8/256 MIDNIGHT BLACK", quantity: 1, percentage: 0.0048 },
-                    { name: "REDMI 14C 8/256 SAGE GREEN", quantity: 1, percentage: 0.0048 },
-                    { name: "REDMI 14C 8/256 STARRY BLUE", quantity: 1, percentage: 0.0048 },
-                    { name: "REDMI A5 4/128 AZUL", quantity: 15, percentage: 0.0721 },
-                    { name: "REDMI A5 4/128 GOLD", quantity: 18, percentage: 0.0865 },
-                    { name: "REDMI A5 4/128 PRETO", quantity: 11, percentage: 0.0529 },
-                    { name: "REDMI NOTE 14 PRO 4G 8/256 PURPLE", quantity: 1, percentage: 0.0048 }
-                ]
-            }
-        };
+        let rawDatasets = {};
 
-        // Função para atribuir categoria com base no nome
+        // Função para obter categoria
         function getCategory(name) {
             const n = name.toUpperCase();
             if (n.includes("BRINDE")) return "BRINDES";
@@ -800,380 +657,386 @@
             if (n.includes("HONOR")) return "HONOR";
             if (n.includes("IPHONE")) return "IPHONE";
             if (n.includes("MOTO")) return "MOTOROLA";
-            if (n.includes("PAGAMENTO") || n.includes("ASSISTÊNCIA") || n.includes("TAXA") || n.includes("TROCA") || n.includes("IMPRESSÃO") || n.includes("SENHA")) return "PAGAMENTOS/SERVIÇOS";
+            if (n.includes("PAGAMENTO") || n.includes("ASSISTÊNCIA") || n.includes("TAXA") || n.includes("TROCA") || n.includes("IMPRESSÃO")) return "PAGAMENTOS/SERVIÇOS";
             if (n.includes("REALME") || n.includes("C85") || n.includes("NOTE 70")) return "REALME";
             if (n.includes("POCO")) return "POCO";
             if (n.includes("REDMI") || n.includes("XIAOMI")) return "REDMI";
             if (n.includes("PELICULA") || n.includes("PELÍCULA")) return "PELÍCULAS";
-            if (n.includes("SAMSUNG")) return "SAMSUNG"; 
-            if (n.includes("ADAPTADOR")) return "ACESSÓRIOS"; 
-            if (n.includes("CARTÃO")) return "ACESSÓRIOS"; 
+            if (n.includes("SAMSUNG")) return "SAMSUNG";
+            if (n.includes("ADAPTADOR")) return "ACESSÓRIOS";
             return "OUTROS";
         }
 
-        // Função para agregar dados (Soma itens com mesmo nome)
-        function aggregateData(dataList) {
-            const map = new Map();
-            
-            dataList.forEach(item => {
-                let name = item.name.trim();
-                
-                // Normalização específica solicitada anteriormente
-                if(name === "NOTE 70 4/128 BEACH GOLD (2)") name = "REALME NOTE 70 4/128 BEACH GOLD";
-                
-                // Remover sufixos de contagem como (2) se não forem parte do nome do produto para melhor agregação
-                name = name.replace(/\s*\(\d+\)$/, "");
-
-                // Filter out items with zero quantity if they exist in the raw data
-                if (item.quantity !== 0) {
-                    if (map.has(name)) {
-                        const existing = map.get(name);
-                        existing.quantity += item.quantity;
-                        existing.percentage += item.percentage;
-                    } else {
-                        map.set(name, { ...item, name: name }); 
-                    }
-                }
-            });
-            
-            return Array.from(map.values());
-        }
-
-        // Processa os dados para adicionar a categoria e agregar duplicatas
-        const datasets = {};
-        for (const [key, value] of Object.entries(rawDatasets)) {
-            // Primeiro agrega para remover duplicatas de nome e remove itens com quantidade 0
-            const aggregatedData = aggregateData(value.data);
-            
-            datasets[key] = {
-                total: value.total,
-                data: aggregatedData.map(item => ({
-                    ...item,
-                    category: getCategory(item.name)
-                }))
-            };
-        }
-
-        // Paleta de cores profissional
-        const brandColors = [
-            '#0ea5e9', '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', 
-            '#f97316', '#eab308', '#22c55e', '#14b8a6', '#64748b'
-        ];
-
-        let currentPeriod = 'jan2026';
-        let sortState = { column: 'quantity', direction: 'desc' };
-        let filteredData = []; 
-        let currentBarChartFilter = 'Todas';
-
-        // --- Funções Auxiliares ---
-
-        function generateColors(num) {
-            const colors = [];
-            for (let i = 0; i < num; i++) colors.push(brandColors[i % brandColors.length]);
-            return colors;
-        }
-
-        function switchView(viewName) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-            const view = document.getElementById(`view-${viewName}`);
-            if (view) view.classList.remove('hidden');
-            
-            const navIds = ['nav-overview', 'nav-products'];
-            navIds.forEach(id => {
-                const btn = document.getElementById(id);
-                if (btn) {
-                    if (id === `nav-${viewName}`) {
-                        btn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/30');
-                        btn.classList.add('text-white', 'bg-slate-800/50', 'border-slate-700/50', 'shadow-sm');
-                        btn.querySelector('i')?.classList.remove('group-hover:text-brand-400');
-                        btn.querySelector('i')?.classList.add('text-brand-500');
-                    } else {
-                        btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/30');
-                        btn.classList.remove('text-white', 'bg-slate-800/50', 'border-slate-700/50', 'shadow-sm');
-                        btn.querySelector('i')?.classList.add('group-hover:text-brand-400');
-                        btn.querySelector('i')?.classList.remove('text-brand-500');
-                    }
-                }
-            });
-
-            if(viewName === 'products') {
-                renderProductGrid();
-            }
-        }
-
-        // Modal Functions
-        function openCategoryModal(category) {
-            const modal = document.getElementById('category-modal');
-            const backdrop = document.getElementById('modal-backdrop');
-            const panel = document.getElementById('modal-panel');
-            const title = document.getElementById('modal-category-title');
-            const tbody = document.getElementById('modal-table-body');
-            
-            document.body.style.overflow = 'hidden';
-            
-            const categoryItems = datasets[currentPeriod].data
-                .filter(item => item.category === category)
-                .sort((a,b) => b.quantity - a.quantity);
-                
-            if(title) title.innerText = category;
-            if(tbody) {
-                tbody.innerHTML = '';
-                categoryItems.forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="whitespace-normal py-3 pl-4 pr-3 text-sm font-medium text-slate-700 sm:pl-0">${item.name}</td>
-                        <td class="whitespace-nowrap px-3 py-3 text-right text-sm text-slate-500 font-mono">${item.quantity}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-            
-            modal.classList.remove('hidden');
-            requestAnimationFrame(() => {
-                backdrop.classList.add('open');
-                panel.classList.add('open');
-            });
-        }
-
-        function closeCategoryModal() {
-            const modal = document.getElementById('category-modal');
-            const backdrop = document.getElementById('modal-backdrop');
-            const panel = document.getElementById('modal-panel');
-            
-            backdrop.classList.remove('open');
-            panel.classList.remove('open');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = ''; 
-            }, 300);
-        }
-
-        function renderProductGrid() {
-            const data = datasets[currentPeriod].data;
-            const container = document.getElementById('categories-grid');
-            if(!container) return;
-            container.innerHTML = '';
-
-            const grouped = {};
+        // Função para agregar
+        function aggregateData(data) {
+            const aggr = {};
             data.forEach(item => {
-                if(!grouped[item.category]) grouped[item.category] = { count: 0, items: [] };
-                grouped[item.category].count += item.quantity;
-                grouped[item.category].items.push(item);
-            });
-
-            const sortedCategories = Object.keys(grouped).sort((a,b) => grouped[b].count - grouped[a].count);
-
-            sortedCategories.forEach(cat => {
-                const catData = grouped[cat];
-                if(catData.count <= 0) return;
-
-                const div = document.createElement('div');
-                div.className = 'bg-slate-50 rounded-xl p-5 border border-slate-100 hover:shadow-md transition-shadow page-break-inside-avoid';
-                
-                const topItem = catData.items.sort((a,b) => b.quantity - a.quantity)[0];
-
-                div.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
-                        <h4 class="font-bold text-slate-800">${cat}</h4>
-                        <span class="bg-brand-100 text-brand-700 text-xs font-bold px-2 py-1 rounded-full">${catData.count} un.</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="text-sm text-slate-500">
-                            <span class="block text-xs uppercase tracking-wide text-slate-400 mb-1">Top Item</span>
-                            <p class="font-medium text-slate-700 truncate cursor-pointer hover:text-brand-600 hover:underline transition-all" title="Ver todos os itens desta categoria" onclick="openCategoryModal('${cat}')">${topItem.name}</p>
-                            <p class="text-xs text-brand-600 mt-0.5">${topItem.quantity} vendas</p>
-                        </div>
-                        <div class="w-full bg-slate-200 rounded-full h-1.5 mt-2">
-                            <div class="bg-brand-500 h-1.5 rounded-full" style="width: ${Math.min(100, (catData.count / datasets[currentPeriod].total) * 500)}%"></div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // --- Renderização ---
-
-        function renderTable(data) {
-            const tbody = document.getElementById('product-table-body');
-            if(!tbody) return;
-            tbody.innerHTML = '';
-
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="px-8 py-10 text-center text-slate-400 italic">Nenhum produto encontrado.</td></tr>`;
-                const showingText = document.getElementById('showing-text');
-                if(showingText) showingText.innerText = `Mostrando 0 resultados`;
-                return;
-            }
-
-            data.forEach((item, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50/80 transition-colors group border-b border-slate-50 last:border-0';
-                
-                let statusBadge = `<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100/50">Ativo</span>`;
-                if(item.name.includes("BRINDE")) statusBadge = `<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-100/50">Brinde</span>`;
-                if(item.name.includes("DESCONTO")) statusBadge = `<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-100/50">Ajuste</span>`;
-                if(item.quantity < 0) statusBadge = `<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-100/50">Devolução</span>`;
-
-                tr.innerHTML = `
-                    <td class="px-8 py-4 whitespace-nowrap text-center text-slate-400 font-mono text-xs">${index + 1}</td>
-                    <td class="px-8 py-4 font-medium text-slate-700 group-hover:text-brand-600 transition-colors">${item.name}</td>
-                    <td class="px-8 py-4 text-center">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
-                            ${item.category}
-                        </span>
-                    </td>
-                    <td class="px-8 py-4 text-center">
-                        <span class="inline-block font-bold text-slate-800 bg-slate-50 px-3 py-1 rounded-lg border border-slate-100 min-w-[3rem] shadow-sm">${item.quantity}</span>
-                    </td>
-                    <td class="px-8 py-4 text-center">
-                        <div class="flex items-center justify-center gap-3">
-                            <span class="text-xs font-semibold text-slate-500 w-12 text-right">${(item.percentage * 100).toFixed(2)}%</span>
-                            <div class="w-16 bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                                <div class="bg-gradient-to-r from-brand-400 to-brand-600 h-1.5 rounded-full" style="width: ${(item.percentage * 100)}%"></div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-8 py-4 text-center">${statusBadge}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-            const showingText = document.getElementById('showing-text');
-            if(showingText) showingText.innerText = `Mostrando ${data.length} resultados`;
-        }
-
-        function renderPieLegend(data, colors) {
-            const container = document.getElementById('pie-legend-container');
-            if(!container) return;
-            container.innerHTML = '';
-            
-            const legendData = data.filter(item => item.quantity > 0); 
-            
-            legendData.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100 page-break-inside-avoid';
-                div.innerHTML = `
-                    <span class="mt-1.5 block h-2.5 w-2.5 rounded-full flex-shrink-0 shadow-sm" style="background-color: ${colors[index % colors.length]}"></span>
-                    <div class="flex-1 min-w-0">
-                        <p class="font-medium text-sm text-slate-700 truncate" title="${item.name}">${item.name}</p>
-                        <p class="text-xs text-slate-400 mt-0.5">${item.quantity} un. <span class="text-slate-300">|</span> ${(item.percentage * 100).toFixed(1)}%</p>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // --- Charts ---
-
-        Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
-        Chart.defaults.color = '#64748b';
-
-        function renderPieChart(data, categoryFilter) {
-            let filteredPieData = data;
-
-            if (categoryFilter && categoryFilter !== 'Todas') {
-                filteredPieData = data.filter(d => d.category === categoryFilter);
-            }
-
-            const validData = filteredPieData.filter(d => d.quantity > 0).sort((a,b) => b.quantity - a.quantity);
-            const colors = generateColors(validData.length);
-
-            const canvas = document.getElementById('productPieChart');
-            if(!canvas) return; // Proteção contra erro se elemento não existir
-            const pieCtx = canvas.getContext('2d');
-            
-            if(window.pieChart) window.pieChart.destroy();
-
-            const titleEl = document.getElementById('pie-chart-title');
-            if(titleEl) {
-                if(categoryFilter && categoryFilter !== 'Todas') {
-                    titleEl.innerText = `Distribuição - ${categoryFilter}`;
-                } else {
-                    titleEl.innerText = `Distribuição do Mix`;
+                if (item.name === "Total") return;
+                const cat = getCategory(item.name);
+                if (!aggr[item.name]) {
+                    aggr[item.name] = { name: item.name, quantity: 0, category: cat };
                 }
+                aggr[item.name].quantity += item.quantity;
+            });
+            const result = Object.values(aggr);
+            result.sort((a, b) => b.quantity - a.quantity);
+            return result;
+        }
+
+        let datasets = {};
+        let periodOrder = [];
+        let periodLabels = {};
+        let currentPeriod = "";
+
+        // ==========================================
+        // VARIÁVEIS GLOBAIS E ESTADO
+        // ==========================================
+
+        let productPieChart, productBarChart;
+        let selectedCategoryFilter = "Todas";
+        let currentSort = { column: 'quantity', direction: 'desc' };
+        let currentPage = 1;
+        const itemsPerPage = 15;
+        let searchQuery = "";
+
+        // ==========================================
+        // FUNÇÕES PRINCIPAIS
+        // ==========================================
+
+        async function init() {
+            try {
+                const response = await fetch('data.json');
+                const jsonData = await response.json();
+
+                periodOrder = jsonData._ordem_exibicao || [];
+                periodOrder.forEach(k => {
+                    rawDatasets[k] = jsonData[k].data || [];
+                    periodLabels[k] = jsonData[k].label || k;
+                });
+
+                const selector = document.getElementById('period-selector');
+                selector.innerHTML = '';
+                periodOrder.forEach(key => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = periodLabels[key];
+                    selector.appendChild(option);
+                    datasets[key] = aggregateData(rawDatasets[key]);
+                });
+
+                if (periodOrder.length > 0) {
+                    currentPeriod = periodOrder[0];
+                    selector.value = currentPeriod;
+                }
+
+                selector.addEventListener('change', (e) => {
+                    currentPeriod = e.target.value;
+                    loadPeriod(currentPeriod);
+                });
+
+                if (currentPeriod) {
+                    loadPeriod(currentPeriod);
+                }
+            } catch (error) {
+                console.error("Erro ao carregar data.json:", error);
+                document.getElementById('period-selector').innerHTML = '<option value="">Erro ao carregar dados</option>';
             }
-            
-            window.pieChart = new Chart(pieCtx, {
+        }
+
+        function loadPeriod(period) {
+            const data = datasets[period] || [];
+            updateStats(data);
+            initCharts(data);
+            populateCategoryFilter(data);
+            updateBarChartFilter(data);
+            renderTable(data);
+            renderProductGrid(data);
+
+            const displayLabel = periodLabels[period] || period;
+            document.getElementById('page-title').textContent = `Resultados: ${displayLabel}`;
+
+            let comparisonLabel = "";
+            let comparisonData = [];
+            const currentIndex = periodOrder.indexOf(period);
+            if (currentIndex >= 0 && currentIndex < periodOrder.length - 1) {
+                const prevPeriod = periodOrder[currentIndex + 1];
+                comparisonData = datasets[prevPeriod] || [];
+                comparisonLabel = periodLabels[prevPeriod] || prevPeriod;
+            }
+
+            renderComparisonView(period, data, comparisonLabel, comparisonData);
+            renderComparisonCharts();
+        }
+
+        function updateStats(data) {
+            const total = data.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('total-items').textContent = total.toLocaleString('pt-BR');
+            document.getElementById('unique-products').textContent = data.length.toLocaleString('pt-BR');
+
+            if (data.length > 0) {
+                document.getElementById('top-product-name').textContent = data[0].name;
+                document.getElementById('top-product-name').title = data[0].name;
+            } else {
+                document.getElementById('top-product-name').textContent = "-";
+            }
+        }
+
+        // ==========================================
+        // CHARTS (Visão Geral)
+        // ==========================================
+
+        function getChartColors() {
+            return [
+                '#18bbff', '#7567fd', '#bd74ff', '#ff629a', '#ff4b6a',
+                '#ff9138', '#fcc831', '#33d176', '#23b4ba', '#687d90',
+                '#0ea5e9', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981',
+                '#6366f1', '#f43f5e', '#14b8a6', '#84cc16', '#06b6d4'
+            ];
+        }
+
+        function initCharts(data) {
+            const totalQuantity = data.reduce((sum, item) => sum + item.quantity, 0);
+
+            // Pie Chart (Participação por Produto)
+            // Agrupar produtos menores em "Outros" se forem muitos
+            let pieData = [...data];
+            if (pieData.length > 10) {
+                const top9 = pieData.slice(0, 9);
+                const others = pieData.slice(9).reduce((sum, item) => sum + item.quantity, 0);
+                pieData = [...top9, { name: 'Outros Produtos', quantity: others }];
+            }
+
+            const pieCtx = document.getElementById('productPieChart').getContext('2d');
+            if (productPieChart) productPieChart.destroy();
+
+            productPieChart = new Chart(pieCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: validData.map(d => d.name),
+                    labels: pieData.map(d => d.name),
                     datasets: [{
-                        data: validData.map(d => d.quantity),
-                        backgroundColor: colors,
-                        borderWidth: 2,
-                        borderColor: '#ffffff',
-                        hoverOffset: 10,
-                        borderRadius: 4
+                        data: pieData.map(d => d.quantity),
+                        backgroundColor: getChartColors().slice(0, Math.max(10, pieData.length)),
+                        borderWidth: 3,
+                        borderColor: '#f1f5f9',
+                        hoverOffset: 6
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '70%',
+                    cutout: '75%',
                     plugins: {
                         legend: { display: false },
                         tooltip: {
                             backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                            padding: 14,
-                            cornerRadius: 12,
-                            titleFont: { size: 13, weight: '600' },
-                            bodyFont: { size: 12 },
-                            displayColors: true,
-                            boxPadding: 4,
+                            titleColor: '#fff',
+                            bodyColor: '#cbd5e1',
+                            padding: 12,
+                            boxPadding: 6,
+                            usePointStyle: true,
                             callbacks: {
-                                label: function(context) {
-                                    const val = context.raw;
-                                    const total = context.dataset.data.reduce((a,b) => a+b, 0);
-                                    return ` ${val} un. (${((val/total)*100).toFixed(1)}%)`;
+                                label: function (context) {
+                                    const value = context.parsed;
+                                    const percent = totalQuantity > 0 ? ((value / totalQuantity) * 100).toFixed(1) : 0;
+                                    return ` ${context.label}: ${value} unid. (${percent}%)`;
                                 }
                             }
                         }
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
                     }
                 }
             });
-            renderPieLegend(validData, colors);
+
+            // Gerar Legenda Customizada para o Pie Chart
+            const legendContainer = document.getElementById('pie-legend-container');
+            legendContainer.innerHTML = pieData.map((d, i) => {
+                const color = getChartColors()[i % getChartColors().length];
+                const percent = totalQuantity > 0 ? ((d.quantity / totalQuantity) * 100).toFixed(1) : 0;
+                return `
+                    <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                        <span class="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-sm transition-transform group-hover:scale-125" style="background-color: ${color}"></span>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-semibold text-slate-700 truncate" title="${d.name}">${d.name}</p>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <p class="text-[11px] text-slate-500 font-medium">${d.quantity} unid</p>
+                                <span class="text-[10px] text-brand-600 font-bold bg-brand-50 px-1.5 py-0.5 rounded-md">${percent}%</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        function renderBarChart(data, categoryFilter) {
-            let filteredBarData = data;
-            
-            if (categoryFilter && categoryFilter !== 'Todas') {
-                filteredBarData = data.filter(d => d.category === categoryFilter);
+        // ==========================================
+        // TABELA E FILTROS (Visão Geral)
+        // ==========================================
+
+        function renderTable(dataToRender) {
+            let filteredData = dataToRender;
+
+            // Busca
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                filteredData = filteredData.filter(item =>
+                    item.name.toLowerCase().includes(q) ||
+                    item.category.toLowerCase().includes(q)
+                );
             }
 
-            const validData = filteredBarData.filter(d => d.quantity > 0).sort((a,b) => b.quantity - a.quantity);
-            const top10 = validData.slice(0, 10);
-            const topColors = generateColors(10);
+            // Ordenação
+            filteredData.sort((a, b) => {
+                let valA = a[currentSort.column];
+                let valB = b[currentSort.column];
 
-            const canvas = document.getElementById('productBarChart');
-            if(!canvas) return;
-            const barCtx = canvas.getContext('2d');
-            
-            if(window.barChart) window.barChart.destroy();
+                if (typeof valA === 'string') {
+                    valA = valA.toLowerCase();
+                    valB = valB.toLowerCase();
+                    if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+                    if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+                    return 0;
+                }
+                return currentSort.direction === 'asc' ? valA - valB : valB - valA;
+            });
 
-            const titleEl = document.getElementById('bar-chart-title');
-            if(categoryFilter && categoryFilter !== 'Todas') {
-                titleEl.innerText = `Top 10 - ${categoryFilter}`;
+            const totalItems = filteredData.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+
+            const tbody = document.getElementById('product-table-body');
+            const totalQuantity = dataToRender.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (paginatedData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-8 py-12 text-center text-slate-500 font-medium">Nenhum produto encontrado.</td></tr>`;
+                document.getElementById('showing-text').textContent = 'Mostrando 0 de 0 produtos';
+                return;
+            }
+
+            tbody.innerHTML = paginatedData.map((item, index) => {
+                const percentage = totalQuantity > 0 ? ((item.quantity / totalQuantity) * 100).toFixed(2) : "0.00";
+                const isTop = (startIndex + index) < 3;
+                return `
+                    <tr class="hover:bg-slate-50/80 transition-colors group cursor-default">
+                        <td class="px-8 py-4 text-center font-medium text-slate-400 group-hover:text-slate-600">${startIndex + index + 1}</td>
+                        <td class="px-8 py-4">
+                            <div class="flex items-center gap-3">
+                                ${isTop ? `<i data-lucide="medal" class="h-4 w-4 ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-slate-400' : 'text-amber-700'}"></i>` : ''}
+                                <span class="font-semibold text-slate-700 group-hover:text-brand-600 transition-colors">${item.name}</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-4">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                ${item.category}
+                            </span>
+                        </td>
+                        <td class="px-8 py-4 text-center font-bold text-slate-900">${item.quantity}</td>
+                        <td class="px-8 py-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="font-medium text-slate-600">${percentage}%</span>
+                                <div class="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-brand-500 rounded-full" style="width: ${percentage}%"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-4 text-center">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Ativo
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+
+            const end = Math.min(startIndex + itemsPerPage, totalItems);
+            document.getElementById('showing-text').textContent = `Mostrando ${startIndex + 1} - ${end} de ${totalItems} produtos`;
+
+            // Botões de Paginação removidos com :contains (causa SyntaxError no Chrome)
+            // A lógica correta estava no fallback logo abaixo no próprio arquivo.
+
+            // Select elements based on text content (jQuery style mimic for simplicity as they don't have IDs)
+            const buttons = document.querySelectorAll('#scroll-content button');
+            let prevB, nextB;
+            buttons.forEach(b => {
+                if (b.textContent === 'Anterior') prevB = b;
+                if (b.textContent === 'Próxima') nextB = b;
+            });
+
+            if (prevB) {
+                prevB.disabled = currentPage === 1;
+                prevB.onclick = () => { if (currentPage > 1) { currentPage--; renderTable(datasets[currentPeriod] || []); } };
+            }
+            if (nextB) {
+                nextB.disabled = currentPage >= totalPages;
+                nextB.onclick = () => { if (currentPage < totalPages) { currentPage++; renderTable(datasets[currentPeriod] || []); } };
+            }
+        }
+
+        function populateCategoryFilter(data) {
+            const categories = new Set(data.map(d => d.category));
+            const filterContainer = document.getElementById('bar-chart-categories');
+
+            let html = `
+                <button onclick="setCategoryFilter('Todas')" class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-brand-50 hover:text-brand-600 rounded-md transition-colors flex items-center justify-between group ${selectedCategoryFilter === 'Todas' ? 'bg-brand-50 text-brand-700 font-semibold' : ''}">
+                    Todas as Categorias
+                    ${selectedCategoryFilter === 'Todas' ? '<i data-lucide="check" class="h-4 w-4"></i>' : ''}
+                </button>
+            `;
+
+            Array.from(categories).sort().forEach(cat => {
+                const count = data.filter(d => d.category === cat).length;
+                html += `
+                    <button onclick="setCategoryFilter('${cat}')" class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-brand-50 hover:text-brand-600 rounded-md transition-colors flex items-center justify-between group mt-1 ${selectedCategoryFilter === cat ? 'bg-brand-50 text-brand-700 font-semibold' : ''}">
+                        <span class="truncate pr-2">${cat}</span>
+                        <span class="text-[10px] font-medium bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-md group-hover:bg-brand-100 group-hover:text-brand-600">${count}</span>
+                    </button>
+                `;
+            });
+
+            filterContainer.innerHTML = html;
+            lucide.createIcons();
+            updateBarChartFilter(data);
+        }
+
+        function setCategoryFilter(cat) {
+            selectedCategoryFilter = cat;
+            document.getElementById('bar-chart-dropdown').classList.add('hidden');
+            const data = datasets[currentPeriod] || [];
+            populateCategoryFilter(data); // Re-render to show checkmark
+        }
+
+        function updateBarChartFilter(data) {
+            let chartData = [...data];
+
+            if (selectedCategoryFilter !== "Todas") {
+                chartData = chartData.filter(d => d.category === selectedCategoryFilter);
+                document.getElementById('bar-chart-title').textContent = `Top Produtos: ${selectedCategoryFilter}`;
             } else {
-                titleEl.innerText = `Top 10 Produtos (Volume)`;
+                document.getElementById('bar-chart-title').textContent = "Top 10 Produtos (Geral)";
             }
 
-            window.barChart = new Chart(barCtx, {
+            const top10 = chartData.slice(0, 10);
+
+            const barCtx = document.getElementById('productBarChart').getContext('2d');
+            if (productBarChart) productBarChart.destroy();
+
+            const chartColors = getChartColors().slice(0, Math.max(10, top10.length));
+
+            productBarChart = new Chart(barCtx, {
                 type: 'bar',
                 data: {
-                    labels: top10.map(d => d.name.length > 20 ? d.name.substring(0,20)+'...' : d.name), 
+                    labels: top10.map(d => d.name.length > 20 ? d.name.substring(0, 20) + '...' : d.name),
                     datasets: [{
-                        label: 'Vendas',
+                        label: 'Quantidade',
                         data: top10.map(d => d.quantity),
-                        backgroundColor: topColors,
-                        borderRadius: 6,
-                        barThickness: 32,
-                        maxBarThickness: 40
+                        backgroundColor: chartColors,
+                        borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 },
+                        borderSkipped: false,
+                        barPercentage: 0.8,
+                        categoryPercentage: 0.9
                     }]
                 },
                 options: {
@@ -1183,24 +1046,34 @@
                         legend: { display: false },
                         tooltip: {
                             backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                            padding: 14,
-                            cornerRadius: 12,
-                            titleFont: { size: 13, weight: '600' },
-                            bodyFont: { size: 12 },
-                            displayColors: false,
-                            callbacks: { title: (items) => top10[items[0].dataIndex].name } 
+                            titleColor: '#fff',
+                            bodyColor: '#cbd5e1',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                title: (items) => top10[items[0].dataIndex].name
+                            }
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: '#f1f5f9', drawBorder: false },
-                            ticks: { padding: 10, font: {size: 11} },
+                            grid: { display: true, color: '#f1f5f9', drawBorder: false },
+                            ticks: {
+                                color: '#cbd5e1',
+                                font: { family: "'Plus Jakarta Sans', sans-serif" },
+                                maxTicksLimit: 6
+                            },
                             border: { display: false }
                         },
                         x: {
                             grid: { display: false, drawBorder: false },
-                            ticks: { padding: 10, font: {size: 11} },
+                            ticks: {
+                                color: '#cbd5e1',
+                                font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 },
+                                maxRotation: 40,
+                                minRotation: 40
+                            },
                             border: { display: false }
                         }
                     }
@@ -1208,207 +1081,474 @@
             });
         }
 
-        function populateBarChartMenu(data) {
-            const menuContainer = document.getElementById('bar-chart-categories');
-            if(!menuContainer) return;
-            menuContainer.innerHTML = ''; 
 
-            const categories = ['Todas', ...new Set(data.map(item => item.category))].sort();
+        // ==========================================
+        // VIEW: CATEGORIAS E PRODUTOS JUNTOS (PRODUCTS)
+        // ==========================================
 
-            categories.forEach(cat => {
-                const btn = document.createElement('button');
-                btn.className = 'w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors flex items-center justify-between group rounded-lg mb-1';
-                
-                if(cat === currentBarChartFilter) {
-                    btn.classList.add('bg-brand-50', 'font-semibold', 'text-brand-700');
-                    btn.innerHTML = `${cat} <i data-lucide="check" class="h-4 w-4 text-brand-600"></i>`;
-                } else {
-                    btn.innerHTML = `${cat}`;
+        function renderProductGrid(data) {
+            const grid = document.getElementById('categories-grid');
+            const catMap = {};
+
+            data.forEach(item => {
+                if (!catMap[item.category]) {
+                    catMap[item.category] = {
+                        name: item.category,
+                        totalQuantity: 0,
+                        items: []
+                    };
                 }
-
-                btn.onclick = () => {
-                    currentBarChartFilter = cat;
-                    renderBarChart(data, currentBarChartFilter);
-                    renderPieChart(data, currentBarChartFilter);
-                    
-                    populateBarChartMenu(data); 
-                    document.getElementById('bar-chart-dropdown')?.classList.add('hidden'); 
-                    lucide.createIcons(); 
-                };
-                menuContainer.appendChild(btn);
+                catMap[item.category].totalQuantity += item.quantity;
+                catMap[item.category].items.push(item);
             });
+
+            const categories = Object.values(catMap).sort((a, b) => b.totalQuantity - a.totalQuantity);
+
+            grid.innerHTML = categories.map((cat, index) => {
+                const topItems = cat.items.slice(0, 3);
+                const hasMore = cat.items.length > 3;
+
+                return `
+                    <div class="bg-white border text-center border-slate-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300 relative group overflow-hidden flex flex-col h-full cursor-pointer" onclick="openCategoryModal('${cat.name}')">
+                        <div class="absolute inset-0 bg-gradient-to-br from-brand-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="flex items-center justify-between mb-4 relative z-10">
+                             <div class="p-2.5 bg-brand-50 rounded-lg group-hover:scale-110 group-hover:bg-brand-100 transition-all duration-300">
+                                <i data-lucide="${getCategoryIcon(cat.name)}" class="h-6 w-6 text-brand-600"></i>
+                            </div>
+                            <span class="text-2xl font-extrabold text-slate-800 tracking-tight">${cat.totalQuantity} <span class="text-xs font-semibold text-slate-400">unid</span></span>
+                        </div>
+                        
+                        <h4 class="text-base font-bold text-slate-900 mb-3 relative z-10">${cat.name}</h4>
+                        
+                        <div class="space-y-2 mt-auto relative z-10 text-left">
+                            ${topItems.map(item => `
+                                <div class="flex justify-between items-center text-sm pb-1 border-b border-slate-50 last:border-0 last:pb-0">
+                                    <span class="text-slate-500 truncate pr-2" title="${item.name}">${item.name}</span>
+                                    <span class="font-bold text-slate-700">${item.quantity}</span>
+                                </div>
+                            `).join('')}
+                            ${hasMore ? `<p class="text-xs text-brand-600 font-semibold pt-2 text-center group-hover:underline">+ ${cat.items.length - 3} produtos (Clique p/ ver todos)</p>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
             lucide.createIcons();
         }
 
-        // --- Logic ---
+        // ==========================================
+        // MODAL DE CATEGORIA
+        // ==========================================
+        const modal = document.getElementById('category-modal');
+        const backdrop = document.getElementById('modal-backdrop');
+        const panel = document.getElementById('modal-panel');
 
-        function updateStats(periodData) {
-            const data = periodData.data;
-            const total = periodData.total;
-            const unique = data.length;
-            const topProduct = [...data].sort((a,b) => b.quantity - a.quantity)[0];
+        function openCategoryModal(categoryName) {
+            const data = datasets[currentPeriod] || [];
+            const items = data.filter(d => d.category === categoryName).sort((a, b) => b.quantity - a.quantity);
 
-            document.getElementById('total-items').innerText = total;
-            document.getElementById('unique-products').innerText = unique;
-            
-            if(topProduct) {
-                const el = document.getElementById('top-product-name');
-                if(el) {
-                    el.innerText = topProduct.name;
-                    el.title = topProduct.name;
-                }
-            }
-        }
+            document.getElementById('modal-category-title').textContent = `${categoryName} (${items.reduce((s, i) => s + i.quantity, 0)} unid)`;
 
-        function filterData(query) {
-            const currentData = datasets[currentPeriod].data;
-            const term = query.trim().toLowerCase();
+            const tbody = document.getElementById('modal-table-body');
+            tbody.innerHTML = items.map((item, index) => `
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-slate-900 truncate max-w-[300px]" title="${item.name}">
+                        ${index + 1}. ${item.name}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-3 text-right text-sm font-bold text-brand-600">
+                        ${item.quantity}
+                    </td>
+                </tr>
+            `).join('');
 
-            if (term.length > 0) {
-                 filteredData = currentData.filter(item => 
-                    item.name.toLowerCase().includes(term) || 
-                    item.category.toLowerCase().includes(term)
-                );
-            } else {
-                filteredData = [...currentData];
-            }
-
-            sortData(sortState.column, sortState.direction, true); 
-        }
-
-        function sortData(column, direction, updateUI = true) {
-            sortState = { column, direction };
-            
-            filteredData.sort((a, b) => {
-                let valA = a[column];
-                let valB = b[column];
-                
-                if (typeof valA === 'string') return direction === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
-                return direction === 'asc' ? valA - valB : valB - valA;
+            modal.classList.remove('hidden');
+            // Allow display:block to apply before adding animation classes
+            requestAnimationFrame(() => {
+                backdrop.classList.add('open');
+                panel.classList.add('open');
             });
-
-            if(updateUI) renderTable(filteredData);
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
         }
 
-        function loadPeriod(period) {
-            currentPeriod = period;
-            const periodData = datasets[period];
-            const data = periodData.data;
-            
-            currentBarChartFilter = 'Todas';
+        function closeCategoryModal() {
+            backdrop.classList.remove('open');
+            panel.classList.remove('open');
 
-            let label = '';
-            if (period === 'jan2026') label = 'Janeiro 2026';
-            else if (period === 'dez2025') label = 'Dezembro 2025';
-            else if (period === 'nov2025') label = 'Novembro 2025';
-            else label = 'Outubro 2025';
-            
-            const titleEl = document.getElementById('page-title');
-            if(titleEl) titleEl.innerText = `Visão Geral - ${label}`;
-            
-            const growthEl = document.getElementById('growth-badge');
-            if(growthEl) {
-                let prevTotal = 0;
-                let comparisonLabel = "";
-                
-                // Determine previous period for comparison
-                if (period === 'jan2026') {
-                    prevTotal = datasets['dez2025'].total;
-                    comparisonLabel = "vs. Dez";
-                } else if (period === 'dez2025') {
-                    prevTotal = datasets['nov2025'].total;
-                    comparisonLabel = "vs. Nov";
-                } else if (period === 'nov2025') {
-                    prevTotal = datasets['out2025'].total;
-                    comparisonLabel = "vs. Out";
-                }
+            // Wait for transition to finish
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
 
-                if (prevTotal > 0) {
-                    const currentTotal = periodData.total;
-                    const diff = ((currentTotal - prevTotal) / prevTotal) * 100;
-                    const isPositive = diff >= 0;
-                    
-                    // Dynamic styling based on growth/decline
-                    const colorClass = isPositive 
-                        ? "bg-emerald-50 text-emerald-600 border-emerald-100" 
-                        : "bg-rose-50 text-rose-600 border-rose-100";
-                    
-                    const iconName = isPositive ? "trending-up" : "trending-down";
-                    
-                    growthEl.className = `px-2.5 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${colorClass}`;
-                    growthEl.innerHTML = `<i data-lucide="${iconName}" class="h-3 w-3"></i> ${Math.abs(diff).toFixed(1)}% ${comparisonLabel}`;
-                } else {
-                     growthEl.className = "px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-500 border border-slate-200";
-                     growthEl.innerText = "Base";
-                }
+        // FECHAR MODAL COM ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeCategoryModal();
             }
-
-            data.sort((a, b) => b.quantity - a.quantity);
-            filteredData = [...data];
-            const searchInput = document.getElementById('table-search');
-            if(searchInput) searchInput.value = '';
-
-            updateStats(periodData);
-            renderPieChart(data, 'Todas');
-            renderBarChart(data, 'Todas');
-            populateBarChartMenu(data);
-            renderTable(filteredData);
-            if(currentPeriod) renderProductGrid(); 
-            lucide.createIcons();
-        }
-
-        // --- Events ---
-
-        document.getElementById('period-selector').addEventListener('change', (e) => {
-            loadPeriod(e.target.value);
         });
 
-        const performSearch = () => {
-            const query = document.getElementById('table-search').value;
-            filterData(query);
+
+        // ==========================================
+        // VIEW: COMPARATIVO
+        // ==========================================
+
+        function renderComparisonView(period, currentData, comparisonLabel, comparisonData) {
+            const grid = document.getElementById('comparison-kpi-grid');
+
+            // Build 4 KPI cards for the last 4 periods
+            const availablePeriods = periodOrder.slice(0, 4);
+            grid.innerHTML = availablePeriods.map((p, idx) => {
+                const cData = datasets[p] || [];
+                const pPrev = periodOrder[idx + 1];
+                const pData = pPrev ? (datasets[pPrev] || []) : [];
+
+                const currTotal = cData.reduce((s, i) => s + i.quantity, 0);
+                const prevTotal = pData.reduce((s, i) => s + i.quantity, 0);
+
+                const diff = currTotal - prevTotal;
+                const pct = prevTotal !== 0 ? (diff / prevTotal) * 100 : 100;
+
+                const isPos = diff > 0;
+                const isNeg = diff < 0;
+                const sign = isPos ? "+" : "";
+                const trendIcon = isPos ? "▲" : (isNeg ? "▼" : "—");
+
+                // Badge styles matching the image precisely
+                const badgeClass = isPos ? "bg-emerald-400/20 text-emerald-600" : (isNeg ? "bg-rose-400/20 text-rose-600" : "bg-slate-100 text-slate-500");
+                const trendColorText = isPos ? "text-emerald-500" : (isNeg ? "text-rose-500" : "text-slate-400");
+                const barColor = isPos ? "bg-emerald-400" : (isNeg ? "bg-rose-400" : "bg-slate-300");
+
+                const pLabel = periodLabels[p] ? periodLabels[p].toUpperCase() : p;
+
+                // Capitalize first letter string for month (e.g., "Janeiro 2026")
+                const formatPrevLabel = (lbl) => {
+                    if (!lbl) return '';
+                    const parts = lbl.split(' ');
+                    if (parts.length > 0) {
+                        parts[0] = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+                    }
+                    return parts.join(' ');
+                };
+                const pPrevLabel = pPrev ? formatPrevLabel(periodLabels[pPrev] || pPrev) : 'mês anterior';
+
+                // We make the bar fill dynamic just for aesthetics, maxing at 100%
+                const fillWidth = Math.min(100, Math.max(10, Math.abs(pct)));
+
+                return `
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-full">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-[11px] font-bold text-slate-400/80 tracking-widest uppercase">${pLabel}</span>
+                            ${pPrev ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold ${badgeClass}">
+                                ${trendIcon} ${Math.abs(pct).toFixed(1)}%
+                            </span>` : ''}
+                        </div>
+                        <div>
+                            <h3 class="text-[40px] font-extrabold text-slate-800 tracking-tight leading-none mb-1">${currTotal}</h3>
+                            ${pPrev ? `<p class="text-xs text-slate-400 font-medium">vs ${pPrevLabel}: <span class="${trendColorText} font-bold">${sign}${diff} un.</span></p>` : `<p class="text-xs text-slate-400 font-medium">Sem dados anteriores</p>`}
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-100 rounded-full mt-6 overflow-hidden">
+                            <div class="h-full ${barColor} rounded-full" style="width: ${fillWidth}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+
+            // Construir Tabela Histórica
+            const allCats = new Set([...currentData.map(d => d.category), ...comparisonData.map(d => d.category)]);
+            // Adicionar meses anteriores se disponíveis (Hardcoded for demo, normally dynamic based on periodOrder array length)
+            const tablePeriods = periodOrder.slice(0, 5); // Últimos 5 meses
+
+            const tbody = document.getElementById('comparison-table-body');
+            const sortedCats = Array.from(allCats).sort();
+
+            let totalRows = tablePeriods.map(() => 0);
+
+            let tbodyHtml = sortedCats.map(cat => {
+                let html = `<tr class="hover:bg-slate-50 transition-colors">
+                            <td class="pr-8 py-5 font-semibold text-slate-600 uppercase text-xs">${cat}</td>`;
+
+                let currentMonthVal = 0;
+                let lastMonthVal = 0;
+
+                tablePeriods.forEach((p, idx) => {
+                    const pd = datasets[p];
+                    const val = pd ? pd.filter(d => d.category === cat).reduce((s, i) => s + i.quantity, 0) : 0;
+                    totalRows[idx] += val;
+
+                    if (idx === 0) currentMonthVal = val;
+                    if (idx === 1) lastMonthVal = val;
+
+                    const displayVal = val === 0 ? 'Base' : val;
+                    const colorClass = idx === 0 ? 'text-[#1cb5f7]' : 'text-slate-500';
+
+                    html += `<td class="px-4 py-5 text-center font-medium text-[13px] ${colorClass}">${displayVal}</td>`;
+                });
+
+                const diff = currentMonthVal - lastMonthVal;
+                const isPos = diff >= 0;
+                const isNeg = diff < 0;
+
+                const badgeClass = isPos ? 'bg-emerald-400/20 text-emerald-600' : 'bg-rose-400/20 text-rose-600';
+                const sign = isPos ? '+' : '-';
+                const trendIcon = isPos ? '▲' : '▼';
+                const absDiff = Math.abs(diff);
+
+                html += `<td class="px-4 py-5 text-right font-bold"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border overflow-hidden uppercase text-[11px] font-bold tracking-wide ${badgeClass} border-transparent">${trendIcon} ${sign}${absDiff}</span></td></tr>`;
+                return html;
+            }).join('');
+
+            // Total row
+            const diffGeral = totalRows[0] - totalRows[1];
+            const isPosGeral = diffGeral >= 0;
+            const isNegGeral = diffGeral < 0;
+            const badgeClassGeral = isPosGeral ? 'bg-emerald-400/20 text-emerald-600' : 'bg-rose-400/20 text-rose-600';
+            const signGeral = isPosGeral ? '+' : '-';
+            const trendIconGeral = isPosGeral ? '▲' : '▼';
+            const absDiffGeral = Math.abs(diffGeral);
+
+            let totalHtml = `<tr class="border-t-[1px] border-slate-100 hover:bg-slate-50 transition-colors">
+                <td class="pr-8 py-5 font-bold text-slate-900 uppercase text-xs">TOTAL GERAL</td>`;
+
+            tablePeriods.forEach((p, idx) => {
+                const colorClass = idx === 0 ? 'text-[#1cb5f7]' : 'text-slate-600';
+                totalHtml += `<td class="px-4 py-5 text-center font-bold text-[14px] ${colorClass}">${totalRows[idx]}</td>`;
+            });
+
+            totalHtml += `<td class="px-4 py-5 text-right font-bold"><span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border overflow-hidden uppercase text-[11px] font-bold tracking-wide ${badgeClassGeral} border-transparent">${trendIconGeral} ${signGeral}${absDiffGeral}</span></td></tr>`;
+
+            tbody.innerHTML = tbodyHtml + totalHtml;
+
+            lucide.createIcons();
+        }
+
+        function renderComparisonCharts() {
+            // Trend Line Chart custom SVG generator
+            const lineChartDiv = document.getElementById('trendLineChart');
+            if (!lineChartDiv) return;
+
+            const periods = periodOrder.slice(0, 5).reverse(); // Last 5 months, oldest to newest
+            const totals = periods.map(p => datasets[p] ? datasets[p].reduce((s, i) => s + i.quantity, 0) : 0);
+
+            // Catmull-Rom to Cubic Bezier helper
+            function getCurvePath(pts) {
+                if (pts.length === 0) return "";
+                if (pts.length === 1) return `M ${pts[0][0]},${pts[0][1]}`;
+                let d = `M ${pts[0][0]},${pts[0][1]} `;
+                for (let i = 0; i < pts.length - 1; i++) {
+                    const p0 = i === 0 ? pts[0] : pts[i - 1];
+                    const p1 = pts[i];
+                    const p2 = pts[i + 1];
+                    const p3 = i + 2 < pts.length ? pts[i + 2] : p2;
+                    const cp1x = p1[0] + (p2[0] - p0[0]) / 6;
+                    const cp1y = p1[1] + (p2[1] - p0[1]) / 6;
+                    const cp2x = p2[0] - (p3[0] - p1[0]) / 6;
+                    const cp2y = p2[1] - (p3[1] - p1[1]) / 6;
+                    d += `C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2[0]},${p2[1]} `;
+                }
+                return d;
+            }
+
+            const maxVal = Math.max(...totals) || 1;
+            const w = 900; const h = 320;
+            const padX = 50; const padY = 50;
+
+            const pointsArr = totals.map((val, i) => [
+                padX + (i * ((w - 2 * padX) / Math.max(1, periods.length - 1))),
+                h - padY - ((val / maxVal) * (h - 2 * padY))
+            ]);
+
+            const curvePathStr = getCurvePath(pointsArr);
+
+            const svg = `
+            <svg viewBox="0 0 ${w} ${h}" class="w-full h-full drop-shadow-sm min-w-[700px]">
+                <!-- Grid Labels Y -->
+                ${[0, 0.25, 0.5, 0.75, 1].map(pct => `
+                    <text x="${padX - 15}" y="${h - padY - (pct * (h - 2 * padY)) + 4}" text-anchor="end" fill="#cbd5e1" font-size="11" font-family="'Plus Jakarta Sans', sans-serif">${Math.round(pct * maxVal)}</text>
+                `).join('')}
+                
+                <!-- Gradient Fill area -->
+                <linearGradient id="curveGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.25"/>
+                    <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0"/>
+                </linearGradient>
+                <path d="${curvePathStr} L${pointsArr[pointsArr.length - 1][0]},${h - padY} L${pointsArr[0][0]},${h - padY} Z" fill="url(#curveGrad)"/>
+                
+                <!-- Main Curve -->
+                <path d="${curvePathStr}" fill="none" stroke="#22d3ee" stroke-width="4" stroke-linecap="round"/>
+                
+                <!-- Points and Labels -->
+                ${totals.map((val, i) => {
+                const x = pointsArr[i][0];
+                const y = pointsArr[i][1];
+                const lbl = periodLabels[periods[i]] || periods[i];
+                return `
+                        <circle cx="${x}" cy="${y}" r="5" fill="#22d3ee" stroke="#fff" stroke-width="2"/>
+                        <circle cx="${x}" cy="${y}" r="15" fill="transparent" class="hover:fill-sky-100/50 cursor-pointer transition-colors" title="${val} unid"/>
+                        <text x="${x}" y="${h - padY + 25}" text-anchor="middle" fill="#94a3b8" font-size="12" font-family="'Plus Jakarta Sans', sans-serif" font-weight="500">${lbl}</text>
+                        <text x="${x}" y="${y - 12}" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">${val}</text>
+                    `;
+            }).join('')}
+            </svg>`;
+
+            lineChartDiv.innerHTML = svg;
+
+
+            // Bar Chart Comparison Custom SVG
+            const barChartCompareDiv = document.getElementById('categoryCompareChart');
+            if (periodOrder.length < 2) return;
+            const currP = periodOrder[0];
+            const prevP = periodOrder[1];
+            const cData = datasets[currP] || [];
+            const pData = datasets[prevP] || [];
+
+            const allCats = new Set([...cData.map(d => d.category), ...pData.map(d => d.category)]);
+            const compareData = Array.from(allCats).map(cat => {
+                return {
+                    cat: cat,
+                    curr: cData.filter(d => d.category === cat).reduce((s, i) => s + i.quantity, 0),
+                    prev: pData.filter(d => d.category === cat).reduce((s, i) => s + i.quantity, 0)
+                };
+            }).sort((a, b) => b.curr - a.curr).slice(0, 20); // Show top 20 like the image roughly
+
+            const bw = 900; const bh = 320;
+            const bPadX = 50; const bPadY = 50;
+            const bMaxVal = Math.max(...compareData.map(d => Math.max(d.curr, d.prev))) || 1;
+
+            const slotW = (bw - 2 * bPadX) / compareData.length;
+            const barW = Math.min(20, slotW * 0.4);
+            const gap = 2; // small gap between the two bars
+
+            const lblCurr = periodLabels[currP] || currP;
+            const lblPrev = periodLabels[prevP] || prevP;
+
+            const bSvg = `
+            <svg viewBox="0 0 ${bw} ${bh}" class="w-full h-full min-w-[700px]">
+                 <!-- Legend inside SVG (top left) -->
+                 <rect x="${bPadX}" y="10" width="12" height="12" rx="3" fill="#38bdf8"/>
+                 <text x="${bPadX + 18}" y="20" fill="#475569" font-size="12" font-weight="600">${lblCurr}</text>
+                 <rect x="${bPadX + 90}" y="10" width="12" height="12" rx="3" fill="#a855f7"/>
+                 <text x="${bPadX + 108}" y="20" fill="#475569" font-size="12" font-weight="600">${lblPrev}</text>
+
+                 <!-- Grid Labels Y -->
+                 ${[0, 0.25, 0.5, 0.75, 1].map(pct => `
+                     <text x="${bPadX - 10}" y="${bh - bPadY - (pct * (bh - 2 * bPadY)) + 4}" text-anchor="end" fill="#cbd5e1" font-size="11" font-family="'Plus Jakarta Sans', sans-serif">${Math.round(pct * bMaxVal)}</text>
+                 `).join('')}
+
+                 ${compareData.map((d, i) => {
+                const cx = bPadX + (slotW / 2) + (i * slotW);
+                const chCurr = (d.curr / bMaxVal) * (bh - 2 * bPadY);
+                const chPrev = (d.prev / bMaxVal) * (bh - 2 * bPadY);
+
+                const cName = d.cat.length > 10 ? d.cat.substring(0, 8) + '..' : d.cat;
+
+                return `
+                        <!-- Curr Bar (Left - cyan) -->
+                        <rect x="${cx - barW - gap / 2}" y="${bh - bPadY - chCurr}" width="${barW}" height="${chCurr}" rx="3" fill="#38bdf8" class="hover:fill-sky-400 transition-colors"/>
+                        ${d.curr > 0 ? `<text x="${cx - barW / 2 - gap / 2}" y="${bh - bPadY - chCurr - 6}" text-anchor="middle" fill="#0284c7" font-size="10" font-weight="bold">${d.curr}</text>` : ''}
+                        
+                        <!-- Prev Bar (Right - purple) -->
+                        <rect x="${cx + gap / 2}" y="${bh - bPadY - chPrev}" width="${barW}" height="${chPrev}" rx="3" fill="#a855f7" class="hover:fill-purple-400 transition-colors"/>
+                        ${d.prev > 0 ? `<text x="${cx + gap / 2 + barW / 2}" y="${bh - bPadY - chPrev - 6}" text-anchor="middle" fill="#7e22ce" font-size="10" font-weight="bold">${d.prev}</text>` : ''}
+                        
+                        <!-- Label -->
+                        <text x="${cx}" y="${bh - bPadY + 20}" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="600" font-family="'Plus Jakarta Sans', sans-serif">${cName}</text>
+                     `;
+            }).join('')}
+            </svg>`;
+            barChartCompareDiv.innerHTML = bSvg;
+
+        }
+
+
+        // ==========================================
+        // HELPERS E EVENTOS
+        // ==========================================
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${viewId}`).classList.remove('hidden');
+
+            const navs = ['overview', 'products', 'comparison'];
+            navs.forEach(nav => {
+                const el = document.getElementById(`nav-${nav}`);
+                if (nav === viewId) {
+                    el.classList.replace('text-slate-400', 'text-white');
+                    el.classList.add('bg-slate-800/50', 'border', 'border-slate-700/50', 'shadow-sm');
+                    el.classList.remove('hover:bg-slate-800/30');
+                } else {
+                    el.classList.replace('text-white', 'text-slate-400');
+                    el.classList.remove('bg-slate-800/50', 'border', 'border-slate-700/50', 'shadow-sm');
+                    el.classList.add('hover:bg-slate-800/30');
+                }
+            });
+
+            const titles = {
+                'overview': 'Visão Geral',
+                'products': 'Categorias & Mix',
+                'comparison': 'Comparativo Mensal'
+            };
+            document.getElementById('page-title').textContent = titles[viewId];
+        }
+
+        function getCategoryIcon(cat) {
+            const icons = {
+                "IPHONE": "smartphone", "SAMSUNG": "smartphone", "MOTOROLA": "smartphone",
+                "XIAOMI": "smartphone", "REDMI": "smartphone", "POCO": "smartphone", "REALME": "smartphone", "HONOR": "smartphone",
+                "FONES": "headphones", "CAPAS": "smartphone", "PELÍCULAS": "smartphone",
+                "CABOS": "zap", "CARREGADORES": "battery-charging", "ACESSÓRIOS": "speaker",
+                "CHIP": "sim-card", "SERVIÇOS": "tool", "PAGAMENTOS": "credit-card", "DESCONTO": "tag", "BRINDES": "gift"
+            };
+            for (const key in icons) {
+                if (cat.includes(key)) return icons[key];
+            }
+            return "box";
+        }
+
+        // Eventos de Busca e Ordenação
+        document.getElementById('table-search').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            currentPage = 1;
+            renderTable(datasets[currentPeriod] || []);
+        });
+
+        const sortHeaders = {
+            'sort-by-name': 'name',
+            'sort-by-category': 'category',
+            'sort-by-quantity': 'quantity',
+            'sort-by-percentage': 'quantity' // Proxy for percentage
         };
 
-        document.getElementById('search-btn').addEventListener('click', performSearch);
-
-        document.getElementById('table-search').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        // Bar Chart Menu Toggle
-        const menuBtn = document.getElementById('bar-chart-menu-btn');
-        const dropdown = document.getElementById('bar-chart-dropdown');
-
-        if (menuBtn) {
-            menuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdown.classList.toggle('hidden');
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!menuBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.classList.add('hidden');
+        for (const [id, col] of Object.entries(sortHeaders)) {
+            document.getElementById(id).addEventListener('click', () => {
+                if (currentSort.column === col) {
+                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort.column = col;
+                    currentSort.direction = 'desc';
                 }
+                renderTable(datasets[currentPeriod] || []);
             });
         }
 
-        // Sort Events
-        ['name', 'category', 'quantity', 'percentage'].forEach(key => {
-            const el = document.getElementById(`sort-by-${key}`);
-            if(el) {
-                el.addEventListener('click', () => {
-                    const dir = sortState.column === key && sortState.direction === 'desc' ? 'asc' : 'desc';
-                    sortData(key, dir);
-                });
+        // Toggle dropdown de categorias no gráfico de barras
+        document.getElementById('bar-chart-menu-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('bar-chart-dropdown').classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('bar-chart-dropdown');
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
             }
         });
 
-        // Init
-        (function init() {
-            loadPeriod('jan2026');
-        })();
+        // Initialize!
+        init();
 
     </script>
 </body>
+
 </html>
