@@ -1,12 +1,319 @@
 {
     "_instrucoes": "Para adicionar um novo mês: copie um bloco existente (ex: fev2026), altere a chave (ex: 'mar2026'), 'label', 'total' e 'data'. Certifique que a nova chave está no INÍCIO de '_ordem_exibicao'. Salve e recarregue o dashboard.",
     "_ordem_exibicao": [
+        "mar2026",
         "fev2026",
         "jan2026",
         "dez2025",
         "nov2025",
         "out2025"
     ],
+    "mar2026": {
+        "label": "Março 2026",
+        "total": 276,
+        "data": [
+            {
+                "name": "ADAPTADOR TOMADA (BRINDE)",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "ASSISTÊNCIA LIMPEZA VIRUS(PDV)",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "ASSISTÊNCIA SENHA DESBLOQUEIO(PDV)",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "ASSISTÊNCIA TROCA TELA (PDV)",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "BODY SPLASH. WEPINK (BRINDE)",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "BOTICARIO(BRINDE)",
+                "quantity": 10,
+                "percentage": "3,62%"
+            },
+            {
+                "name": "CARREGADOR 20W ESSAGER COMPLETO BRANCO",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "CARREGADOR 20W ESSAGER COMPLETO IPHONE",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "CARREGADOR 20W KD KN-108C KDPAN",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "CARREGADOR 50W LEHМОХ",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "CARREGADOR MOTOROLA 68W",
+                "quantity": 4,
+                "percentage": "1,45%"
+            },
+            {
+                "name": "CARREGADOR XIAOMI 90W 2MTS COMPLETO",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "CHIP CLARO PREZÃO",
+                "quantity": 22,
+                "percentage": "7,97%"
+            },
+            {
+                "name": "CHIP TIM PRE C REGARGA",
+                "quantity": 14,
+                "percentage": "5,07%"
+            },
+            {
+                "name": "COPO STANLEY (BRINDE)",
+                "quantity": 5,
+                "percentage": "1,81%"
+            },
+            {
+                "name": "DESCONTO VENDA",
+                "quantity": 32,
+                "percentage": "11,59%"
+            },
+            {
+                "name": "FONE BLUETOOTH REALFIT F2",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)",
+                "quantity": 18,
+                "percentage": "6,52%"
+            },
+            {
+                "name": "FONTE CARREGADOR 50W EL 4005 ELETRO",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "GARRAFA HONOR (BRINDE)",
+                "quantity": 3,
+                "percentage": "1,09%"
+            },
+            {
+                "name": "HONOR X5C 4/128 MIDNIGHT BLACK",
+                "quantity": 16,
+                "percentage": "5,80%"
+            },
+            {
+                "name": "HONOR X5C 4/128 OCEAN CYAN",
+                "quantity": 7,
+                "percentage": "2,54%"
+            },
+            {
+                "name": "HONOR X7C 8/256 FOREST GREEN ((NFC))",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "HONOR X7C 8/256 MOONLIGHT WHITE ((NFC))",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "HONOR X7D 8/256 DESERT GOLD",
+                "quantity": 4,
+                "percentage": "1,45%"
+            },
+            {
+                "name": "HONOR X7D 8/256 OCEAN CYAN",
+                "quantity": 6,
+                "percentage": "2,17%"
+            },
+            {
+                "name": "HONOR X7D 8/256 VELVET BLACK",
+                "quantity": 6,
+                "percentage": "2,17%"
+            },
+            {
+                "name": "IPHONE 13 128G BRANCO (LACRADO)",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "IPHONE 13 128G PRETO",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "IPHONE 14 256G BRANCO ((LACRADO))",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "IPHONE 14 256G PRETO PRO MAX",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "IPHONE 16e 128 BRANCO",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "MOTO E22 AZUL 4/128 (SEMINOVO)",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "MOTO G05 4/128 VERMELHO",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "MOTO G15 4/128 CINZA",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "MOTO G15 8/128 SEA GLACIER BLUE",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "MOTO G15 8/256 SEA BLUE",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "MOTO G56 5G 12/256 GREY MIST",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "MOTO G86 5G 8/256 CHRYSANTHEMUM PINK",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "PAGAMENTO DE ENTRADA (RESERVA)",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "PAGAMENTO NUOVO(PDV)",
+                "quantity": 14,
+                "percentage": "5,07%"
+            },
+            {
+                "name": "PELICULA FOSCA HYDROGEL SUPER PREMIUM",
+                "quantity": 3,
+                "percentage": "1,09%"
+            },
+            {
+                "name": "PELICULA HD HYDROGEL PREMIUM +",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "PELICULA HD HYDROGEL STANDARD",
+                "quantity": 11,
+                "percentage": "3,99%"
+            },
+            {
+                "name": "PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM",
+                "quantity": 3,
+                "percentage": "1,09%"
+            },
+            {
+                "name": "POCO X7 PRO 5G 12/256 GREEN",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "REALME C67 8/256 SUNNY OASIS",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "REALME C71 4/256 FOREST OWL",
+                "quantity": 2,
+                "percentage": "0,72%"
+            },
+            {
+                "name": "REALME C71 4/256 WHITE SWAN",
+                "quantity": 3,
+                "percentage": "1,09%"
+            },
+            {
+                "name": "REALME C71 8/256 FOREST OWL",
+                "quantity": 7,
+                "percentage": "2,54%"
+            },
+            {
+                "name": "REALME C71 8/256 WHITE SWAN",
+                "quantity": 22,
+                "percentage": "7,97%"
+            },
+            {
+                "name": "REALME C85 8/256 KINGFISHER BLUE",
+                "quantity": 11,
+                "percentage": "3,99%"
+            },
+            {
+                "name": "REALME C85 8/256 SWAN BLACK",
+                "quantity": 5,
+                "percentage": "1,81%"
+            },
+            {
+                "name": "REALME NOTE 70 4/128 BEACH GOLD",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "REALME NOTE 70 4/256 OBSIDIAN BLACK",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "REDMI A5 4/128 GOLD",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "REDMI A5 4/128 PRETO",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "REDMI NOTE 13 4G 8/256 GREEN (SEMINOVO)",
+                "quantity": 1,
+                "percentage": "0,36%"
+            },
+            {
+                "name": "TAXA DO CARTÃO",
+                "quantity": 1,
+                "percentage": "0,36%"
+            }
+        ]
+    },
     "fev2026": {
         "label": "Fevereiro 2026",
         "total": 207,
