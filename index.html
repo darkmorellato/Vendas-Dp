@@ -705,23 +705,29 @@
 
         async function init() {
             try {
-                const response = await fetch('data.json');
-                const jsonData = await response.json();
+                const ordemRes = await fetch('dados/ordem.json');
+                const ordemData = await ordemRes.json();
+                periodOrder = ordemData._ordem_exibicao || [];
 
-                periodOrder = jsonData._ordem_exibicao || [];
-                periodOrder.forEach(k => {
-                    rawDatasets[k] = jsonData[k].data || [];
-                    periodLabels[k] = jsonData[k].label || k;
-                });
+                const resultados = await Promise.all(
+                    periodOrder.map(async key => {
+                        const res = await fetch(`dados/${key}.json`);
+                        if (!res.ok) throw new Error(`Falha ao carregar ${key}`);
+                        const mes = await res.json();
+                        return { key, label: mes.label || key, data: mes.data || [] };
+                    })
+                );
 
                 const selector = document.getElementById('period-selector');
                 selector.innerHTML = '';
-                periodOrder.forEach(key => {
+                resultados.forEach(({ key, label, data }) => {
+                    periodLabels[key] = label;
+                    rawDatasets[key] = data;
                     const option = document.createElement('option');
                     option.value = key;
-                    option.textContent = periodLabels[key];
+                    option.textContent = label;
                     selector.appendChild(option);
-                    datasets[key] = aggregateData(rawDatasets[key]);
+                    datasets[key] = aggregateData(data);
                 });
 
                 if (periodOrder.length > 0) {
@@ -738,7 +744,7 @@
                     loadPeriod(currentPeriod);
                 }
             } catch (error) {
-                console.error("Erro ao carregar data.json:", error);
+                console.error('Erro ao carregar dados:', error);
                 document.getElementById('period-selector').innerHTML = '<option value="">Erro ao carregar dados</option>';
             }
         }

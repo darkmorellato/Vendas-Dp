@@ -1,0 +1,376 @@
+{
+    "label": "Novembro 2025",
+    "total": 402,
+    "data": [
+        {
+            "name": "ADAPTADOR TOMADA (BRINDE)",
+            "quantity": 7,
+            "percentage": 0.0174
+        },
+        {
+            "name": "ASSISTÊNCIA SENHA DESBLOQUEIO(PDV)",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "ASSISTÊNCIA SOFTWARE(PDV)",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "ASSISTÊNCIA TROCA PEÇA(PDV)",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "ASSISTÊNCIA TROCA TELA (PDV)",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "BODY SPLASH. WEPINK (BRINDE)",
+            "quantity": 8,
+            "percentage": 0.0199
+        },
+        {
+            "name": "BOTICARIO(BRINDE)",
+            "quantity": 15,
+            "percentage": 0.0373
+        },
+        {
+            "name": "CABO DE DADOS HB16-CC H'MASTON",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CAPA HONOR X7C",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CAPA REALME C61/C63",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CAPA REDMI NOTE 14 4G",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CARREGADOR 20W KD KN-108A KDPAN",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "CARREGADOR 20W KD KN-108C KDPAN",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CARREGADOR CARRO S15-4 H'MASTON",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CARREGADOR MOTOROLA 50W",
+            "quantity": 6,
+            "percentage": 0.0149
+        },
+        {
+            "name": "CARREGADOR MOTOROLA 68W",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "CARREGADOR XIAOMI 90W C/CABO 2MTS",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CARREGADOR Y24-1 H'MASTON",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CARREGADOR Y27-3 H'MASTON",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CARTÃO SDXC 128G V30 KODAK",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "CHIP CLARO FLEX",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "CHIP CLARO PREZÃO",
+            "quantity": 31,
+            "percentage": 0.0771
+        },
+        {
+            "name": "CHIP TIM PRE C REGARGA",
+            "quantity": 7,
+            "percentage": 0.0174
+        },
+        {
+            "name": "COPO STANLEY (BRINDE)",
+            "quantity": 24,
+            "percentage": 0.0597
+        },
+        {
+            "name": "DESCONTO NA VENDA",
+            "quantity": 37,
+            "percentage": 0.092
+        },
+        {
+            "name": "FONE BLUETOOTH KNC5602 KAIDI",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "FONE BLUETOOTH KNC5603 KAIDI",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "FONE BLUETOOTH REDMI AIRDOTS (BRINDE)",
+            "quantity": 38,
+            "percentage": 0.0945
+        },
+        {
+            "name": "FONE COM FIO LE-0204 LELONG",
+            "quantity": 3,
+            "percentage": 0.0075
+        },
+        {
+            "name": "HONOR 400 LITE 5G 8/256 VELVET BLACK",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "HONOR X5B PLUS 4/256 BLACK MIDNIGHT",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "HONOR X7C 8/256 BLACK (SEMINOVO)",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "HONOR X7C 8/256 FOREST GREEN",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "HONOR X7C 8/256 MIDNIGHT BLACK",
+            "quantity": 4,
+            "percentage": 0.01
+        },
+        {
+            "name": "HONOR X7C 8/256 MOONLIGHT WHITE",
+            "quantity": 24,
+            "percentage": 0.0597
+        },
+        {
+            "name": "HONOR X8B 8/256 CYAN LAKE",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "HONOR X8B 8/256 TITANIUM SILVER",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "MOTO G05 4/128 VERDE",
+            "quantity": 11,
+            "percentage": 0.0274
+        },
+        {
+            "name": "MOTO G05 4/128 VERMELHO",
+            "quantity": 13,
+            "percentage": 0.0323
+        },
+        {
+            "name": "MOTO G15 4/128 CINZA",
+            "quantity": 11,
+            "percentage": 0.0274
+        },
+        {
+            "name": "MOTO G15 4/128 LARANJA",
+            "quantity": 3,
+            "percentage": 0.0075
+        },
+        {
+            "name": "MOTO G15 4/128 VERDE",
+            "quantity": 7,
+            "percentage": 0.0174
+        },
+        {
+            "name": "MOTO G15 8/256 GRAVITY GRAY",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "MOTO G15 8/256 SEA BLUE",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "MOTOROLA EDGE 50 5G FUSION 8/256 FOREST BLUE",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "MOTOROLA EDGE 50 5G FUSION 8/256 MARSHMALLOW BLUE",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "MOTOROLA EDGE 60 5G FUSION 12/256 BLUE",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "MOTOROLA EDGE 60 5G FUSION 12/256 GREY",
+            "quantity": 3,
+            "percentage": 0.0075
+        },
+        {
+            "name": "MOTOROLA EDGE 60 5G FUSION 12/256 PINK",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "MOTOROLA EDGE 60 5G FUSION 8/256 BLUE",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "PAGAMENTO NUOVO(PDV)",
+            "quantity": 12,
+            "percentage": 0.0299
+        },
+        {
+            "name": "PELICULA FOSCA HYDROGEL SUPER PREMIUM",
+            "quantity": 3,
+            "percentage": 0.0075
+        },
+        {
+            "name": "PELICULA HD HYDROGEL PREMIUM",
+            "quantity": 6,
+            "percentage": 0.0149
+        },
+        {
+            "name": "PELICULA HD HYDROGEL STANDARD",
+            "quantity": 27,
+            "percentage": 0.0672
+        },
+        {
+            "name": "PELICULA HD HYDROGEL SUPER PREMIUM",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "POCO X7 PRO 5G 12/512 IRON MAN EDITION",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "POCO X7 PRO 5G 12/512 PRETO",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "POCO X7 PRO 5G 12/512 YELLOW",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "REALME C63 8/256 JADE GREEN",
+            "quantity": 9,
+            "percentage": 0.0224
+        },
+        {
+            "name": "REALME C63 8/256 LEATHER BLUE",
+            "quantity": 9,
+            "percentage": 0.0224
+        },
+        {
+            "name": "REALME C65 8/256 STARLIGHT BLACK",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "REALME C65 8/256 STARLIGHT PURPLE",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "REALME C71 8/256 FOREST OWL",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "REALME C71 8/256 WHITE SWAN",
+            "quantity": 5,
+            "percentage": 0.0124
+        },
+        {
+            "name": "REALME C75 8/256 RUBY RED",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "REALME C75X 8/256 CORAL PINK",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "REDMI 14C 4/128 STARRY BLUE SEMINOVO",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "REDMI 15C 8/256 MIDNIGHT BLACK",
+            "quantity": 2,
+            "percentage": 0.005
+        },
+        {
+            "name": "REDMI A5 4/128 AZUL",
+            "quantity": 7,
+            "percentage": 0.0174
+        },
+        {
+            "name": "REDMI A5 4/128 GOLD",
+            "quantity": 1,
+            "percentage": 0.0025
+        },
+        {
+            "name": "REDMI A5 4/128 PRETO",
+            "quantity": 6,
+            "percentage": 0.0149
+        },
+        {
+            "name": "REDMI A5 4/128 VERDE",
+            "quantity": 1,
+            "percentage": 0.0025
+        }
+    ]
+}

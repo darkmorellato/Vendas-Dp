@@ -1,0 +1,13 @@
+{
+    "_instrucoes": "Ordem de exibição dos meses. Para adicionar um novo mês, crie o arquivo JSON na pasta 'dados/' e adicione a chave aqui no início da lista.",
+    "_ordem_exibicao": [
+        "mai2026",
+        "abr2026",
+        "mar2026",
+        "fev2026",
+        "jan2026",
+        "dez2025",
+        "nov2025",
+        "out2025"
+    ]
+}
