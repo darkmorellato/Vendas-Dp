@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miplace Honor | Dashboard Executivo</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#faf9f6',
+                            100: '#f5f0eb',
+                            500: '#78716c',
+                            600: '#57534e',
+                            700: '#44403c',
+                            900: '#1c1917',
+                            dark: '#1c1917',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': 'none',
+                        'card': '0 0 0 1px rgba(28,25,23,0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #faf9f6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d6d3d1;
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e;
+        }
+
+        .glass-header {
+            background: rgba(250, 249, 246, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .custom-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2378716c' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.25em 1.25em;
+            padding-right: 2.5rem;
+        }
+
+        .modal-backdrop {
+            opacity: 0;
+            transition: opacity 300ms ease-out;
+            pointer-events: none;
+        }
+
+        .modal-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-panel {
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+            transition: opacity 300ms ease-out, transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-panel.open {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 1cm;
+            }
+
+            body,
+            html {
+                height: auto !important;
+                overflow: visible !important;
+                background-color: white !important;
+            }
+
+            aside,
+            header,
+            #search-btn,
+            #bar-chart-menu-btn,
+            .no-print,
+            #category-modal,
+            ::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            #main-wrapper {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+                width: 100% !important;
+            }
+
+            #scroll-content {
+                padding: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .shadow-card {
+                box-shadow: none !important;
+                border: 1px solid #d6d3d1 !important;
+                page-break-inside: avoid;
+            }
+
+            canvas {
+                max-height: 300px !important;
+            }
+
+            h2,
+            h3 {
+                color: #000 !important;
+            }
+
+            p,
+            span,
+            td {
+                color: #333 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-stone-600 antialiased h-screen flex overflow-hidden font-sans bg-[#faf9f6]">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-stone-900 flex-col hidden md:flex z-20 transition-all duration-300">
+        <div class="h-20 flex items-center px-8 border-b border-stone-800">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 flex items-center justify-center overflow-hidden bg-stone-800 border border-stone-700 rounded-full">
+                    <img src="dp.jpg" alt="Logo DP" class="h-full w-full object-cover rounded-full"
+                        onerror="this.src='https://placehold.co/40x40/78716c/ffffff?text=DP'">
+                </div>
+                <div>
+                    <h1 class="text-white font-serif font-bold text-lg tracking-tight leading-none">Miplace Honor</h1>
+                    <span class="text-stone-500 text-xs font-medium uppercase tracking-[0.15em]">Enterprise Dashboard</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <p class="px-4 text-xs font-bold text-stone-600 uppercase tracking-[0.2em] mb-2">Principal</p>
+
+            <button onclick="switchView('overview')" id="nav-overview"
+                class="w-full flex items-center gap-3 px-4 py-3 text-white bg-stone-800 border border-stone-700 transition-all group">
+                <i data-lucide="layout-dashboard" class="h-5 w-5 text-stone-300 group-hover:text-white"></i>
+                <span class="font-medium text-sm">Visao Geral</span>
+            </button>
+
+            <button onclick="switchView('products')" id="nav-products"
+                class="w-full flex items-center gap-3 px-4 py-3 text-stone-500 hover:text-white hover:bg-stone-800/50 transition-all group">
+                <i data-lucide="package" class="h-5 w-5 group-hover:text-stone-300 transition-colors"></i>
+                <span class="font-medium text-sm">Categorias</span>
+            </button>
+
+            <button onclick="switchView('comparison')" id="nav-comparison"
+                class="w-full flex items-center gap-3 px-4 py-3 text-stone-500 hover:text-white hover:bg-stone-800/50 transition-all group">
+                <i data-lucide="trending-up" class="h-5 w-5 group-hover:text-stone-300 transition-colors"></i>
+                <span class="font-medium text-sm">Comparativo</span>
+            </button>
+
+            <p class="px-4 text-xs font-bold text-stone-600 uppercase tracking-[0.2em] mb-2 mt-8">Relatorios</p>
+            <button onclick="window.print()"
+                class="w-full flex items-center gap-3 px-4 py-3 text-stone-500 hover:text-white hover:bg-stone-800/50 transition-all group">
+                <i data-lucide="file-text" class="h-5 w-5 group-hover:text-stone-300 transition-colors"></i>
+                <span class="font-medium text-sm">Exportar PDF</span>
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-stone-800">
+            <div class="flex items-center gap-3 px-4 py-3 bg-stone-800/50 border border-stone-700/50">
+                <div class="h-9 w-9 bg-stone-700 flex items-center justify-center text-white text-xs font-bold border border-stone-600">
+                    DM
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">Administrador</p>
+                    <p class="text-xs text-stone-500 truncate">Dark Morellato</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div id="main-wrapper" class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#faf9f6]">
+
+        <!-- Top Header -->
+        <header class="glass-header h-20 border-b border-stone-200 flex items-center justify-between px-6 sticky top-0 z-10">
+            <button class="md:hidden p-2 text-stone-500 hover:bg-stone-100 transition-colors">
+                <i data-lucide="menu" class="h-6 w-6"></i>
+            </button>
+
+            <div class="flex flex-col justify-center">
+                <h2 id="page-title" class="text-xl font-serif font-bold text-stone-900 tracking-tight">Visao Geral</h2>
+                <div class="flex items-center gap-2">
+                    <span class="h-1.5 w-1.5 rounded-full bg-stone-400"></span>
+                    <span id="last-updated" class="text-xs text-stone-400 font-medium uppercase tracking-[0.15em]">Atualizado em tempo real</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="relative min-w-[180px]">
+                    <select id="period-selector"
+                        class="custom-select w-full bg-white border border-stone-200 text-stone-700 text-sm font-semibold hover:border-stone-300 focus:border-stone-400 focus:outline-none block p-2.5 transition-all">
+                        <option value="">Carregando...</option>
+                    </select>
+                </div>
+
+                <div class="h-8 w-[1px] bg-stone-200 mx-1 hidden sm:block"></div>
+
+                <button class="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors">
+                    <i data-lucide="arrow-left" class="h-5 w-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Scrollable Content -->
+        <div id="scroll-content" class="flex-1 overflow-y-auto p-6 lg:p-12 scroll-smooth">
+
+            <!-- VIEW: OVERVIEW -->
+            <div id="view-overview" class="view-section space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 border border-stone-200 hover:border-stone-300 transition-all duration-300 group relative overflow-hidden">
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-4 mb-6">
+                                <i data-lucide="shopping-bag" class="h-5 w-5 text-stone-400"></i>
+                                <span class="px-2.5 py-1 text-xs font-bold uppercase tracking-[0.15em] text-stone-500 border border-stone-200">
+                                    Base
+                                </span>
+                            </div>
+                            <p class="text-xs font-bold text-stone-400 uppercase tracking-[0.2em]">Volume Total</p>
+                            <h3 id="total-items" class="text-5xl font-serif font-bold text-stone-900 mt-2 tracking-tight">...</h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 border border-stone-200 hover:border-stone-300 transition-all duration-300 group relative overflow-hidden">
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-4 mb-6">
+                                <i data-lucide="layers" class="h-5 w-5 text-stone-400"></i>
+                                <span class="px-2.5 py-1 text-xs font-bold uppercase tracking-[0.15em] text-stone-500 border border-stone-200">
+                                    Mix Ativo
+                                </span>
+                            </div>
+                            <p class="text-xs font-bold text-stone-400 uppercase tracking-[0.2em]">Produtos Unicos</p>
+                            <h3 id="unique-products" class="text-5xl font-serif font-bold text-stone-900 mt-2 tracking-tight">...</h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 border border-stone-200 hover:border-stone-300 transition-all duration-300 group relative overflow-hidden">
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-4 mb-6">
+                                <i data-lucide="award" class="h-5 w-5 text-stone-400"></i>
+                                <span class="px-2.5 py-1 text-xs font-bold uppercase tracking-[0.15em] text-stone-500 border border-stone-200">
+                                    Top Performer
+                                </span>
+                            </div>
+                            <p class="text-xs font-bold text-stone-400 uppercase tracking-[0.2em]">Mais Vendido</p>
+                            <h3 id="top-product-name" class="text-lg font-serif font-bold text-stone-900 mt-2 truncate leading-tight" title="">...</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Pie Chart -->
+                    <div class="bg-white p-8 border border-stone-200 flex flex-col">
+                        <div class="flex items-center justify-between mb-8">
+                            <div>
+                                <h3 id="pie-chart-title" class="text-lg font-serif font-bold text-stone-900">Distribuicao do Mix</h3>
+                                <p class="text-xs text-stone-400 mt-1 uppercase tracking-[0.15em]">Participacao por produto</p>
+                            </div>
+                            <button class="text-stone-300 hover:text-stone-500 transition-colors">
+                                <i data-lucide="pie-chart" class="h-6 w-6"></i>
+                            </button>
+                        </div>
+                        <div class="relative flex-grow flex items-center justify-center min-h-[320px]">
+                            <canvas id="productPieChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart -->
+                    <div class="bg-white p-8 border border-stone-200 flex flex-col">
+                        <div class="flex items-center justify-between mb-8 relative">
+                            <div>
+                                <h3 id="bar-chart-title" class="text-lg font-serif font-bold text-stone-900">Top 10 Produtos (Volume)</h3>
+                                <p class="text-xs text-stone-400 mt-1 uppercase tracking-[0.15em]">Ranking por volume de vendas</p>
+                            </div>
+
+                            <div class="relative">
+                                <button id="bar-chart-menu-btn"
+                                    class="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-all focus:outline-none">
+                                    <i data-lucide="filter" class="h-5 w-5"></i>
+                                </button>
+
+                                <div id="bar-chart-dropdown"
+                                    class="hidden absolute right-0 top-10 w-64 bg-white border border-stone-200 z-30 py-2 max-h-80 overflow-y-auto transform origin-top-right transition-all animate-in fade-in zoom-in-95 duration-200">
+                                    <div class="px-4 py-3 border-b border-stone-100 mb-1">
+                                        <span class="text-xs font-bold text-stone-400 uppercase tracking-[0.2em]">Filtrar Categoria</span>
+                                    </div>
+                                    <div id="bar-chart-categories" class="p-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative flex-grow flex items-center justify-center min-h-[320px]">
+                            <canvas id="productBarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="bg-white p-8 border border-stone-200">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-stone-100">
+                        <i data-lucide="list" class="h-4 w-4 text-stone-400"></i>
+                        <h3 class="text-lg font-serif font-bold text-stone-900">Detalhamento Visual</h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="pie-legend-container"></div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="bg-white border border-stone-200 overflow-hidden flex flex-col">
+                    <div class="p-8 border-b border-stone-100 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                        <div>
+                            <h3 class="text-lg font-serif font-bold text-stone-900">Relatorio Detalhado</h3>
+                            <p class="text-xs text-stone-400 mt-1 uppercase tracking-[0.15em]">Analise granular de todas as transacoes do periodo.</p>
+                        </div>
+
+                        <div class="flex items-center gap-2 w-full lg:w-auto">
+                            <div class="relative flex-grow lg:w-80 group">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i data-lucide="search" class="h-4 w-4 text-stone-400 group-focus-within:text-stone-600 transition-colors"></i>
+                                </div>
+                                <input type="text" id="table-search" placeholder="Buscar produto ou categoria..."
+                                    class="pl-10 pr-4 py-2.5 border border-stone-200 bg-white text-sm focus:outline-none focus:border-stone-400 w-full transition-all">
+                            </div>
+                            <button id="search-btn"
+                                class="p-2.5 bg-stone-900 text-white hover:bg-stone-800 transition-all"
+                                aria-label="Buscar">
+                                <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-stone-600">
+                            <thead class="bg-stone-50 text-xs uppercase font-bold text-stone-400 border-b border-stone-200">
+                                <tr>
+                                    <th class="px-8 py-5 text-center w-20 tracking-[0.15em]">#</th>
+                                    <th id="sort-by-name" class="px-8 py-5 cursor-pointer hover:bg-stone-100 transition-colors group tracking-[0.15em]">
+                                        <div class="flex items-center gap-2">
+                                            Produto
+                                            <i data-lucide="chevrons-up-down" class="h-3 w-3 text-stone-300 group-hover:text-stone-500 transition-colors"></i>
+                                        </div>
+                                    </th>
+                                    <th id="sort-by-category" class="px-8 py-5 cursor-pointer hover:bg-stone-100 transition-colors group tracking-[0.15em]">
+                                        <div class="flex items-center gap-2">
+                                            Categoria
+                                            <i data-lucide="chevrons-up-down" class="h-3 w-3 text-stone-300 group-hover:text-stone-500 transition-colors"></i>
+                                        </div>
+                                    </th>
+                                    <th id="sort-by-quantity" class="px-8 py-5 text-center cursor-pointer hover:bg-stone-100 transition-colors group tracking-[0.15em]">
+                                        <div class="flex items-center justify-center gap-2">
+                                            Qtd.
+                                            <i data-lucide="chevrons-up-down" class="h-3 w-3 text-stone-300 group-hover:text-stone-500 transition-colors"></i>
+                                        </div>
+                                    </th>
+                                    <th id="sort-by-percentage" class="px-8 py-5 text-center cursor-pointer hover:bg-stone-100 transition-colors group tracking-[0.15em]">
+                                        <div class="flex items-center justify-center gap-2">
+                                            Share (%)
+                                            <i data-lucide="chevrons-up-down" class="h-3 w-3 text-stone-300 group-hover:text-stone-500 transition-colors"></i>
+                                        </div>
+                                    </th>
+                                    <th class="px-8 py-5 text-center tracking-[0.15em]">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-table-body" class="divide-y divide-stone-100 bg-white"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-8 py-6 border-t border-stone-200 flex items-center justify-between text-sm">
+                        <span id="showing-text" class="text-stone-400 font-medium">Carregando dados...</span>
+                        <div class="flex gap-3">
+                            <button class="px-4 py-2 border border-stone-200 text-stone-600 hover:bg-stone-50 hover:border-stone-300 transition-all disabled:opacity-50 font-medium" disabled>Anterior</button>
+                            <button class="px-4 py-2 border border-stone-200 text-stone-600 hover:bg-stone-50 hover:border-stone-300 transition-all disabled:opacity-50 font-medium" disabled>Proxima</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: PRODUCTS -->
+            <div id="view-products" class="view-section hidden space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div class="bg-white p-8 border border-stone-200">
+                    <h3 class="text-lg font-serif font-bold text-stone-900 mb-6">Performance por Categoria</h3>
+                    <div id="categories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </div>
+
+            <!-- VIEW: COMPARISON -->
+            <div id="view-comparison" class="view-section hidden space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div id="comparison-kpi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+                <div class="bg-white p-8 border border-stone-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-stone-50 border border-stone-200">
+                            <i data-lucide="trending-up" class="h-5 w-5 text-stone-500"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-serif font-bold text-stone-900">Evolucao do Volume Total</h3>
+                            <p class="text-xs text-stone-400 mt-0.5 uppercase tracking-[0.15em]">Quantidade total de itens vendidos por mes</p>
+                        </div>
+                    </div>
+                    <div id="trendLineChart" style="width:100%;height:300px;"></div>
+                </div>
+
+                <div class="bg-white p-8 border border-stone-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-stone-50 border border-stone-200">
+                            <i data-lucide="bar-chart-2" class="h-5 w-5 text-stone-500"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-serif font-bold text-stone-900">Comparativo por Categoria</h3>
+                            <p class="text-xs text-stone-400 mt-0.5 uppercase tracking-[0.15em]">Unidades por categoria</p>
+                        </div>
+                    </div>
+                    <div id="categoryCompareChart" style="width:100%;height:380px;overflow-x:auto;"></div>
+                </div>
+
+                <div class="bg-white border border-stone-200 overflow-hidden p-8 mt-4">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-serif font-bold text-stone-800">Historico Mensal — Resumo por Categoria</h3>
+                        <p class="text-xs text-stone-400 mt-1 pb-4 uppercase tracking-[0.15em]">Volume de unidades por categoria em cada periodo.</p>
+                    </div>
+                    <div class="overflow-x-auto pb-4">
+                        <table class="w-full text-left text-sm text-stone-600">
+                            <thead class="text-[11px] uppercase font-bold text-stone-400 border-b border-stone-200">
+                                <tr>
+                                    <th class="py-5 pr-8 tracking-[0.15em]">Categoria</th>
+                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Fev 2026</th>
+                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Jan 2026</th>
+                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Dez 2025</th>
+                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Nov 2025</th>
+                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Out 2025</th>
+                                    <th class="px-4 py-5 text-right tracking-[0.15em]">&#916; Mensal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comparison-table-body" class="divide-y divide-stone-50"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center pt-8 pb-4 no-print">
+                <div class="w-16 h-[1px] bg-stone-300 mx-auto mb-6"></div>
+                <p class="text-stone-400 text-xs font-medium uppercase tracking-[0.2em]">&copy; 2026 PR Analytics Platform. Uso estritamente confidencial.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Details Modal -->
+    <div id="category-modal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div id="modal-backdrop" class="fixed inset-0 bg-stone-900/40 backdrop-blur-sm modal-backdrop"></div>
+
+        <div class="fixed inset-0 z-10 overflow-y-auto" onclick="closeCategoryModal()">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div id="modal-panel"
+                    class="relative transform overflow-hidden bg-white text-left shadow-xl modal-panel sm:my-8 sm:w-full sm:max-w-lg border border-stone-200"
+                    onclick="event.stopPropagation()">
+                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border-b border-stone-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-serif font-bold leading-6 text-stone-900" id="modal-category-title">Categoria</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white px-4 py-2 sm:p-6 max-h-[60vh] overflow-y-auto">
+                        <table class="min-w-full divide-y divide-stone-100">
+                            <thead class="bg-stone-50 sticky top-0">
+                                <tr>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-stone-900 uppercase tracking-[0.15em]">Produto</th>
+                                    <th scope="col" class="px-3 py-3.5 text-right text-xs font-semibold text-stone-900 uppercase tracking-[0.15em]">Qtd.</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-stone-100 bg-white" id="modal-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+
+        let rawDatasets = {};
+
+        function getCategory(name) {
+            const n = name.toUpperCase();
+            if (n.includes("BRINDE")) return "BRINDES";
+            if (n.includes("CABO") || n.includes("FONTE")) return "CABOS/CARREGADORES";
+            if (n.includes("CAPA")) return "CAPAS";
+            if (n.includes("CARREGADOR") || n.includes("POWER BANK")) return "CABOS/CARREGADORES";
+            if (n.includes("CHIP")) return "CHIP";
+            if (n.includes("DESCONTO") || n.includes("AJUSTE") || n.includes("FUNCIONÁRIO")) return "DESCONTO";
+            if (n.includes("FONE")) return "FONES";
+            if (n.includes("HONOR")) return "HONOR";
+            if (n.includes("IPHONE")) return "IPHONE";
+            if (n.includes("MOTO")) return "MOTOROLA";
+            if (n.includes("PAGAMENTO") || n.includes("ASSISTÊNCIA") || n.includes("TAXA") || n.includes("TROCA") || n.includes("IMPRESSÃO")) return "PAGAMENTOS/SERVIÇOS";
+            if (n.includes("REALME") || n.includes("C85") || n.includes("NOTE 70")) return "REALME";
+            if (n.includes("POCO")) return "POCO";
+            if (n.includes("REDMI") || n.includes("XIAOMI")) return "REDMI";
+            if (n.includes("PELICULA") || n.includes("PELÍCULA")) return "PELÍCULAS";
+            if (n.includes("SAMSUNG")) return "SAMSUNG";
+            if (n.includes("ADAPTADOR")) return "ACESSÓRIOS";
+            return "OUTROS";
+        }
+
+        function aggregateData(data) {
+            const aggr = {};
+            data.forEach(item => {
+                if (item.name === "Total") return;
+                const cat = getCategory(item.name);
+                if (!aggr[item.name]) {
+                    aggr[item.name] = { name: item.name, quantity: 0, category: cat };
+                }
+                aggr[item.name].quantity += item.quantity;
+            });
+            const result = Object.values(aggr);
+            result.sort((a, b) => b.quantity - a.quantity);
+            return result;
+        }
+
+        let datasets = {};
+        let periodOrder = [];
+        let periodLabels = {};
+        let currentPeriod = "";
+
+        let productPieChart, productBarChart;
+        let selectedCategoryFilter = "Todas";
+        let currentSort = { column: 'quantity', direction: 'desc' };
+        let currentPage = 1;
+        const itemsPerPage = 15;
+        let searchQuery = "";
+
+        async function init() {
+            try {
+                const ordemRes = await fetch('dados/ordem.json');
+                const ordemData = await ordemRes.json();
+                periodOrder = ordemData._ordem_exibicao || [];
+
+                const resultados = await Promise.all(
+                    periodOrder.map(async key => {
+                        const res = await fetch(`dados/${key}.json`);
+                        if (!res.ok) throw new Error(`Falha ao carregar ${key}`);
+                        const mes = await res.json();
+                        return { key, label: mes.label || key, data: mes.data || [] };
+                    })
+                );
+
+                const selector = document.getElementById('period-selector');
+                selector.innerHTML = '';
+                resultados.forEach(({ key, label, data }) => {
+                    periodLabels[key] = label;
+                    rawDatasets[key] = data;
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = label;
+                    selector.appendChild(option);
+                    datasets[key] = aggregateData(data);
+                });
+
+                if (periodOrder.length > 0) {
+                    currentPeriod = periodOrder[0];
+                    selector.value = currentPeriod;
+                }
+
+                selector.addEventListener('change', (e) => {
+                    currentPeriod = e.target.value;
+                    loadPeriod(currentPeriod);
+                });
+
+                if (currentPeriod) {
+                    loadPeriod(currentPeriod);
+                }
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                document.getElementById('period-selector').innerHTML = '<option value="">Erro ao carregar dados</option>';
+            }
+        }
+
+        function loadPeriod(period) {
+            const data = datasets[period] || [];
+            updateStats(data);
+            initCharts(data);
+            populateCategoryFilter(data);
+            updateBarChartFilter(data);
+            renderTable(data);
+            renderProductGrid(data);
+
+            const displayLabel = periodLabels[period] || period;
+            document.getElementById('page-title').textContent = `Resultados: ${displayLabel}`;
+
+            let comparisonLabel = "";
+            let comparisonData = [];
+            const currentIndex = periodOrder.indexOf(period);
+            if (currentIndex >= 0 && currentIndex < periodOrder.length - 1) {
+                const prevPeriod = periodOrder[currentIndex + 1];
+                comparisonData = datasets[prevPeriod] || [];
+                comparisonLabel = periodLabels[prevPeriod] || prevPeriod;
+            }
+
+            renderComparisonView(period, data, comparisonLabel, comparisonData);
+            renderComparisonCharts();
+        }
+
+        function updateStats(data) {
+            const total = data.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('total-items').textContent = total.toLocaleString('pt-BR');
+            document.getElementById('unique-products').textContent = data.length.toLocaleString('pt-BR');
+
+            if (data.length > 0) {
+                document.getElementById('top-product-name').textContent = data[0].name;
+                document.getElementById('top-product-name').title = data[0].name;
+            } else {
+                document.getElementById('top-product-name').textContent = "-";
+            }
+        }
+
+        // ==========================================
+        // CHARTS
+        // ==========================================
+
+        const brandColors = [
+            '#c4b5a0', '#a3b8c4', '#b8c4a3', '#c4a3b8', '#c4b0a3',
+            '#a0b8c4', '#b8a3c4', '#c4c4a3', '#a3c4b8', '#c4a3a3'
+        ];
+
+        function getChartColors() {
+            return brandColors;
+        }
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#78716c';
+
+        function initCharts(data) {
+            const totalQuantity = data.reduce((sum, item) => sum + item.quantity, 0);
+
+            let pieData = [...data];
+            if (pieData.length > 10) {
+                const top9 = pieData.slice(0, 9);
+                const others = pieData.slice(9).reduce((sum, item) => sum + item.quantity, 0);
+                pieData = [...top9, { name: 'Outros Produtos', quantity: others }];
+            }
+
+            const pieCtx = document.getElementById('productPieChart').getContext('2d');
+            if (productPieChart) productPieChart.destroy();
+
+            productPieChart = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: pieData.map(d => d.name),
+                    datasets: [{
+                        data: pieData.map(d => d.quantity),
+                        backgroundColor: getChartColors().slice(0, Math.max(10, pieData.length)),
+                        borderWidth: 2,
+                        borderColor: '#faf9f6',
+                        hoverOffset: 10,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(28, 25, 23, 0.95)',
+                            padding: 14,
+                            cornerRadius: 0,
+                            titleFont: { size: 13, weight: '600', family: "'Inter', sans-serif" },
+                            bodyFont: { size: 12, family: "'Inter', sans-serif" },
+                            displayColors: true,
+                            boxPadding: 4,
+                            callbacks: {
+                                label: function (context) {
+                                    const value = context.parsed;
+                                    const percent = totalQuantity > 0 ? ((value / totalQuantity) * 100).toFixed(1) : 0;
+                                    return ` ${context.label}: ${value} unid. (${percent}%)`;
+                                }
+                            }
+                        }
+                    },
+                    animation: { animateScale: true, animateRotate: true }
+                }
+            });
+
+            const legendContainer = document.getElementById('pie-legend-container');
+            legendContainer.innerHTML = pieData.map((d, i) => {
+                const color = getChartColors()[i % getChartColors().length];
+                const percent = totalQuantity > 0 ? ((d.quantity / totalQuantity) * 100).toFixed(1) : 0;
+                return `
+                    <div class="flex items-start gap-3 p-3 hover:bg-stone-50 transition-colors border border-transparent hover:border-stone-200 page-break-inside-avoid">
+                        <span class="mt-1.5 block h-2 w-2 flex-shrink-0" style="background-color: ${color}"></span>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-sm text-stone-700 truncate" title="${d.name}">${d.name}</p>
+                            <p class="text-xs text-stone-400 mt-0.5">${d.quantity} un. <span class="text-stone-300">|</span> ${percent}%</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==========================================
+        // TABLE & FILTERS
+        // ==========================================
+
+        function renderTable(dataToRender) {
+            let filteredData = dataToRender;
+
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                filteredData = filteredData.filter(item =>
+                    item.name.toLowerCase().includes(q) ||
+                    item.category.toLowerCase().includes(q)
+                );
+            }
+
+            filteredData.sort((a, b) => {
+                let valA = a[currentSort.column];
+                let valB = b[currentSort.column];
+                if (typeof valA === 'string') {
+                    valA = valA.toLowerCase();
+                    valB = valB.toLowerCase();
+                    if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+                    if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+                    return 0;
+                }
+                return currentSort.direction === 'asc' ? valA - valB : valB - valA;
+            });
+
+            const totalItems = filteredData.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+
+            const tbody = document.getElementById('product-table-body');
+            const totalQuantity = dataToRender.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (paginatedData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-8 py-12 text-center text-stone-500 font-medium">Nenhum produto encontrado.</td></tr>`;
+                document.getElementById('showing-text').textContent = 'Mostrando 0 de 0 produtos';
+                return;
+            }
+
+            tbody.innerHTML = paginatedData.map((item, index) => {
+                const percentage = totalQuantity > 0 ? ((item.quantity / totalQuantity) * 100).toFixed(2) : "0.00";
+                const isTop = (startIndex + index) < 3;
+                return `
+                    <tr class="hover:bg-stone-50 transition-colors group border-b border-stone-50 last:border-0">
+                        <td class="px-8 py-4 whitespace-nowrap text-center text-stone-400 font-mono text-xs">${startIndex + index + 1}</td>
+                        <td class="px-8 py-4">
+                            <div class="flex items-center gap-3">
+                                ${isTop ? `<i data-lucide="medal" class="h-4 w-4 ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-stone-400' : 'text-amber-700'}"></i>` : ''}
+                                <span class="font-medium text-stone-700 group-hover:text-stone-900 transition-colors">${item.name}</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-4">
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-medium text-stone-500 border border-stone-200 uppercase tracking-[0.1em]">
+                                ${item.category}
+                            </span>
+                        </td>
+                        <td class="px-8 py-4 text-center">
+                            <span class="inline-block font-bold text-stone-900 bg-stone-50 px-3 py-1 border border-stone-100 min-w-[3rem]">${item.quantity}</span>
+                        </td>
+                        <td class="px-8 py-4 text-center">
+                            <div class="flex items-center justify-center gap-3">
+                                <span class="text-xs font-semibold text-stone-500 w-12 text-right">${percentage}%</span>
+                                <div class="w-16 bg-stone-100 h-[3px] overflow-hidden">
+                                    <div class="h-[3px]" style="width: ${percentage}%; background-color: #c4b5a0"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-4 text-center">
+                            <span class="inline-flex items-center px-2.5 py-1 text-xs font-semibold text-stone-600 border border-stone-200 uppercase tracking-[0.1em]">Ativo</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+
+            const end = Math.min(startIndex + itemsPerPage, totalItems);
+            document.getElementById('showing-text').textContent = `Mostrando ${startIndex + 1} - ${end} de ${totalItems} produtos`;
+
+            const buttons = document.querySelectorAll('#scroll-content button');
+            let prevB, nextB;
+            buttons.forEach(b => {
+                if (b.textContent === 'Anterior') prevB = b;
+                if (b.textContent === 'Proxima') nextB = b;
+            });
+
+            if (prevB) {
+                prevB.disabled = currentPage === 1;
+                prevB.onclick = () => { if (currentPage > 1) { currentPage--; renderTable(datasets[currentPeriod] || []); } };
+            }
+            if (nextB) {
+                nextB.disabled = currentPage >= totalPages;
+                nextB.onclick = () => { if (currentPage < totalPages) { currentPage++; renderTable(datasets[currentPeriod] || []); } };
+            }
+        }
+
+        function populateCategoryFilter(data) {
+            const categories = new Set(data.map(d => d.category));
+            const filterContainer = document.getElementById('bar-chart-categories');
+
+            let html = `
+                <button onclick="setCategoryFilter('Todas')" class="w-full text-left px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors flex items-center justify-between group mb-1 ${selectedCategoryFilter === 'Todas' ? 'bg-stone-50 font-semibold text-stone-900' : ''}">
+                    Todas as Categorias
+                    ${selectedCategoryFilter === 'Todas' ? '<i data-lucide="check" class="h-4 w-4 text-stone-700"></i>' : ''}
+                </button>
+            `;
+
+            Array.from(categories).sort().forEach(cat => {
+                const count = data.filter(d => d.category === cat).length;
+                html += `
+                    <button onclick="setCategoryFilter('${cat}')" class="w-full text-left px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors flex items-center justify-between group mb-1 ${selectedCategoryFilter === cat ? 'bg-stone-50 font-semibold text-stone-900' : ''}">
+                        <span class="truncate pr-2">${cat}</span>
+                        <span class="text-[10px] font-medium bg-stone-100 text-stone-500 px-1.5 py-0.5 group-hover:bg-stone-200">${count}</span>
+                    </button>
+                `;
+            });
+
+            filterContainer.innerHTML = html;
+            lucide.createIcons();
+            updateBarChartFilter(data);
+        }
+
+        function setCategoryFilter(cat) {
+            selectedCategoryFilter = cat;
+            document.getElementById('bar-chart-dropdown').classList.add('hidden');
+            const data = datasets[currentPeriod] || [];
+            populateCategoryFilter(data);
+        }
+
+        function updateBarChartFilter(data) {
+            let chartData = [...data];
+
+            if (selectedCategoryFilter !== "Todas") {
+                chartData = chartData.filter(d => d.category === selectedCategoryFilter);
+                document.getElementById('bar-chart-title').textContent = `Top Produtos: ${selectedCategoryFilter}`;
+            } else {
+                document.getElementById('bar-chart-title').textContent = "Top 10 Produtos (Geral)";
+            }
+
+            const top10 = chartData.slice(0, 10);
+
+            const barCtx = document.getElementById('productBarChart').getContext('2d');
+            if (productBarChart) productBarChart.destroy();
+
+            productBarChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: top10.map(d => d.name.length > 20 ? d.name.substring(0, 20) + '...' : d.name),
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: top10.map(d => d.quantity),
+                        backgroundColor: brandColors.slice(0, Math.max(10, top10.length)),
+                        borderRadius: 6,
+                        borderSkipped: false,
+                        barThickness: 32,
+                        maxBarThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(28, 25, 23, 0.95)',
+                            padding: 14,
+                            cornerRadius: 0,
+                            titleFont: { size: 13, weight: '600', family: "'Inter', sans-serif" },
+                            bodyFont: { size: 12, family: "'Inter', sans-serif" },
+                            displayColors: false,
+                            callbacks: {
+                                title: (items) => top10[items[0].dataIndex].name
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { display: true, color: '#ede8e1', drawBorder: false },
+                            ticks: {
+                                color: '#a39888',
+                                font: { family: "'Inter', sans-serif" },
+                                maxTicksLimit: 6
+                            },
+                            border: { display: false }
+                        },
+                        x: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: {
+                                color: '#8b7e6a',
+                                font: { family: "'Inter', sans-serif", size: 10 },
+                                maxRotation: 40,
+                                minRotation: 40
+                            },
+                            border: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ==========================================
+        // CATEGORIES GRID
+        // ==========================================
+
+        function renderProductGrid(data) {
+            const grid = document.getElementById('categories-grid');
+            const catMap = {};
+
+            data.forEach(item => {
+                if (!catMap[item.category]) {
+                    catMap[item.category] = {
+                        name: item.category,
+                        totalQuantity: 0,
+                        items: []
+                    };
+                }
+                catMap[item.category].totalQuantity += item.quantity;
+                catMap[item.category].items.push(item);
+            });
+
+            const categories = Object.values(catMap).sort((a, b) => b.totalQuantity - a.totalQuantity);
+
+            grid.innerHTML = categories.map((cat, index) => {
+                const topItems = cat.items.slice(0, 3);
+                const hasMore = cat.items.length > 3;
+
+                return `
+                    <div class="bg-white border border-stone-200 p-6 hover:border-stone-300 transition-colors relative overflow-hidden flex flex-col h-full cursor-pointer" onclick="openCategoryModal('${cat.name}')">
+                        <div class="flex items-start justify-between mb-4">
+                            <i data-lucide="${getCategoryIcon(cat.name)}" class="h-5 w-5 text-stone-400"></i>
+                            <div class="text-right">
+                                <span class="text-[1.75rem] font-serif font-bold text-stone-900 leading-none tracking-tight">${cat.totalQuantity}</span>
+                                <span class="text-[0.65rem] font-bold text-stone-400 uppercase tracking-[0.2em] ml-1">unid</span>
+                            </div>
+                        </div>
+
+                        <h4 class="text-center font-bold text-stone-900 tracking-[0.15em] uppercase text-sm mb-6 mt-2">
+                            ${cat.name}
+                        </h4>
+
+                        <div class="space-y-3 mb-4 flex-grow">
+                            ${topItems.map(item => `
+                                <div class="flex items-center justify-between text-xs group/item">
+                                    <span class="text-stone-500 font-medium truncate pr-4 group-hover/item:text-stone-900 transition-colors" title="${item.name}">
+                                        ${item.name}
+                                    </span>
+                                    <span class="text-stone-900 font-bold bg-stone-50 px-2 py-0.5 border border-stone-100 flex-shrink-0">${item.quantity}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        ${hasMore ? `<button class="mt-auto w-full text-center text-xs font-bold text-stone-400 hover:text-stone-900 py-2 hover:bg-stone-50 transition-colors uppercase tracking-[0.15em]">+ ${cat.items.length - 3} produtos (Clique p/ ver todos)</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // MODAL
+        // ==========================================
+        const modal = document.getElementById('category-modal');
+        const backdrop = document.getElementById('modal-backdrop');
+        const panel = document.getElementById('modal-panel');
+
+        function openCategoryModal(categoryName) {
+            const data = datasets[currentPeriod] || [];
+            const items = data.filter(d => d.category === categoryName).sort((a, b) => b.quantity - a.quantity);
+
+            document.getElementById('modal-category-title').textContent = `${categoryName} (${items.reduce((s, i) => s + i.quantity, 0)} unid)`;
+
+            const tbody = document.getElementById('modal-table-body');
+            tbody.innerHTML = items.map((item, index) => `
+                <tr class="hover:bg-stone-50 transition-colors">
+                    <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-stone-900 truncate max-w-[300px]" title="${item.name}">
+                        ${index + 1}. ${item.name}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-3 text-right text-sm font-mono font-medium text-stone-600">
+                        ${item.quantity}
+                    </td>
+                </tr>
+            `).join('');
+
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                backdrop.classList.add('open');
+                panel.classList.add('open');
+            });
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCategoryModal() {
+            backdrop.classList.remove('open');
+            panel.classList.remove('open');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeCategoryModal();
+            }
+        });
+
+        // ==========================================
+        // COMPARISON VIEW
+        // ==========================================
+
+        function renderComparisonView(period, currentData, comparisonLabel, comparisonData) {
+            const grid = document.getElementById('comparison-kpi-grid');
+
+            const availablePeriods = periodOrder.slice(0, 4);
+            grid.innerHTML = availablePeriods.map((p, idx) => {
+                const cData = datasets[p] || [];
+                const pPrev = periodOrder[idx + 1];
+                const pData = pPrev ? (datasets[pPrev] || []) : [];
+
+                const currTotal = cData.reduce((s, i) => s + i.quantity, 0);
+                const prevTotal = pData.reduce((s, i) => s + i.quantity, 0);
+
+                const diff = currTotal - prevTotal;
+                const pct = prevTotal !== 0 ? (diff / prevTotal) * 100 : 100;
+
+                const isPos = diff > 0;
+                const isNeg = diff < 0;
+                const sign = isPos ? "+" : "";
+                const trendIcon = isPos ? "+" : (isNeg ? "-" : "");
+
+                const badgeText = isPos ? `+ ${Math.abs(pct).toFixed(1)}%` : (isNeg ? `- ${Math.abs(pct).toFixed(1)}%` : "0%");
+
+                const pLabel = periodLabels[p] ? periodLabels[p].toUpperCase() : p;
+
+                const formatPrevLabel = (lbl) => {
+                    if (!lbl) return '';
+                    const parts = lbl.split(' ');
+                    if (parts.length > 0) {
+                        parts[0] = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+                    }
+                    return parts.join(' ');
+                };
+                const pPrevLabel = pPrev ? formatPrevLabel(periodLabels[pPrev] || pPrev) : 'mes anterior';
+
+                const fillWidth = Math.min(100, Math.max(10, Math.abs(pct)));
+                const barColor = isPos ? '#c4b5a0' : (isNeg ? '#c4a3a3' : '#d6d3d1');
+
+                return `
+                    <div class="bg-white p-6 border border-stone-200 hover:border-stone-300 transition-all duration-300 group relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-[0.2em] text-stone-400">${pLabel}</span>
+                            ${pPrev ? `<span class="px-2 py-0.5 text-xs font-bold text-stone-600 border border-stone-200 uppercase tracking-[0.1em]">
+                                ${badgeText}
+                            </span>` : ''}
+                        </div>
+                        <p class="text-3xl font-serif font-bold text-stone-900 tracking-tight">${currTotal}</p>
+                        ${pPrev ? `<p class="text-xs text-stone-400 mt-1">vs ${pPrevLabel}: <span class="font-semibold text-stone-700">${sign}${diff} un.</span></p>` : `<p class="text-xs text-stone-400 mt-1">Sem dados anteriores</p>`}
+                        <div class="w-full bg-stone-100 h-[3px] mt-4">
+                            <div class="h-[3px]" style="width: ${fillWidth}%; background-color: ${barColor}"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const allCats = new Set([...currentData.map(d => d.category), ...comparisonData.map(d => d.category)]);
+            const tablePeriods = periodOrder.slice(0, 5);
+
+            const tbody = document.getElementById('comparison-table-body');
+            const sortedCats = Array.from(allCats).sort();
+
+            let totalRows = tablePeriods.map(() => 0);
+
+            let tbodyHtml = sortedCats.map(cat => {
+                let html = `<tr class="hover:bg-stone-50 transition-colors">
+                            <td class="pr-8 py-5 font-semibold text-stone-600 uppercase text-xs tracking-[0.1em]">${cat}</td>`;
+
+                let currentMonthVal = 0;
+                let lastMonthVal = 0;
+
+                tablePeriods.forEach((p, idx) => {
+                    const pd = datasets[p];
+                    const val = pd ? pd.filter(d => d.category === cat).reduce((s, i) => s + i.quantity, 0) : 0;
+                    totalRows[idx] += val;
+
+                    if (idx === 0) currentMonthVal = val;
+                    if (idx === 1) lastMonthVal = val;
+
+                    const displayVal = val === 0 ? 'Base' : val;
+                    const colorClass = idx === 0 ? 'text-stone-900 font-semibold' : 'text-stone-500';
+
+                    html += `<td class="px-4 py-5 text-center font-medium text-[13px] ${colorClass}">${displayVal}</td>`;
+                });
+
+                const diff = currentMonthVal - lastMonthVal;
+                const isPos = diff >= 0;
+                const sign = isPos ? '+' : '-';
+                const trendIcon = isPos ? '+' : '-';
+                const absDiff = Math.abs(diff);
+                const badgeClass = isPos ? 'text-stone-600 border-stone-200' : 'text-stone-500 border-stone-200';
+
+                html += `<td class="px-4 py-5 text-right font-bold"><span class="inline-flex items-center gap-1.5 px-3 py-1 border uppercase text-[11px] font-bold tracking-[0.1em] ${badgeClass}">${trendIcon}${absDiff}</span></td></tr>`;
+                return html;
+            }).join('');
+
+            const diffGeral = totalRows[0] - totalRows[1];
+            const isPosGeral = diffGeral >= 0;
+            const signGeral = isPosGeral ? '+' : '-';
+            const trendIconGeral = isPosGeral ? '+' : '-';
+            const absDiffGeral = Math.abs(diffGeral);
+            const badgeClassGeral = isPosGeral ? 'text-stone-600 border-stone-200' : 'text-stone-500 border-stone-200';
+
+            let totalHtml = `<tr class="border-t-[1px] border-stone-100 hover:bg-stone-50 transition-colors">
+                <td class="pr-8 py-5 font-bold text-stone-900 uppercase text-xs tracking-[0.1em]">TOTAL GERAL</td>`;
+
+            tablePeriods.forEach((p, idx) => {
+                const colorClass = idx === 0 ? 'text-stone-900 font-semibold' : 'text-stone-600';
+                totalHtml += `<td class="px-4 py-5 text-center font-bold text-[14px] ${colorClass}">${totalRows[idx]}</td>`;
+            });
+
+            totalHtml += `<td class="px-4 py-5 text-right font-bold"><span class="inline-flex items-center gap-1.5 px-3 py-1 border uppercase text-[11px] font-bold tracking-[0.1em] ${badgeClassGeral}">${trendIconGeral}${absDiffGeral}</span></td></tr>`;
+
+            tbody.innerHTML = tbodyHtml + totalHtml;
+            lucide.createIcons();
+        }
+
+        function renderComparisonCharts() {
+            const lineChartDiv = document.getElementById('trendLineChart');
+            if (!lineChartDiv) return;
+
+            const periods = periodOrder.slice(0, 5).reverse();
+            const totals = periods.map(p => datasets[p] ? datasets[p].reduce((s, i) => s + i.quantity, 0) : 0);
+
+            function getCurvePath(pts) {
+                if (pts.length === 0) return "";
+                if (pts.length === 1) return `M ${pts[0][0]},${pts[0][1]}`;
+                let d = `M ${pts[0][0]},${pts[0][1]} `;
+                for (let i = 0; i < pts.length - 1; i++) {
+                    const p0 = i === 0 ? pts[0] : pts[i - 1];
+                    const p1 = pts[i];
+                    const p2 = pts[i + 1];
+                    const p3 = i + 2 < pts.length ? pts[i + 2] : p2;
+                    const cp1x = p1[0] + (p2[0] - p0[0]) / 6;
+                    const cp1y = p1[1] + (p2[1] - p0[1]) / 6;
+                    const cp2x = p2[0] - (p3[0] - p1[0]) / 6;
+                    const cp2y = p2[1] - (p3[1] - p1[1]) / 6;
+                    d += `C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2[0]},${p2[1]} `;
+                }
+                return d;
+            }
+
+            const maxVal = Math.max(...totals) || 1;
+            const w = 900; const h = 320;
+            const padX = 50; const padY = 50;
+
+            const pointsArr = totals.map((val, i) => [
+                padX + (i * ((w - 2 * padX) / Math.max(1, periods.length - 1))),
+                h - padY - ((val / maxVal) * (h - 2 * padY))
+            ]);
+
+            const curvePathStr = getCurvePath(pointsArr);
+
+            const svg = `
+            <svg viewBox="0 0 ${w} ${h}" class="w-full h-full min-w-[700px]">
+                ${[0, 0.25, 0.5, 0.75, 1].map(pct => `
+                    <text x="${padX - 15}" y="${h - padY - (pct * (h - 2 * padY)) + 4}" text-anchor="end" fill="#a39888" font-size="11" font-family="'Inter',sans-serif">${Math.round(pct * maxVal)}</text>
+                `).join('')}
+
+                <linearGradient id="curveGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#c4b5a0" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#c4b5a0" stop-opacity="0.02"/>
+                </linearGradient>
+                <path d="${curvePathStr} L${pointsArr[pointsArr.length - 1][0]},${h - padY} L${pointsArr[0][0]},${h - padY} Z" fill="url(#curveGrad)"/>
+
+                <path d="${curvePathStr}" fill="none" stroke="#c4b5a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+                ${totals.map((val, i) => {
+                const x = pointsArr[i][0];
+                const y = pointsArr[i][1];
+                const lbl = periodLabels[periods[i]] || periods[i];
+                return `
+                        <circle cx="${x}" cy="${y}" r="5" fill="#c4b5a0" stroke="#faf9f6" stroke-width="2"/>
+                        <circle cx="${x}" cy="${y}" r="15" fill="transparent" class="cursor-pointer" title="${val} unid"/>
+                        <text x="${x}" y="${h - padY + 25}" text-anchor="middle" fill="#8b7e6a" font-size="11" font-family="'Inter',sans-serif" font-weight="500">${lbl}</text>
+                        <text x="${x}" y="${y - 12}" text-anchor="middle" fill="#57534e" font-size="11" font-weight="600">${val}</text>
+                    `;
+            }).join('')}
+            </svg>`;
+
+            lineChartDiv.innerHTML = svg;
+
+            const barChartCompareDiv = document.getElementById('categoryCompareChart');
+            if (periodOrder.length < 2) return;
+            const currP = periodOrder[0];
+            const prevP = periodOrder[1];
+            const cData = datasets[currP] || [];
+            const pData = datasets[prevP] || [];
+
+            const allCats = new Set([...cData.map(d => d.category), ...pData.map(d => d.category)]);
+            const compareData = Array.from(allCats).map(cat => {
+                return {
+                    cat: cat,
+                    curr: cData.filter(d => d.category === cat).reduce((s, i) => s + i.quantity, 0),
+                    prev: pData.filter(d => d.category === cat).reduce((s, i) => s + i.quantity, 0)
+                };
+            }).sort((a, b) => b.curr - a.curr).slice(0, 20);
+
+            const bw = Math.max(860, compareData.length * 70); const bh = 340;
+            const bPadX = 50; const bPadY = 50; const bPadBottom = 70;
+            const bMaxVal = Math.max(...compareData.map(d => Math.max(d.curr, d.prev))) || 1;
+
+            const slotW = (bw - 2 * bPadX) / compareData.length;
+            const barW = Math.min(20, slotW * 0.4);
+            const gap = 2;
+
+            const lblCurr = periodLabels[currP] || currP;
+            const lblPrev = periodLabels[prevP] || prevP;
+
+            const bSvg = `
+            <svg viewBox="0 0 ${bw} ${bh}" class="w-full h-full min-w-[700px]">
+                 <rect x="${bPadX}" y="10" width="12" height="12" fill="#c4b5a0"/>
+                 <text x="${bPadX + 18}" y="20" fill="#57534e" font-size="12" font-weight="600">${lblCurr}</text>
+                 <rect x="${bPadX + 90}" y="10" width="12" height="12" fill="#a3b8c4"/>
+                 <text x="${bPadX + 108}" y="20" fill="#57534e" font-size="12" font-weight="600">${lblPrev}</text>
+
+                 <line x1="${bPadX}" y1="${bh - bPadBottom}" x2="${bw - 20}" y2="${bh - bPadBottom}" stroke="#d6cfc6" stroke-width="1.5"/>
+
+                 ${[0, 0.25, 0.5, 0.75, 1].map(pct => `
+                     <text x="${bPadX - 10}" y="${bh - bPadBottom - (pct * (bh - bPadY - bPadBottom)) + 4}" text-anchor="end" fill="#a39888" font-size="11" font-family="'Inter',sans-serif">${Math.round(pct * bMaxVal)}</text>
+                 `).join('')}
+
+                 ${compareData.map((d, i) => {
+                const cx = bPadX + (slotW / 2) + (i * slotW);
+                const chCurr = (d.curr / bMaxVal) * (bh - bPadY - bPadBottom);
+                const chPrev = (d.prev / bMaxVal) * (bh - bPadY - bPadBottom);
+
+                const cName = d.cat.length > 8 ? d.cat.substring(0, 7) + '..' : d.cat;
+
+                return `
+                        <rect x="${cx - barW - gap / 2}" y="${bh - bPadBottom - chCurr}" width="${barW}" height="${chCurr}" fill="#c4b5a0"/>
+                        ${d.curr > 0 ? `<text x="${cx - barW / 2 - gap / 2}" y="${bh - bPadBottom - chCurr - 6}" text-anchor="middle" fill="#8b7e6a" font-size="10" font-weight="600">${d.curr}</text>` : ''}
+
+                        <rect x="${cx + gap / 2}" y="${bh - bPadBottom - chPrev}" width="${barW}" height="${chPrev}" fill="#a3b8c4"/>
+                        ${d.prev > 0 ? `<text x="${cx + gap / 2 + barW / 2}" y="${bh - bPadBottom - chPrev - 6}" text-anchor="middle" fill="#7a9aae" font-size="10" font-weight="600">${d.prev}</text>` : ''}
+
+                        <text x="${cx}" y="${bh - bPadBottom + 20}" text-anchor="middle" fill="#8b7e6a" font-size="10" font-weight="600" font-family="'Inter',sans-serif">${cName}</text>
+                     `;
+            }).join('')}
+            </svg>`;
+            barChartCompareDiv.innerHTML = bSvg;
+        }
+
+        // ==========================================
+        // HELPERS & EVENTS
+        // ==========================================
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${viewId}`).classList.remove('hidden');
+
+            const navs = ['overview', 'products', 'comparison'];
+            navs.forEach(nav => {
+                const el = document.getElementById(`nav-${nav}`);
+                if (nav === viewId) {
+                    el.classList.replace('text-stone-500', 'text-white');
+                    el.classList.add('bg-stone-800', 'border', 'border-stone-700');
+                    el.classList.remove('hover:bg-stone-800/50');
+                } else {
+                    el.classList.replace('text-white', 'text-stone-500');
+                    el.classList.remove('bg-stone-800', 'border', 'border-stone-700');
+                    el.classList.add('hover:bg-stone-800/50');
+                }
+            });
+
+            const titles = {
+                'overview': 'Visao Geral',
+                'products': 'Categorias & Mix',
+                'comparison': 'Comparativo Mensal'
+            };
+            document.getElementById('page-title').textContent = titles[viewId];
+        }
+
+        function getCategoryIcon(cat) {
+            const icons = {
+                "IPHONE": "smartphone", "SAMSUNG": "smartphone", "MOTOROLA": "smartphone",
+                "XIAOMI": "smartphone", "REDMI": "smartphone", "POCO": "smartphone", "REALME": "smartphone", "HONOR": "smartphone",
+                "FONES": "headphones", "CAPAS": "smartphone", "PELÍCULAS": "smartphone",
+                "CABOS": "zap", "CARREGADORES": "zap", "ACESSÓRIOS": "zap",
+                "CHIP": "sim-card", "SERVIÇOS": "circle-dollar-sign", "PAGAMENTOS": "circle-dollar-sign", "DESCONTO": "circle-dollar-sign", "BRINDES": "gift"
+            };
+            for (const key in icons) {
+                if (cat.includes(key)) return icons[key];
+            }
+            return "smartphone";
+        }
+
+        document.getElementById('table-search').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            currentPage = 1;
+            renderTable(datasets[currentPeriod] || []);
+        });
+
+        const sortHeaders = {
+            'sort-by-name': 'name',
+            'sort-by-category': 'category',
+            'sort-by-quantity': 'quantity',
+            'sort-by-percentage': 'quantity'
+        };
+
+        for (const [id, col] of Object.entries(sortHeaders)) {
+            document.getElementById(id).addEventListener('click', () => {
+                if (currentSort.column === col) {
+                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort.column = col;
+                    currentSort.direction = 'desc';
+                }
+                renderTable(datasets[currentPeriod] || []);
+            });
+        }
+
+        document.getElementById('bar-chart-menu-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('bar-chart-dropdown').classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('bar-chart-dropdown');
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>
