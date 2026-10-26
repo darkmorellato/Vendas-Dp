@@ -469,15 +469,7 @@
                     <div class="overflow-x-auto pb-4">
                         <table class="w-full text-left text-sm text-stone-600">
                             <thead class="text-[11px] uppercase font-bold text-stone-400 border-b border-stone-200">
-                                <tr>
-                                    <th class="py-5 pr-8 tracking-[0.15em]">Categoria</th>
-                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Fev 2026</th>
-                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Jan 2026</th>
-                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Dez 2025</th>
-                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Nov 2025</th>
-                                    <th class="px-4 py-5 text-center tracking-[0.15em]">Out 2025</th>
-                                    <th class="px-4 py-5 text-right tracking-[0.15em]">&#916; Mensal</th>
-                                </tr>
+                                <tr id="comparison-table-head"></tr>
                             </thead>
                             <tbody id="comparison-table-body" class="divide-y divide-stone-50"></tbody>
                         </table>
@@ -1118,6 +1110,24 @@
 
             const allCats = new Set([...currentData.map(d => d.category), ...comparisonData.map(d => d.category)]);
             const tablePeriods = periodOrder.slice(0, 5);
+
+            const shortLabel = (key) => {
+                const [month, year] = (periodLabels[key] || key).split(' ');
+                const abbr = month.slice(0, 3);
+                return abbr.charAt(0).toUpperCase() + abbr.slice(1) + (year ? ` ${year}` : '');
+            };
+
+            const headRow = document.getElementById('comparison-table-head');
+            headRow.textContent = '';
+            const addHeadCell = (text, className) => {
+                const th = document.createElement('th');
+                th.textContent = text;
+                th.className = className;
+                headRow.appendChild(th);
+            };
+            addHeadCell('Categoria', 'py-5 pr-8 tracking-[0.15em]');
+            tablePeriods.forEach(p => addHeadCell(shortLabel(p), 'px-4 py-5 text-center tracking-[0.15em]'));
+            addHeadCell('\u0394 Mensal', 'px-4 py-5 text-right tracking-[0.15em]');
 
             const tbody = document.getElementById('comparison-table-body');
             const sortedCats = Array.from(allCats).sort();
